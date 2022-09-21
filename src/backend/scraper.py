@@ -14,7 +14,7 @@ class Apt:
     def add_contact_number(number):
         contact_number = number
         
-with open("uiucApts.htm", "r") as f:
+with open(r"D:\AptRating\uiucApts.htm", "r") as f:
     content = f.read()
     soup = BeautifulSoup(content, features="html.parser")
     apts = soup.find_all("div", class_="c-list")
