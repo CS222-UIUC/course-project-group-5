@@ -39,7 +39,7 @@ def register():
         email = request.form['email']
         password = request.form['password']
         phone = request.form['phone']
-        login.register(username, email, password, phone)
+        result = login.register(username, email, password, phone)
         if (not username) or (not email) or (not password) or (not phone):
             return redirect(url_for('register_failure', name = username))
         else:
@@ -49,7 +49,7 @@ def register():
         email = request.args.get('email')
         password = request.args.get('password')
         phone = request.args.get('phone')
-        login.register(username, email, password, phone)
+        result = login.register(username, email, password, phone)
         if (not username) or (not email) or (not password) or (not phone):
             return redirect(url_for('register_failure', name = username))
         else:
