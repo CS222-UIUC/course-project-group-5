@@ -1,37 +1,16 @@
-name: Node CI environment
-
-on: [pull_request]
-
+name: reviewdog
+on: [push, pull_request]
 jobs:
-  lint:
+  eslint:
+    name: runner / eslint
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          fetch-depth: 1
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+          node-version: '14'
+      - run: yarn install
+      - uses: reviewdog/action-eslint@v1
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: npm login
-        run:
-          npm config set //registry.npmjs.org/:_authToken=$NPM_READONLY_AUTH_TOKEN
-        env:
-          NPM_READONLY_AUTH_TOKEN: ${{ secrets.NPM_READONLY_AUTH_TOKEN }}
-
-      - name: npm install
-        run: npm i --ignore-scripts
-
-      - name: Run ESLint
-        uses: ninosaurus/eslint-check@v5
-        with:
-          eslint-config-path: "assets/js/.eslintrc.json"
-          custom-directory: "./application"
-          repo-token: ${{secrets.GITHUB_TOKEN}}
+          reporter: github-check
+          eslint_flags: 'src/'
