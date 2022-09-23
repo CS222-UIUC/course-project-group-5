@@ -7,64 +7,66 @@ app = Flask(__name__)
 # Login
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    login = Login()
+    '''Handles login routing'''
+    user_login = Login()
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        if login.login(username, email, password):
-            return redirect(url_for('success', name = username))
-        else:
-            return redirect(url_for('failure', name = username))
-    else:
-        username = request.args.get('username')
-        email = request.args.get('email')
-        password = request.args.get('password')
-        if login.login(username, email, password):
+        if user_login.login(username, password) or user_login.login(email, password):
             return redirect(url_for('login_success', name = username))
-        else:
-            return redirect(url_for('login_failure', name = username))
+        return redirect(url_for('login_failure'))
+
+    username = request.args.get('username')
+    email = request.args.get('email')
+    password = request.args.get('password')
+    if user_login.login(username, password) or user_login.login(email, password):
+        return redirect(url_for('login_success', name = username))
+    return redirect(url_for('login_failure'))
 
 # Register
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
-    login = Login()
+    '''Handles register routing'''
+    user_login = Login()
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
         phone = request.form['phone']
-        result = login.register(username, email, password, phone)
+        result = user_login.register(username, email, password, phone)
         if (not username) or (not email) or (not password) or (not phone):
-            return redirect(url_for('register_failure', name = username))
-        else:
-            return redirect(url_for('register_success', name = username))
-    else:
-        username = request.args.get('username')
-        email = request.args.get('email')
-        password = request.args.get('password')
-        phone = request.args.get('phone')
-        result = login.register(username, email, password, phone)
-        if (not username) or (not email) or (not password) or (not phone):
-            return redirect(url_for('register_failure', name = username))
-        else:
-            return redirect(url_for('register_success', name = username))
+            return redirect(url_for('register_failure'))
+        return redirect(url_for('register_success', name = username))
+
+    username = request.args.get('username')
+    email = request.args.get('email')
+    password = request.args.get('password')
+    phone = request.args.get('phone')
+    result = user_login.register(username, email, password, phone)
+    if (not username) or (not email) or (not password) or (not phone):
+        return redirect(url_for('register_failure'))
+    return redirect(url_for('register_success', name = username))
 # Login and register successful/unsuccessful
 @app.route('/login_success/<name>')
 def login_success(name: str):
-    return 'welcome %name' % name
+    '''Login succesful'''
+    return f"welcome {name}"
 
 @app.route('/login_failure/<name>')
-def login_failure(name: str):
+def login_failure():
+    '''Login failure'''
     return 'User not found, please try again'
 
 @app.route('/register_success/<name>')
 def register_success(name: str):
-    return 'Register successful, welcome %name' % name
+    '''Resgiter successful'''
+    return f"Register successful, welcome {name}"
 
 @app.route('/register_failure/<name>')
-def login_failure(name: str):
+def register_failure():
+    '''Register failure'''
     return 'Register failed due to incomplete information, please try again'
 
 if __name__ == '__main__':
-   app.run()
+    app.run()
