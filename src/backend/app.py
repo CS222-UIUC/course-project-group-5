@@ -35,7 +35,7 @@ def register():
         password = request.form['password']
         phone = request.form['phone']
         result = user_login.register(username, email, password, phone)
-        if (not username) or (not email) or (not password) or (not phone):
+        if (not username) or (not email) or (not password) or (not phone) or (not result):
             return redirect(url_for('register_failure'))
         return redirect(url_for('register_success', name = username))
 
@@ -44,7 +44,7 @@ def register():
     password = request.args.get('password')
     phone = request.args.get('phone')
     result = user_login.register(username, email, password, phone)
-    if (not username) or (not email) or (not password) or (not phone):
+    if (not username) or (not email) or (not password) or (not phone) or (not result):
         return redirect(url_for('register_failure'))
     return redirect(url_for('register_success', name = username))
 # Login and register successful/unsuccessful
