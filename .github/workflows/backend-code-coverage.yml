@@ -22,5 +22,5 @@ jobs:
 
       - name: Calculating test coverage
         run: |
-          coverage run login.py
+          coverage run src/backend/login.py
           coverage report
