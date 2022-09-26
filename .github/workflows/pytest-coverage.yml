@@ -29,5 +29,5 @@ jobs:
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: ./pytest-coverage.txt
-          junitxml-path: ./pytest.xml
+          pytest-coverage-path: src/backend/pytest-coverage.txt
+          junitxml-path: src/backend/pytest.xml

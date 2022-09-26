@@ -1,3 +1,0 @@
-name: Python style checker
-
-on: [push, pull_request]
