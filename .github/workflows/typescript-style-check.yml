@@ -1,0 +1,3 @@
+name: Typescript style checker
+
+on: [push, pull_request]
