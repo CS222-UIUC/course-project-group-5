@@ -9,11 +9,9 @@ class Login:
         self.connection = sqlite3.connect("database.db")
         self.cursor = self.connection.cursor()
     def register(self, username: str, email: str, password: str, phone: str) -> bool:
-        '''Register function, returns false if username is taken'''
-        check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", (username, ))
-        print(check)
-        if check:
-            print("hi")
+        '''Register function, returns false if username is take'''
+        check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", (username, )).fetchall()
+        if not check:
             self.cursor.execute(
             "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
             (username, email, password, phone))
@@ -24,7 +22,7 @@ class Login:
         user = self.cursor.execute(
             "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",
-            (user_id, user_id, password))
+            (user_id, user_id, password)).fetchall()
         return user
     def logout(self) -> None:
         '''Logout function'''
