@@ -17,6 +17,10 @@ class Login:
             (username, email, password, phone))
             return False
         return True
+    def delete_register_for_tests(self, username: str) -> str:
+        self.cursor.execute(
+        "DELETE FROM Users WHERE username = ?", (username, ))
+        return username
     def login(self, user_id: str, password: str) -> bool:
         '''Login function, returns false if combination not found'''
         user = self.cursor.execute(
