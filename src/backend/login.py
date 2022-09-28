@@ -9,14 +9,16 @@ class Login:
         self.connection = sqlite3.connect("database.db")
         self.cursor = self.connection.cursor()
     def register(self, username: str, email: str, password: str, phone: str) -> bool:
-        '''Register function, returns false if username is take'''
+        '''Register function, returns false if username is taken'''
         check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", (username, ))
-        if not check:
+        print(check)
+        if check:
+            print("hi")
             self.cursor.execute(
             "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
             (username, email, password, phone))
-            return True
-        return False
+            return False
+        return True
     def login(self, user_id: str, password: str) -> bool:
         '''Login function, returns false if combination not found'''
         user = self.cursor.execute(
