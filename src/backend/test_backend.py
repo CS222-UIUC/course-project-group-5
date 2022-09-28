@@ -36,10 +36,12 @@ class TestLogin:
     def test_login(self):
         '''Tests login function'''
         self.register_setup()
-        user = self.first_login.login(1, "passw")
+        user = self.first_login.login(self.username, "passw")
         check = self.cursor.execute(
-            "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
+            "SELECT username, password FROM Users WHERE username = ? \
             AND password = ?",
-            (1, 1, "passw")).fetchall()
+            (self.username, "passw")).fetchall()
         assert user == check
+    def test_logout(self):
+        '''Tests logout function'''
         

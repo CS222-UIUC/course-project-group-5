@@ -23,12 +23,16 @@ class Login:
         self.cursor.execute(
         "DELETE FROM Users WHERE username = ?", (username, ))
         return username
-    def login(self, user_id: str, password: str) -> bool:
+    def login(self, username: str, password: str) -> bool:
         '''Login function, returns false if combination not found'''
+        #user = self.cursor.execute(
+        #    "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
+        #    AND password = ?",
+        #    (username, email, password)).fetchall()
         user = self.cursor.execute(
-            "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
+            "SELECT username, password FROM Users WHERE username = ? \
             AND password = ?",
-            (user_id, password)).fetchall()
+            (username, password)).fetchall()
         return user
     def logout(self) -> None:
         '''Logout function'''
