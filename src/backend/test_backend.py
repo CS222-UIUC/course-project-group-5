@@ -3,7 +3,6 @@ import sqlite3
 from login import Login
 #from app import login, register, login_success, login_failure, register_success, register_failure
 
-
 class TestLogin:
     '''Test Login class'''
     first_login = Login()
@@ -38,10 +37,12 @@ class TestLogin:
         self.register_setup()
         user = self.first_login.login(self.username, "passw")
         check = self.cursor.execute(
-            "SELECT username, password FROM Users WHERE username = ? \
+            "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",
-            (self.username, "passw")).fetchall()
+            (self.username, "email", "passw")).fetchall()
         assert user == check
     def test_logout(self):
         '''Tests logout function'''
         
+class MockTests:
+    pass
