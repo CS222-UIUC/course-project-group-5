@@ -1,33 +1,40 @@
-import pytest
-from login import Login
-from app import login, register, login_success, login_failure, register_success, register_failure
+'''Test file'''
 import sqlite3
+from login import Login
+#from app import login, register, login_success, login_failure, register_success, register_failure
+
 
 class TestLogin:
+    '''Test Login class'''
     first_login = Login()
     username = "sadf23"
     password1 = "passw"
-    password2 = "dsc"
     connection = sqlite3.connect("database.db")
     cursor = connection.cursor()
     def register_setup(self) -> bool:
-        register = self.first_login.register(self.username, "akfda@gmail.com", "passwor", "213-342-123")
+        '''Registers a user with first_login object'''
+        register = self.first_login.register(
+            self.username, "akfda@gmail.com", "passwor", "213-342-123")
         return register
     def delete_register(self) -> str:
+        '''Remove fake data from database'''
         delete = self.first_login.delete_register_for_tests(self.username)
         return delete
     def test_register(self):
+        '''Tests register function'''
         self.test_register_helper()
         # do it again to confirm
         self.test_register_helper()
     def test_register_helper(self): # I would pass in the username but it's not working
+        '''Registers users and tests duplicate usernames'''
         first_register_bool = self.register_setup()
         second_register_bool = self.register_setup()
-        assert first_register_bool == True
-        assert second_register_bool == False
+        assert first_register_bool is True
+        assert second_register_bool is False
         delete = self.delete_register()
         assert delete == self.username
     def test_login(self):
+        '''Tests login function'''
         self.register_setup()
         user = self.first_login.login(1, "passw")
         check = self.cursor.execute(
@@ -35,5 +42,4 @@ class TestLogin:
             AND password = ?",
             (1, 1, "passw")).fetchall()
         assert user == check
-        pass
         

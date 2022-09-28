@@ -28,7 +28,7 @@ class Login:
         user = self.cursor.execute(
             "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",
-            (user_id, user_id, password)).fetchall()
+            (user_id, password)).fetchall()
         return user
     def logout(self) -> None:
         '''Logout function'''
