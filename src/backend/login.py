@@ -10,11 +10,11 @@ class Login:
         self.cursor = self.connection.cursor()
     def register(self, username: str, email: str, password: str, phone: str) -> bool:
         '''Register function, returns false if username is take'''
-        check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", username)
+        check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", (username, ))
         if not check:
             self.cursor.execute(
             "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
-            username, email, password, phone)
+            (username, email, password, phone))
             return True
         return False
     def login(self, user_id: str, password: str) -> bool:
@@ -22,7 +22,7 @@ class Login:
         user = self.cursor.execute(
             "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",
-            user_id, password)
+            (user_id, user_id, password))
         return user
     def logout(self) -> None:
         '''Logout function'''
