@@ -1,8 +1,8 @@
 '''Test file'''
 import sqlite3
+#import requests
 from login import Login
 #from app import login, register, login_success, login_failure, register_success, register_failure
-
 class TestLogin:
     '''Test Login class'''
     first_login = Login()
@@ -17,21 +17,23 @@ class TestLogin:
         return register
     def delete_register(self) -> str:
         '''Remove fake data from database'''
-        delete = self.first_login.delete_register_for_tests(self.username)
-        return delete
+        self.first_login.cursor.execute(
+            "DELETE FROM Users WHERE username = ?", (self.username, )
+        )
+        return self.username
     def test_register(self):
         '''Tests register function'''
         self.test_register_helper()
         # do it again to confirm
         self.test_register_helper()
-    def test_register_helper(self): # I would pass in the username but it's not working
+    def test_register_helper(self):
         '''Registers users and tests duplicate usernames'''
         first_register_bool = self.register_setup()
         second_register_bool = self.register_setup()
         assert first_register_bool is True
         assert second_register_bool is False
         delete = self.delete_register()
-        assert delete == self.username
+        assert delete == self.username # correct data deleted
     def test_login(self):
         '''Tests login function'''
         self.register_setup()
@@ -43,6 +45,15 @@ class TestLogin:
         assert user == check
     def test_logout(self):
         '''Tests logout function'''
-        
+class MockObject:
+    '''Mock object for test'''
+    def fetch_json(self, url):
+        '''Gets json from url'''
+        #response = requests.get(url)
+        #return response.json()
 class MockTests:
-    pass
+    '''Mock tests for app.py''' # not done
+    def test_login(self):
+        '''Mock login'''
+        #mock = MockObject()
+        #json = mock.fetch_json('')
