@@ -9,9 +9,11 @@ class Login:
         self.connection = sqlite3.connect("database.db")
         self.cursor = self.connection.cursor()
     def register(self, username: str, email: str, password: str, phone: str) -> bool:
-        '''Register function, returns false if username is take'''
+        '''Register function, returns false if username is taken'''
+        if "@" not in email:
+            return True
         check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", (username, )).fetchall()
-        if not check:
+        if not check: # valid
             self.cursor.execute(
             "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
             (username, email, password, phone))
