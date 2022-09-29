@@ -1,6 +1,5 @@
 '''Test file'''
 import sqlite3
-#import requests
 from login import Login
 #from app import login, register, login_success, login_failure, register_success, register_failure
 class TestLogin:
@@ -45,15 +44,3 @@ class TestLogin:
         assert user == check
     def test_logout(self):
         '''Tests logout function'''
-class MockObject:
-    '''Mock object for test'''
-    def fetch_json(self, url):
-        '''Gets json from url'''
-        #response = requests.get(url)
-        #return response.json()
-class MockTests:
-    '''Mock tests for app.py''' # not done
-    def test_login(self):
-        '''Mock login'''
-        #mock = MockObject()
-        #json = mock.fetch_json('')
