@@ -12,7 +12,8 @@ class Login:
         '''Register function, returns false if username is taken'''
         if "@" not in email:
             return True
-        check = self.cursor.execute("SELECT username FROM Users WHERE username = ?", (username, )).fetchall()
+        check = self.cursor.execute("SELECT username FROM Users WHERE username = ?",
+            (username, )).fetchall()
         if not check: # valid
             self.cursor.execute(
             "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
