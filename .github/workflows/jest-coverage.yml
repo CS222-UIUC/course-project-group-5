@@ -9,10 +9,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: src/frontend
 
       - name: Run tests
         run: |
           npx jest --coverage --coverageReporters json-summary
+        working-directory: src/frontend
 
       - name: Jest coverage comment
         uses: MishaKav/jest-coverage-comment@main
