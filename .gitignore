@@ -4,7 +4,7 @@ venv
 __pycache__
 .vscode
 # dependencies
-/node_modules
+src/frontend/node_modules
 /.pnp
 .pnp.js
 
