@@ -1,23 +1,27 @@
-name: prettier styling
+name: Continuous Integration
 
+# This action works with pull requests and pushes on the main branch
 on: [push, pull_request]
 
 jobs:
   prettier:
+    name: Prettier Check
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
 
-      - name: Run prettier
-        uses: permafrost-dev/prettier-docker-ga@main
+      - name: Run Prettier
+        id: prettier-run
+        uses: rutajdash/prettier-cli-action@v1.0.0
         with:
-          args: --config prettier.config.js ./src
+          config_path: ./.prettierrc.yml
 
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Fix styling
+      # This step only runs if prettier finds errors causing the previous step to fail
+      # This steps lists the files where errors were found
+      - name: Prettier Output
+        if: ${{ failure() }}
+        shell: bash
+        run: |
+          echo "The following files are not formatted:"
+          echo "${{steps.prettier-run.outputs.prettier_output}}"
