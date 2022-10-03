@@ -14,7 +14,7 @@ class Login:
     def register(self, username: str, email: str, password: str, phone: str) -> bool:
         """Register function, returns false if username is taken"""
         if "@" not in email:
-            return True
+            return False
         check = self.cursor.execute(
             "SELECT username FROM Users WHERE username = ?", (username,)
         ).fetchall()
