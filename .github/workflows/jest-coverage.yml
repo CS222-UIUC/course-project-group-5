@@ -14,7 +14,7 @@ jobs:
       - name: Run tests
         run: |
           npx jest --coverage --coverageReporters json-summary
-        working-directory: src/frontend
+        working-directory: src/frontend/my-app/src
 
       - name: Jest coverage comment
         uses: MishaKav/jest-coverage-comment@main
