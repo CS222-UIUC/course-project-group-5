@@ -3,18 +3,25 @@ name: ESLint
 on: [push, pull_request]
 
 jobs:
-  eslint:
-    name: runner / eslint
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '14'
-      - run: |
-          yarn install
-          npm install eslint -D
-      - uses: reviewdog/action-eslint@v1
+          node-version: "16"
+          check-latest: true
+
+      - name: Install dependencies
+        run: yarn install # or npm ci if you use npm and have the package-lock.json file
+
+      - uses: CatChen/eslint-suggestion-action@v2
         with:
-          reporter: github-check
-          eslint_flags: 'src/'
+          request-changes: true # optional
+          fail-check: false # optional
+          github-token: ${{ secrets.GITHUB_TOKEN }} # optional
+          directory: "./" #optional
+          targets: "." #optional
+          eslint-lib-path: "./node_modules/eslint/lib/api.js" #optional
+          eslint-bin-path: "node_modules/.bin/eslint" # optional
