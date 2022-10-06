@@ -9,7 +9,7 @@ class TestLogin:
     first_login = Login()
     username = "sadf23"
     password1 = "passw"
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("../database/database.db")
     cursor = connection.cursor()
 
     def register_setup(self) -> bool:
