@@ -8,7 +8,7 @@ class Login:
     # stored_user = User()
     def __init__(self) -> None:
         """Constructor"""
-        self.connection = sqlite3.connect("database.db")
+        self.connection = sqlite3.connect("./database/database.db")
         self.cursor = self.connection.cursor()
 
     def register(self, username: str, email: str, password: str, phone: str) -> bool:

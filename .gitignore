@@ -8,7 +8,7 @@ src/frontend/node_modules
 /.pnp
 .pnp.js
 src/backend/.pytest_cache
-
+.pytest_cache
 # testing
 /coverage
 
