@@ -15,5 +15,5 @@ jobs:
 
       - name: Prettify code
         run: |
-          npx prettier --check .
+          npx prettier --write .
         working-directory: src/frontend
