@@ -3,9 +3,8 @@ import sqlite3
 
 
 class Login:
-    """Login class"""
+    """Login class, interacts with the login frontend"""
 
-    # stored_user = User()
     def __init__(self) -> None:
         """Constructor"""
         self.connection = sqlite3.connect("database/database.db")
