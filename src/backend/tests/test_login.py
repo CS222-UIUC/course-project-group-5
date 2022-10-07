@@ -1,4 +1,4 @@
-"""Test file"""
+"""Test login"""
 import sqlite3
 from login import Login
 
