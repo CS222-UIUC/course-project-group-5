@@ -1,4 +1,4 @@
-"""Test login"""
+"""Test login.py"""
 import sqlite3
 from login import Login
 

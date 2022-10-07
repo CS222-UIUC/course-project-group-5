@@ -1,4 +1,4 @@
-"""Test apt"""
+"""Test apt.py"""
 from apt import Apt
 
 
