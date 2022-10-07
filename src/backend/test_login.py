@@ -1,8 +1,6 @@
 """Test file"""
 import sqlite3
 from login import Login
-
-# from app import login, register, login_success, login_failure, register_success, register_failure
 class TestLogin:
     """Test Login class"""
 
