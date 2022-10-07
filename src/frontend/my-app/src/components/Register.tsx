@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Paper, Avatar, TextField, Button, Typography, Link, FormControlLabel, Checkbox } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 
-export default function Login() {
+export default function Register() {
 
   const paperStyle = { padding: 20, height: '55vh', width: 310, margin: "20px auto" }
   const btnstyle = { margin: '8px 0' }
@@ -10,9 +10,12 @@ export default function Login() {
     <Grid>
       <Paper elevation={12} style={paperStyle}>
         <PersonIcon fontSize="large" />
-        <h2>Sign In</h2>
-        <TextField label='Username/Email' placeholder='Enter Username/Email' fullWidth required />
-        <TextField label='Password' placeholder='Enter Password' type='password' fullWidth required />
+        <h2>Register</h2>
+        <TextField label='Username' placeholder='Ex: user1' fullWidth required />
+        <TextField label='Email' placeholder='Ex: user1@gmail.com' fullWidth required />
+        <TextField label='Password' placeholder='Ex: user1password!' type='password' fullWidth required />
+        <TextField label='Phone' placeholder='Ex: (000)-000-0000' fullWidth required />
+
 
         <FormControlLabel
           control={
@@ -23,15 +26,10 @@ export default function Login() {
           }
           label="Remember me"
         />
-        <Button type='submit' color="primary" variant="contained" style={btnstyle} fullWidth>Sign in</Button>
+        <Button type='submit' color="primary" variant="contained" style={btnstyle} fullWidth>Sign up</Button>
         <Typography >
           <Link href="#" >
-            Forgot Password
-          </Link>
-        </Typography>
-        <Typography >
-          <Link href="#" >
-            Sign Up
+            Already signed up?
           </Link>
         </Typography>
       </Paper>
