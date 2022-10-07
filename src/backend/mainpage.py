@@ -3,6 +3,7 @@ from typing import List
 from apt import Apt
 from review import Review
 
+
 class MainPage:
     """Mainpage class, interacts with the mainpage frontend"""
 
@@ -19,7 +20,9 @@ class MainPage:
         # TODO: Implement in week 3
         #       Apartments are sorted by default from most vote -> least vote
 
-    def apartments_sorted(self, num_apts: int, price_sort: int, rating_sort: int) -> List[Apt]:
+    def apartments_sorted(
+        self, num_apts: int, price_sort: int, rating_sort: int
+    ) -> List[Apt]:
         """Returns num_apts apartments with sorting criterias"""
         # TODO: Implement in week 3
         #       If both price_sort and rating_sort are selected,

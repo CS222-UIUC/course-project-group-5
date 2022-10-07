@@ -1,5 +1,6 @@
 """Contains Review class"""
 
+
 class Review:
     """Rating class, stores details about a particular user review"""
 
@@ -22,4 +23,3 @@ class Review:
     def get_vote(self) -> bool:
         """Returns boolean indicating upvote/downvote"""
         # TODO: Implement in week 3
-        

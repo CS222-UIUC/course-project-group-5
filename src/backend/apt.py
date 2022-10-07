@@ -1,10 +1,13 @@
 """Contains Apartment class"""
 from typing import Tuple
 
+
 class Apt:
     """Apt class, stores detail about an apartment"""
 
-    def __init__(self, name:str, address: str, rating: int, price: Tuple[int, int]) -> None:
+    def __init__(
+        self, name: str, address: str, rating: int, price: Tuple[int, int]
+    ) -> None:
         """Constructor"""
         # TODO: Implement in week 3
         #       The first argument of the tuple is the min price
@@ -31,4 +34,3 @@ class Apt:
     def get_price_min(self) -> int:
         """Returns minimum price of apartment"""
         # TODO: Implement in week 3
-        
