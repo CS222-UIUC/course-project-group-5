@@ -25,3 +25,10 @@ src/backend/.pytest_cache
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# tests
+/src/backend/.coverage
+/src/backend/pytest-coverage.txt
+/src/backend/pytest.xml
+/src/backend/database/database.db-journal
+
