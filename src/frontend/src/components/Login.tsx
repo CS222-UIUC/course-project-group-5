@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Paper, Avatar, TextField, Button, Typography, Link, FormControlLabel, Checkbox } from '@mui/material';
+import { Grid, Paper, TextField, Button, Typography, Link, FormControlLabel, Checkbox } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import axios from "axios"
 import { useState } from 'react';
@@ -22,7 +22,7 @@ function sendData(username:string, email:string, password:string) {
           console.log(error.response.status)
           console.log(error.response.headers)
       }
-  })
+  });
 }
 
 export default function Login() {
@@ -31,8 +31,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const paperStyle = { padding: 20, height: '55vh', width: 310, margin: "20px auto" }
-  const btnstyle = { margin: '8px 0' }
+  const paperStyle = { padding: 20, height: '55vh', width: 310, margin: "20px auto" };
+  const btnstyle = { margin: '8px 0' };
   return (
     <Grid>
       <Paper elevation={12} style={paperStyle}>
@@ -64,7 +64,7 @@ export default function Login() {
         </Typography>
       </Paper>
     </Grid>
-  )
+  );
 }
 
 

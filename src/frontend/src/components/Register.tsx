@@ -22,7 +22,7 @@ function sendData(username:string, email:string, password:string, phone:string) 
             console.log(error.response.status)
             console.log(error.response.headers)
         }
-    })
+    });
 }
 
 
@@ -34,8 +34,8 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState("");
   
-  const paperStyle = { padding: 20, height: '55vh', width: 310, margin: "20px auto" }
-  const btnstyle = { margin: '8px 0' }
+  const paperStyle = { padding: 20, height: '55vh', width: 310, margin: "20px auto" };
+  const btnstyle = { margin: '8px 0' };
 
   return (
     <Grid>
@@ -63,7 +63,7 @@ export default function Register() {
         </Typography>
       </Paper>
     </Grid>
-  )
+  );
 }
 
 
