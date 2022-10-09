@@ -8,7 +8,6 @@ from review import Review
 class TestMainPage:
     """Test main page class"""
 
-    sample_apts_sorted = []
     main_page = MainPage()
     connection = sqlite3.connect("database/database.db")
     cursor = connection.cursor()
@@ -169,6 +168,7 @@ class TestMainPage:
         sample_search_apts = []
         sample_search_apts.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
         sample_search_apts.append(Apt("PAR", "901 W College Ct", -1, (5000, 6000)))
+
         self.initialize_all()
         res = self.main_page.search_apartments("ar")
         self.clean_all()
@@ -188,13 +188,58 @@ class TestMainPage:
         self.clean_all()
         assert sample_apts_default == res
 
-    def test_apartments_sorted(self):
+    def test_apartments_sorted_default(self):
         """Test apartments_sorted() returns correct list"""
-        assert self.sample_apts_sorted == self.main_page.apartments_sorted()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
+        sample_apts_sorted.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
+        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
+
+        self.initialize_all()
+        res = self.main_page.apartments_sorted(3, 0, 0)
+        self.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_rating_reversed(self):
+        """Test returns list rating from low to high"""
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt("PAR", "901 W College Ct", -1, (5000, 6000)))
+        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
+        sample_apts_sorted.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
+
+        self.initialize_all()
+        res = self.main_page.apartments_sorted(3, 0, -1)
+        self.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_price_reversed(self):
+        """Test returns price from low to high"""
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
+        sample_apts_sorted.append(Apt("PAR", "901 W College Ct", -1, (5000, 6000)))
+        sample_apts_sorted.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
+
+        self.initialize_all()
+        res = self.main_page.apartments_sorted(3, -1, 0)
+        self.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_price(self):
+        """Test returns price from high to low"""
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
+        sample_apts_sorted.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
+        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
+
+        self.initialize_all()
+        res = self.main_page.apartments_sorted(3, 1, 0)
+        self.clean_all()
+        assert sample_apts_sorted == res
 
     def test_get_apartments_pictures(self):
         """Test get_apartments_picture()"""
         sample_apts_picture = ["Link1", "Link2", "Link3"]
+
         self.initialize_all()
         res = self.main_page.get_apartments_pictures("Sherman")
         self.clean_all()
@@ -210,6 +255,7 @@ class TestMainPage:
             Review("Minh", "2022-10-08", "Bruh this sucks", False)
         )
         sample_apts_review.append(Review("Big_finger", "2022-10-09", "Decent", True))
+
         self.initialize_all()
         res = self.main_page.get_apartments_reviews("Sherman")
         self.clean_all()
