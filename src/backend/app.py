@@ -1,41 +1,32 @@
 """ This is a module docstring """
 from flask import Flask, request, redirect, url_for
 from login import Login
+from logging import FileHandler,WARNING
 
 app = Flask(__name__)
 
-# Login
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     """Handles login routing"""
     user_login = Login()
     if request.method == "POST":
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
-        if user_login.login(username, password) or user_login.login(email, password):
-            return redirect(url_for("login_success", name=username))
-        return redirect(url_for("login_failure"))
+        user = request.json["user"]
+        password = request.json["password"]
+        if user_login.login(user, password):
+            return redirect(url_for("login_success", name=user))
+        return redirect(url_for("login_failure", name = user))
 
-    username = request.args.get("username")
-    email = request.args.get("email")
-    password = request.args.get("password")
-    if user_login.login(username, password) or user_login.login(email, password):
-        return redirect(url_for("login_success", name=username))
-    return redirect(url_for("login_failure"))
-
-
-# Register
 @app.route("/register", methods=["POST", "GET"])
 def register():
     """Handles register routing"""
     user_login = Login()
     if request.method == "POST":
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
-        phone = request.form["phone"]
-        result = user_login.register(username, email, password, phone)
+        username = request.json["username"]
+        email = request.json["email"]
+        password = request.json["password"]
+        phone = request.json["phone"]
+        result = user_login.register(username, email, password, phone) 
         if (
             (not username)
             or (not email)
@@ -43,18 +34,8 @@ def register():
             or (not phone)
             or (not result)
         ):
-            return redirect(url_for("register_failure"))
+            return redirect(url_for("register_failure", name =username))
         return redirect(url_for("register_success", name=username))
-
-    username = request.args.get("username")
-    email = request.args.get("email")
-    password = request.args.get("password")
-    phone = request.args.get("phone")
-    result = user_login.register(username, email, password, phone)
-    if (not username) or (not email) or (not password) or (not phone) or (not result):
-        return redirect(url_for("register_failure"))
-    return redirect(url_for("register_success", name=username))
-
 
 # Login and register successful/unsuccessful
 @app.route("/login_success/<name>")
@@ -82,4 +63,4 @@ def register_failure():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

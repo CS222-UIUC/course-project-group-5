@@ -4,8 +4,6 @@ import sqlite3
 
 class Login:
     """Login class"""
-
-    # stored_user = User()
     def __init__(self) -> None:
         """Constructor"""
         self.connection = sqlite3.connect("database/database.db")
@@ -19,10 +17,11 @@ class Login:
             "SELECT username FROM Users WHERE username = ?", (username,)
         ).fetchall()
         if not check:  # valid
-            self.cursor.execute(
-                "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
-                (username, email, password, phone),
+            self.connection.execute(
+                "INSERT INTO Users (username, password, email, phone, apt_id) VALUES (?, ?, ?, ?, ?)",
+                (username, password, email, phone, 1)
             )
+            self.connection.commit()
             return True
         return False
 

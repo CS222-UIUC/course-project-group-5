@@ -13,13 +13,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { useState } from 'react';
 
-function sendData(username: string, email: string, password: string) {
+function sendData(user: string, password: string) {
    axios({
       method: 'post',
       url: '/login',
       data: {
-         username: username,
-         email: email,
+         user: user,
          password: password,
       },
    })
@@ -36,8 +35,7 @@ function sendData(username: string, email: string, password: string) {
 }
 
 export default function Login() {
-   const [username, setUsername] = useState('');
-   const [email, setEmail] = useState('');
+   const [user, setUser] = useState('');
    const [password, setPassword] = useState('');
 
    const paperStyle = {
@@ -53,16 +51,9 @@ export default function Login() {
             <PersonIcon fontSize="large" />
             <h2>Sign In</h2>
             <TextField
-               label="Username"
-               placeholder="Enter Username"
-               onChange={(event) => setUsername(event.target.value)}
-               fullWidth
-               required
-            />
-            <TextField
-               label="Email"
-               placeholder="Enter Email"
-               onChange={(event) => setEmail(event.target.value)}
+               label="Username/Email"
+               placeholder="Enter Username or Email"
+               onChange={(event) => setUser(event.target.value)}
                fullWidth
                required
             />
@@ -74,7 +65,6 @@ export default function Login() {
                fullWidth
                required
             />
-
             <FormControlLabel
                control={<Checkbox name="checkedB" color="primary" />}
                label="Remember me"
@@ -84,7 +74,7 @@ export default function Login() {
                color="primary"
                variant="contained"
                style={btnstyle}
-               onClick={() => sendData(username, email, password)}
+               onClick={() => sendData(user, password)}
                fullWidth
             >
                Sign in
