@@ -10,18 +10,20 @@ class Login:
 
     def register(self, username: str, email: str, password: str, phone: str) -> bool:
         """Register function, returns false if username is taken"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
         if "@" not in email:
             return False
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
         check = cursor.execute(
             "SELECT username FROM Users WHERE username = ?", (username,)
-        ).fetchall()
-        if not check:  # valid
+        ).fetchone()
+        if check is None:  # valid
             cursor.execute(
-                "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
+                "INSERT INTO Users (username, email, password, phone, apt_id) \
+                VALUES (?, ?, ?, ?, 0)",
                 (username, email, password, phone),
             )
+            connection.commit()
             connection.close()
             return True
         connection.close()

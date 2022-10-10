@@ -22,24 +22,32 @@ class TestLogin:
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         cursor.execute("DELETE FROM Users WHERE username = ?", (self.username,))
+        connection.commit()
         connection.close()
         return self.username
 
     def test_register(self):
         """Tests register function"""
-        self.test_register_helper()
+        self.register_helper()
         # do it again to confirm
-        # self.test_register_helper()
-        self.delete_register()
+        self.register_helper()
 
-    def test_register_helper(self):
+    def register_helper(self):
         """Registers users and tests duplicate usernames"""
         first_register_bool = self.register_setup()
         second_register_bool = self.register_setup()
         assert first_register_bool is True
         assert second_register_bool is False
+        self.delete_register()
         # delete = self.delete_register()
         # assert delete == self.username  # correct data deleted
+
+    def test_register_invalid_email(self):
+        """Invalid email string"""
+        register = self.first_login.register(
+            self.username, "akfda&gmail.com", "passwor", "213-342-123"
+        )
+        assert register is False
 
     def test_login(self):
         """Tests login function"""
