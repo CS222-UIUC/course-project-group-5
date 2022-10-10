@@ -4,21 +4,29 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function Searchbar(props: any) {
-    const [inputText, setInputText] = useState("");
-    let inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        var convertToLowerCase = e.target.value.toLowerCase();
-        setInputText(convertToLowerCase);
-    };
-    function handlePost(query) {
+    const [input, setInput] = useState("");
+    
+    function keyPress(e: any) {
+        if (e.key === 'Enter') {
+            // handle
+        }
+    }
+
+    function handlePost(query: any) {
         var myParams = {
             data: query
         }
         if (query !== "") {
-            axios.post('http://127.0.0.1:5000/login', {
+            axios.post('http://127.0.0.1:5000/login', myParams)
+            .then(function(response) {
+                console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        } else {
+            alert("Query empty");
         }
-        
-
-    }
     }
 
     return (
@@ -29,9 +37,14 @@ export default function Searchbar(props: any) {
                 <TextField
                     id="outlined-basic"
                     variant="outlined"
-                    onChange={inputHandler}
                     fullWidth
+                    value={input || ''}
                     label="Apartment Search"
+                    onKeyDown={(e: any) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                        }
+                    }}
                 />
                 </div>
             </div>
