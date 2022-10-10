@@ -5,14 +5,11 @@ from review import Review
 class TestReview:
     """Test Review class"""
 
-    sample_id = 0
     sample_username = "Minh Phan"
     sample_date = "2022-10-07"
     sample_comment = "Decent hall"
     sample_vote = True
-    sample_review = Review(
-        sample_id, sample_username, sample_date, sample_comment, sample_vote
-    )
+    sample_review = Review(sample_username, sample_date, sample_comment, sample_vote)
 
     def test_username(self):
         """Test class stores correct username"""

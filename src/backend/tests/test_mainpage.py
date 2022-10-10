@@ -165,73 +165,148 @@ class TestMainPage:
 
     def test_search_apartments(self):
         """Test search_apartment() returns correct list"""
-        sample_search_apts = []
-        sample_search_apts.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
-        sample_search_apts.append(Apt("PAR", "901 W College Ct", -1, (5000, 6000)))
-
         self.initialize_all()
+        sample_search_apts = []
+        far_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()
+        par_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()
+        sample_search_apts.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_search_apts.append(
+            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        )
+
         res = self.main_page.search_apartments("ar")
         self.clean_all()
         assert sample_search_apts == res
 
     def test_apartments_default(self):
         """Test apartments_default() returns correct list"""
+        self.initialize_all()
         sample_apts_default = []
-        sample_apts_default.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
-        sample_apts_default.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
+        sherman_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()
+        far_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()
+        lincoln_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()
         sample_apts_default.append(
-            Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000))
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+        sample_apts_default.append(
+            Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000)
+        )
+        sample_apts_default.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
 
-        self.initialize_all()
         res = self.main_page.apartments_default(3)
         self.clean_all()
         assert sample_apts_default == res
 
     def test_apartments_sorted_default(self):
         """Test apartments_sorted() returns correct list"""
-        sample_apts_sorted = []
-        sample_apts_sorted.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
-        sample_apts_sorted.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
-        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
-
         self.initialize_all()
+        sample_apts_sorted = []
+        sherman_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()
+        far_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()
+        lincoln_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_apts_sorted.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+        )
+
         res = self.main_page.apartments_sorted(3, 0, 0)
         self.clean_all()
         assert sample_apts_sorted == res
 
     def test_apartments_sorted_rating_reversed(self):
         """Test returns list rating from low to high"""
-        sample_apts_sorted = []
-        sample_apts_sorted.append(Apt("PAR", "901 W College Ct", -1, (5000, 6000)))
-        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
-        sample_apts_sorted.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
-
         self.initialize_all()
+        par_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()
+        far_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()
+        lincoln_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(
+            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        )
+        sample_apts_sorted.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+        )
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+
         res = self.main_page.apartments_sorted(3, 0, -1)
         self.clean_all()
         assert sample_apts_sorted == res
 
     def test_apartments_sorted_price_reversed(self):
         """Test returns price from low to high"""
-        sample_apts_sorted = []
-        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
-        sample_apts_sorted.append(Apt("PAR", "901 W College Ct", -1, (5000, 6000)))
-        sample_apts_sorted.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
-
         self.initialize_all()
+        lincoln_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()
+        par_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()
+        sherman_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+        )
+        sample_apts_sorted.append(
+            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        )
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+
         res = self.main_page.apartments_sorted(3, -1, 0)
         self.clean_all()
         assert sample_apts_sorted == res
 
     def test_apartments_sorted_price(self):
         """Test returns price from high to low"""
-        sample_apts_sorted = []
-        sample_apts_sorted.append(Apt("FAR", "901 W College Ct", 1, (6000, 7000)))
-        sample_apts_sorted.append(Apt("Sherman", "909 S 5th St", 1, [5500, 6500]))
-        sample_apts_sorted.append(Apt("Lincoln", "1005 S Lincoln Ave", 0, (5000, 6000)))
-
         self.initialize_all()
+        sherman_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()
+        lincoln_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()
+        far_id = self.cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+        sample_apts_sorted.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+        )
+
         res = self.main_page.apartments_sorted(3, 1, 0)
         self.clean_all()
         assert sample_apts_sorted == res
