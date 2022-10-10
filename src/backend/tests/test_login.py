@@ -38,9 +38,8 @@ class TestLogin:
         second_register_bool = self.register_setup()
         assert first_register_bool is True
         assert second_register_bool is False
-        self.delete_register()
-        # delete = self.delete_register()
-        # assert delete == self.username  # correct data deleted
+        delete = self.delete_register()
+        assert delete == self.username  # correct data deleted
 
     def test_register_invalid_email(self):
         """Invalid email string"""
