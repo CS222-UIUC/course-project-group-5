@@ -1,32 +1,31 @@
 import React from "react";
-import { Grid, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 
 export default function Searchbar(props: any) {
     const [input, setInput] = useState("");
-    
-    function keyPress(e: any) {
-        if (e.key === 'Enter') {
-            // handle
-        }
-    }
 
-    function handlePost(query: any) {
-        var myParams = {
-            data: query
-        }
-        if (query !== "") {
-            axios.post('http://127.0.0.1:5000/login', myParams)
-            .then(function(response) {
-                console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        } else {
-            alert("Query empty");
-        }
+    function handlePost(
+        query: string
+    ) {
+        axios({
+            method: 'post',
+            url: '/login', // need mainpage.py url
+            data: {
+                query: query
+            },
+        })
+        .then((response) => {
+            console.log(response);
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+            }
+         });
     }
 
     return (
@@ -43,8 +42,10 @@ export default function Searchbar(props: any) {
                     onKeyDown={(e: any) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();
+                            handlePost(e.target.value);
                         }
                     }}
+                    onChange={(e: any) => setInput(e.target.value)}
                 />
                 </div>
             </div>
