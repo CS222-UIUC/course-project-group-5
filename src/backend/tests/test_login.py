@@ -9,8 +9,6 @@ class TestLogin:
     first_login = Login()
     username = "sadf23"
     password1 = "passw"
-    connection = sqlite3.connect("database/database.db")
-    cursor = connection.cursor()
 
     def register_setup(self) -> bool:
         """Registers a user with first_login object"""
@@ -21,16 +19,18 @@ class TestLogin:
 
     def delete_register(self) -> str:
         """Remove fake data from database"""
-        self.first_login.cursor.execute(
-            "DELETE FROM Users WHERE username = ?", (self.username,)
-        )
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM Users WHERE username = ?", (self.username,))
+        connection.close()
         return self.username
 
     def test_register(self):
         """Tests register function"""
         self.test_register_helper()
         # do it again to confirm
-        self.test_register_helper()
+        # self.test_register_helper()
+        self.delete_register()
 
     def test_register_helper(self):
         """Registers users and tests duplicate usernames"""
@@ -38,18 +38,22 @@ class TestLogin:
         second_register_bool = self.register_setup()
         assert first_register_bool is True
         assert second_register_bool is False
-        delete = self.delete_register()
-        assert delete == self.username  # correct data deleted
+        # delete = self.delete_register()
+        # assert delete == self.username  # correct data deleted
 
     def test_login(self):
         """Tests login function"""
         self.register_setup()
         user = self.first_login.login(self.username, "passw")
-        check = self.cursor.execute(
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        check = cursor.execute(
             "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",
             (self.username, "email", "passw"),
         ).fetchall()
+        connection.close()
+        self.delete_register()
         assert user == check
 
     def test_logout(self):
