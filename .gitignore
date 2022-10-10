@@ -9,6 +9,8 @@ src/frontend/node_modules
 .pnp.js
 src/backend/.pytest_cache
 .pytest_cache
+src/backend/__pycache__
+
 # testing
 /coverage
 
