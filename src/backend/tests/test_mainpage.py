@@ -14,43 +14,29 @@ class TestMainPage:
 
     def insert_apartments(self):
         """Insert apartments for use by test methods"""
-        self.cursor.execute(
-            "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
-            VALUES (?, ?, ?, ?, ?)",
+        args = [
             ("Sherman", "909 S 5th St", 5500, 6500, ""),
-        )
-        self.cursor.execute(
-            "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
-            VALUES (?, ?, ?, ?, ?)",
             ("FAR", "901 W College Ct", 6000, 7000, ""),
-        )
-        self.cursor.execute(
-            "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
-            VALUES (?, ?, ?, ?, ?)",
             ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
-        )
-        self.cursor.execute(
+            ("PAR", "901 W College Ct", 5000, 6000, ""),
+        ]
+        self.cursor.executemany(
             "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
             VALUES (?, ?, ?, ?, ?)",
-            ("PAR", "901 W College Ct", 5000, 6000, ""),
+            args,
         )
 
     def insert_users(self):
         """Initialize users for use by test methods"""
-        self.cursor.execute(
-            "INSERT INTO Users (username, password, email, phone) \
-            VALUES (?, ?, ?, ?, ?)",
+        args = [
             ("Minh Phan", "", "", ""),
-        )
-        self.cursor.execute(
-            "INSERT INTO Users (username, password, email, phone) \
-            VALUES (?, ?, ?, ?, ?)",
             ("Minh", "", "", ""),
-        )
-        self.cursor.execute(
-            "INSERT INTO Users (username, password, email, phone) \
-            VALUES (?, ?, ?, ?, ?)",
             ("Big_finger", "", "", ""),
+        ]
+        self.cursor.executemany(
+            "INSERT INTO Users (username, password, email, phone) \
+            VALUES (?, ?, ?, ?)",
+            args,
         )
 
     def insert_pics(self):
@@ -58,14 +44,9 @@ class TestMainPage:
         sherman_id = self.cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()
-        self.cursor.execute(
-            "INSERT INTO AptPics (apt_id, link) VALUES (?, 'Link1')", (sherman_id,)
-        )
-        self.cursor.execute(
-            "INSERT INTO AptPics (apt_id, link) VALUES (?, 'Link2')", (sherman_id,)
-        )
-        self.cursor.execute(
-            "INSERT INTO AptPics (apt_id, link) VALUES (?, 'Link3')", (sherman_id,)
+        args_link = ["Link1", "Link2", "Link3"]
+        self.cursor.executemany(
+            "INSERT INTO AptPics (apt_id, link) VALUES (?, ?)", (sherman_id, args_link)
         )
 
     def insert_reviews(self):
@@ -116,16 +97,22 @@ class TestMainPage:
 
     def clean_up_users(self):
         """Delete users inserted during test"""
-        self.cursor.execute("DELETE FROM Users WHERE username = 'Minh Phan'")
-        self.cursor.execute("DELETE FROM Users WHERE username = 'Minh'")
-        self.cursor.execute("DELETE FROM Users WHERE username = 'Big_finger'")
+        args = [
+            ("Minh Phan",),
+            ("Minh",),
+            ("Big_finger",),
+        ]
+        self.cursor.executescript("DELETE FROM Users WHERE username = ?", args)
 
     def clean_up_apartments(self):
         """Delete apartments inserted during test"""
-        self.cursor.execute("DELETE FROM Apartments WHERE apt_name = 'Sherman'")
-        self.cursor.execute("DELETE FROM Apartments WHERE apt_name = 'FAR'")
-        self.cursor.execute("DELETE FROM Apartments WHERE apt_name = 'Lincoln'")
-        self.cursor.execute("DELETE FROM Apartments WHERE apt_name = 'PAR'")
+        args = [
+            ("Sherman",),
+            ("FAR",),
+            ("Lincoln",),
+            ("PAR",),
+        ]
+        self.cursor.executescript("DELETE FROM Apartments WHERE apt_name = ?", args)
 
     def clean_up_reviews(self):
         """Delete reviews inserted during test"""
@@ -138,9 +125,12 @@ class TestMainPage:
         par_id = self.cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
         ).fetchone()
-        self.cursor.execute("DELETE FROM Ratings WHERE apt_id = ?", (sherman_id,))
-        self.cursor.execute("DELETE FROM Ratings WHERE apt_id = ?", (far_id,))
-        self.cursor.execute("DELETE FROM Ratings WHERE apt_id = ?", (par_id,))
+        args = [
+            (sherman_id,),
+            (far_id,),
+            (par_id,),
+        ]
+        self.cursor.executemany("DELETE FROM Ratings WHERE apt_id = ?", args)
 
     def clean_up_pics(self):
         """Clean up pics inserted during test"""
