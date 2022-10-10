@@ -32,12 +32,12 @@ class MainPage:
         #       If both are 0, then use apartments_default()'s behaviour.
         return []
 
-    def get_apartments_pictures(self, apt_name: str) -> List[str]:
+    def get_apartments_pictures(self, apt_id: int) -> List[str]:
         """Returns pictures related to an apartment"""
         # TODO: Implement in week 3
         return []
 
-    def get_apartments_reviews(self, apt_name: str) -> List[Review]:
+    def get_apartments_reviews(self, apt_id: int) -> List[Review]:
         """Returns a list of apartment reviews"""
         # TODO: Implement in week 3
         return []
