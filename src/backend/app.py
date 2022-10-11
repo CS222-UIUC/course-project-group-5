@@ -1,6 +1,6 @@
 """ This is a module docstring """
 from flask import Flask, request
-from login import Login
+from login import Login, RegisterResult
 
 # from logging import FileHandler, WARNING
 
@@ -27,9 +27,9 @@ def register():
     password = request.json["password"]
     phone = request.json["phone"]
     result = user_login.register(username, email, password, phone)
-    if (not username) or (not email) or (not password) or (not phone) or (not result):
-        return "Register failed", 400
-    return f"Register successful, welcome {username}", 200
+    if not result.status:
+        return result.message, 400
+    return result.message, 200
 
 
 # @app.route("/login_success/<name>")
