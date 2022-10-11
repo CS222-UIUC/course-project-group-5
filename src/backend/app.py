@@ -1,5 +1,5 @@
 """ This is a module docstring """
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request
 from login import Login
 
 # from logging import FileHandler, WARNING
@@ -28,33 +28,32 @@ def register():
     phone = request.json["phone"]
     result = user_login.register(username, email, password, phone)
     if (not username) or (not email) or (not password) or (not phone) or (not result):
-        return f"Register successful, welcome {username}", 200
-    return "Register failed", 400
+        return "Register failed", 400
+    return f"Register successful, welcome {username}", 200
 
 
-# Login and register successful/unsuccessful
-@app.route("/login_success/<name>")
-def login_success(name: str):
-    """Login succesful"""
-    return f"welcome {name}"
+# @app.route("/login_success/<name>")
+# def login_success(name: str):
+#    """Login succesful"""
+#    return f"welcome {name}"
 
 
-@app.route("/login_failure/<name>")
-def login_failure():
-    """Login failure"""
-    return "User not found, please try again"
+# @app.route("/login_failure/<name>")
+# def login_failure():
+#    """Login failure"""
+#    return "User not found, please try again"
 
 
-@app.route("/register_success/<name>")
-def register_success(name: str):
-    """Resgiter successful"""
-    return f"Register successful, welcome {name}"
+# @app.route("/register_success/<name>")
+# def register_success(name: str):
+#    """Resgiter successful"""
+#    return f"Register successful, welcome {name}"
 
 
-@app.route("/register_failure/<name>")
-def register_failure():
-    """Register failure"""
-    return "Register failed due to incomplete information, please try again"
+# @app.route("/register_failure/<name>")
+# def register_failure():
+#    """Register failure"""
+#    return "Register failed due to incomplete information, please try again"
 
 
 if __name__ == "__main__":
