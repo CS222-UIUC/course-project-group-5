@@ -1,41 +1,36 @@
 """ This is a module docstring """
 from flask import Flask, request, redirect, url_for
 from login import Login
-from logging import FileHandler,WARNING
+
+# from logging import FileHandler, WARNING
 
 app = Flask(__name__)
 
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["POST"])
 def login():
     """Handles login routing"""
     user_login = Login()
-    if request.method == "POST":
-        user = request.json["user"]
-        password = request.json["password"]
-        if user_login.login(user, password):
-            return redirect(url_for("login_success", name=user))
-        return redirect(url_for("login_failure", name = user))
+    user = request.json["user"]
+    password = request.json["password"]
+    if user_login.login(user, password):
+        return f"welcome {user}", 200
+    return "User not found, please try again", 404
 
-@app.route("/register", methods=["POST", "GET"])
+
+@app.route("/register", methods=["POST"])
 def register():
     """Handles register routing"""
     user_login = Login()
-    if request.method == "POST":
-        username = request.json["username"]
-        email = request.json["email"]
-        password = request.json["password"]
-        phone = request.json["phone"]
-        result = user_login.register(username, email, password, phone) 
-        if (
-            (not username)
-            or (not email)
-            or (not password)
-            or (not phone)
-            or (not result)
-        ):
-            return redirect(url_for("register_failure", name =username))
-        return redirect(url_for("register_success", name=username))
+    username = request.json["username"]
+    email = request.json["email"]
+    password = request.json["password"]
+    phone = request.json["phone"]
+    result = user_login.register(username, email, password, phone)
+    if (not username) or (not email) or (not password) or (not phone) or (not result):
+        return f"Register successful, welcome {username}", 200
+    return "Register failed", 400
+
 
 # Login and register successful/unsuccessful
 @app.route("/login_success/<name>")
