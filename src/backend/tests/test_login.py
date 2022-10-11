@@ -74,12 +74,12 @@ class TestLogin:
         self.register_setup()
         user = self.first_login.login(self.username, "123456789")
         self.delete_register()
-        assert user == True
+        assert user is True
 
     def test_login_invalid(self):
         """Test invalid login attempt"""
         user = self.first_login.login(self.username, "123456789")
-        assert user == False
+        assert user is False
 
     def test_logout(self):
         """Tests logout function"""

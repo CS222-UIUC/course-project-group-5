@@ -121,11 +121,11 @@ def test_login_valid(client):
     cursor.execute(
         "INSERT INTO Users (username, password, email, phone)\
     VALUES (?, ?, ?, ?)",
-        ("big_finger", "pass", "junk@gmail.com", "0003335555"),
+        ("big_finger", "123456789", "junk@gmail.com", "0003335555"),
     )
     connection.commit()
 
-    log_info = {"user": "big_finger", "password": "pass"}
+    log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
     cursor.execute("DELETE FROM Users WHERE username = ?", ("big_finger",))
     connection.commit()
@@ -135,6 +135,6 @@ def test_login_valid(client):
 
 def test_login_invalid(client):
     """Test handles invalid login"""
-    log_info = {"user": "big_finger", "password": "pass"}
+    log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
     assert res.status_code == 404
