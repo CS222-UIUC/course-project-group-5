@@ -11,6 +11,7 @@ src/backend/.pytest_cache
 .pytest_cache
 src/backend/__pycache__
 
+src/frontend/my-app/node_modules
 # testing
 /coverage
 
@@ -27,3 +28,10 @@ src/backend/__pycache__
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# tests
+/src/backend/.coverage
+/src/backend/pytest-coverage.txt
+/src/backend/pytest.xml
+/src/backend/database/database.db-journal
+
