@@ -46,48 +46,40 @@ class TestLogin:
         register = self.first_login.register(
             self.username, "akfda&gmail.com", "123456789", "2133421234"
         )
-        assert register is False
+        assert register.status is False
 
     def test_register_missing_field(self):
         """Missing certain fields"""
         register = self.first_login.register(
             self.username, "", "123456789", "2133421234"
         )
-        assert register is False
+        assert register.status is False
 
     def test_register_short_password(self):
         """Password is too short"""
         register = self.first_login.register(
-            self.username, "akfda&gmail.com", "1234567", "2133421234"
+            self.username, "akfda@gmail.com", "1234567", "2133421234"
         )
-        assert register is False
+        assert register.status is False
 
     def test_register_invalid_phone_length(self):
         """Invalid phone number length"""
         register = self.first_login.register(
-            self.username, "akfda&gmail.com", "123456789", "213342123"
+            self.username, "akfda@gmail.com", "123456789", "213342123"
         )
-        assert register is False
+        assert register.status is False
 
     def test_login(self):
         """Tests login function"""
         self.register_setup()
-        user = self.first_login.login(self.username, "passw")
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        check = cursor.execute(
-            "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
-            AND password = ?",
-            (self.username, "email", "passw"),
-        ).fetchall()
-        connection.close()
+        user = self.first_login.login(self.username, "123456789")
         self.delete_register()
-        assert user == check
+        assert user == True
 
     def test_login_invalid(self):
         """Test invalid login attempt"""
         user = self.first_login.login(self.username, "123456789")
-        assert user is False
+        assert user == False
 
     def test_logout(self):
         """Tests logout function"""

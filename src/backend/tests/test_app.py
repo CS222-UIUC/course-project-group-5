@@ -48,7 +48,7 @@ def test_register_duplicate_username(client):
         "password": "123456789",
         "phone": "0003335555",
     }
-    
+
     client.post("/register", json=reg_info)
     res_2 = client.post("/register", json=reg_info_2)
 
@@ -59,6 +59,7 @@ def test_register_duplicate_username(client):
     connection.close()
 
     assert res_2.status_code == 400
+
 
 def test_register_missing_field(client):
     """Test register handles missing field"""
@@ -76,6 +77,7 @@ def test_register_missing_field(client):
     connection.close()
     assert res.status_code == 400
 
+
 def test_register_invalid_email_format(client):
     """Test register handles invalid email format"""
     reg_info = {
@@ -86,6 +88,7 @@ def test_register_invalid_email_format(client):
     }
     res = client.post("/register", json=reg_info)
     assert res.status_code == 400
+
 
 def test_register_invalid_phone_number_length(client):
     """Test registers handle invalid phone number length"""
@@ -98,16 +101,18 @@ def test_register_invalid_phone_number_length(client):
     res = client.post("/register", json=reg_info)
     assert res.status_code == 400
 
+
 def test_register_short_password(client):
     """Test register handles short password"""
     reg_info = {
         "username": "fig_binger",
         "email": "junk@gmail.com",
         "password": "123456",
-        "phone": "000333",
+        "phone": "0003335555",
     }
     res = client.post("/register", json=reg_info)
     assert res.status_code == 400
+
 
 def test_login_valid(client):
     """Test handles valid login"""

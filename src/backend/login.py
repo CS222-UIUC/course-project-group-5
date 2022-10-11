@@ -1,8 +1,14 @@
 """ Contains Login class """
 from dataclasses import dataclass
 import sqlite3
-from login import RegisterResult
 
+
+@dataclass(frozen=True)
+class RegisterResult:
+    """Stores the register respond message and validity"""
+
+    message: str
+    status: bool
 
 class Login:
     """Login class"""
@@ -11,7 +17,9 @@ class Login:
     def __init__(self) -> None:
         """Constructor"""
 
-    def register(self, username: str, email: str, password: str, phone: str) -> RegisterResult:
+    def register(
+        self, username: str, email: str, password: str, phone: str
+    ) -> RegisterResult:
         """Register function, returns false if username is taken"""
         if (not username) or (not email) or (not password) or (not phone):
             return RegisterResult("Missing information, please try again", False)
@@ -48,14 +56,7 @@ class Login:
             (user_id, user_id, password),
         ).fetchall()
         connection.close()
-        return user
+        return len(user) > 0
 
     def logout(self) -> None:
         """Logout function"""
-
-@dataclass(frozen=True)
-class RegisterResult:
-    """Stores the register respond message and validity"""
-
-    message: str
-    status: bool
