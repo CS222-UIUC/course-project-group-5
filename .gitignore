@@ -11,6 +11,7 @@ src/backend/.pytest_cache
 .pytest_cache
 src/backend/__pycache__
 
+src/frontend/my-app/node_modules
 # testing
 /coverage
 
