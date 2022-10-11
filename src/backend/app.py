@@ -1,6 +1,6 @@
 """ This is a module docstring """
 from flask import Flask, request
-from login import Login, RegisterResult
+from login import Login
 
 # from logging import FileHandler, WARNING
 

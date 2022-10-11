@@ -10,6 +10,7 @@ class RegisterResult:
     message: str
     status: bool
 
+
 class Login:
     """Login class"""
 

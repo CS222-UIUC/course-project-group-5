@@ -60,6 +60,7 @@ def test_register_invalid(client):
 
     assert res_2.status_code == 400
 
+
 def test_login_valid(client):
     """Test login returns valid (200) network code"""
     connection = sqlite3.connect("database/database.db")
