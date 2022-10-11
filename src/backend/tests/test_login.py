@@ -13,9 +13,9 @@ class TestLogin:
     def register_setup(self) -> bool:
         """Registers a user with first_login object"""
         register = self.first_login.register(
-            self.username, "akfda@gmail.com", "passwor", "213-342-123"
+            self.username, "akfda@gmail.com", "123456789", "2133421234"
         )
-        return register
+        return register.status
 
     def delete_register(self) -> str:
         """Remove fake data from database"""
@@ -44,7 +44,28 @@ class TestLogin:
     def test_register_invalid_email(self):
         """Invalid email string"""
         register = self.first_login.register(
-            self.username, "akfda&gmail.com", "passwor", "213-342-123"
+            self.username, "akfda&gmail.com", "123456789", "2133421234"
+        )
+        assert register is False
+
+    def test_register_missing_field(self):
+        """Missing certain fields"""
+        register = self.first_login.register(
+            self.username, "", "123456789", "2133421234"
+        )
+        assert register is False
+
+    def test_register_short_password(self):
+        """Password is too short"""
+        register = self.first_login.register(
+            self.username, "akfda&gmail.com", "1234567", "2133421234"
+        )
+        assert register is False
+
+    def test_register_invalid_phone_length(self):
+        """Invalid phone number length"""
+        register = self.first_login.register(
+            self.username, "akfda&gmail.com", "123456789", "213342123"
         )
         assert register is False
 
@@ -62,6 +83,11 @@ class TestLogin:
         connection.close()
         self.delete_register()
         assert user == check
+
+    def test_login_invalid(self):
+        """Test invalid login attempt"""
+        user = self.first_login.login(self.username, "123456789")
+        assert user is False
 
     def test_logout(self):
         """Tests logout function"""
