@@ -19,6 +19,8 @@ class Login:
             return RegisterResult("Invalid email, please try again", False)
         if len(phone) != 10:
             return RegisterResult("Invalid phone number, please try again", False)
+        if len(password) < 8:
+            return RegisterResult("Password is too short, please try again", False)
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         check = cursor.execute(
