@@ -7,7 +7,7 @@ from login import Login
 app = Flask(__name__)
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST", "GET"])
 def login():
     """Handles login routing"""
     user_login = Login()
@@ -18,7 +18,7 @@ def login():
     return "User not found, please try again", 404
 
 
-@app.route("/register", methods=["POST"])
+@app.route("/register", methods=["POST", "GET"])
 def register():
     """Handles register routing"""
     user_login = Login()
@@ -31,6 +31,9 @@ def register():
         return result.message, 400
     return result.message, 200
 
+
+# The routes below are not implemented yet
+# They are there as placeholders
 
 # @app.route("/login_success/<name>")
 # def login_success(name: str):

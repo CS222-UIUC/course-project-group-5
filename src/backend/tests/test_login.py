@@ -46,7 +46,11 @@ class TestLogin:
         register = self.first_login.register(
             self.username, "akfda&gmail.com", "123456789", "2133421234"
         )
+        register_2 = self.first_login.register(
+            self.username, "akfda@gmail", "123456789", "2133421234"
+        )
         assert register.status is False
+        assert register_2.status is False
 
     def test_register_missing_field(self):
         """Missing certain fields"""

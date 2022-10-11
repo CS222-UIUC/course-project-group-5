@@ -1,5 +1,6 @@
 """ Contains Login class """
 from dataclasses import dataclass
+import re
 import sqlite3
 
 
@@ -24,7 +25,8 @@ class Login:
         """Register function, returns false if username is taken"""
         if (not username) or (not email) or (not password) or (not phone):
             return RegisterResult("Missing information, please try again", False)
-        if "@" not in email:
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        if not re.fullmatch(regex, email):
             return RegisterResult("Invalid email, please try again", False)
         if len(phone) != 10:
             return RegisterResult("Invalid phone number, please try again", False)
