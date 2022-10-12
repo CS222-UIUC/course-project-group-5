@@ -72,30 +72,17 @@ class TestMainPage:
         big_finger_id = cursor.execute(
             "SELECT user_id FROM Users WHERE (username = 'Big_finger')"
         ).fetchone()[0]
-        cursor.execute(
+        args = [
+            (sherman_id, minh_phan_id, "2022-10-07", "Pretty good", True),
+            (sherman_id, minh_id, "2022-10-08", "Bruh this sucks", False),
+            (sherman_id, big_finger_id, "2022-10-09", "Decent", True),
+            (far_id, big_finger_id, "2022-10-10", "Decent hall", True),
+            (par_id, big_finger_id, "2022-10-11", "Why", False),
+        ]
+        cursor.executemany(
             "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, 2022-10-07, 'Pretty good', TRUE)",
-            (sherman_id, minh_phan_id),
-        )
-        cursor.execute(
-            "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, 2022-10-08, 'Bruh this sucks', FALSE)",
-            (sherman_id, minh_id),
-        )
-        cursor.execute(
-            "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, 2022-10-09, 'Decent', TRUE)",
-            (sherman_id, big_finger_id),
-        )
-        cursor.execute(
-            "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, 2022-10-10, 'Decent hall', TRUE)",
-            (far_id, big_finger_id),
-        )
-        cursor.execute(
-            "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, 2022-10-11, 'Why', FALSE)",
-            (par_id, big_finger_id),
+            VALUES (?, ?, ?, ?, ?)",
+            args,
         )
         connection.commit()
 

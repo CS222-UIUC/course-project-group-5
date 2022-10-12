@@ -13,9 +13,9 @@ class TestLogin:
     def register_setup(self) -> bool:
         """Registers a user with first_login object"""
         register = self.first_login.register(
-            self.username, "akfda@gmail.com", "passwor", "213-342-123"
+            self.username, "akfda@gmail.com", "123456789", "2133421234"
         )
-        return register
+        return register.status
 
     def delete_register(self) -> str:
         """Remove fake data from database"""
@@ -44,24 +44,46 @@ class TestLogin:
     def test_register_invalid_email(self):
         """Invalid email string"""
         register = self.first_login.register(
-            self.username, "akfda&gmail.com", "passwor", "213-342-123"
+            self.username, "akfda&gmail.com", "123456789", "2133421234"
         )
-        assert register is False
+        register_2 = self.first_login.register(
+            self.username, "akfda@gmail", "123456789", "2133421234"
+        )
+        assert register.status is False
+        assert register_2.status is False
+
+    def test_register_missing_field(self):
+        """Missing certain fields"""
+        register = self.first_login.register(
+            self.username, "", "123456789", "2133421234"
+        )
+        assert register.status is False
+
+    def test_register_short_password(self):
+        """Password is too short"""
+        register = self.first_login.register(
+            self.username, "akfda@gmail.com", "1234567", "2133421234"
+        )
+        assert register.status is False
+
+    def test_register_invalid_phone_length(self):
+        """Invalid phone number length"""
+        register = self.first_login.register(
+            self.username, "akfda@gmail.com", "123456789", "213342123"
+        )
+        assert register.status is False
 
     def test_login(self):
         """Tests login function"""
         self.register_setup()
-        user = self.first_login.login(self.username, "passw")
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        check = cursor.execute(
-            "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
-            AND password = ?",
-            (self.username, "email", "passw"),
-        ).fetchall()
-        connection.close()
+        user = self.first_login.login(self.username, "123456789")
         self.delete_register()
-        assert user == check
+        assert user is True
+
+    def test_login_invalid(self):
+        """Test invalid login attempt"""
+        user = self.first_login.login(self.username, "123456789")
+        assert user is False
 
     def test_logout(self):
         """Tests logout function"""
