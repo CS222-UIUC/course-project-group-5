@@ -25,14 +25,19 @@ class Login:
         """Register function, returns false if username is taken"""
         if (not username) or (not email) or (not password) or (not phone):
             return RegisterResult("Missing information, please try again", False)
-        regex_email = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
-        if not re.fullmatch(regex_email, email):
+
+        regex_email = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b")
+        if not regex_email.fullmatch(email):
             return RegisterResult("Invalid email, please try again", False)
-        if not re.fullmatch(
-            r"^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$",
-            phone,
-        ):
+
+        regex_phone = re.compile(
+            r"^\s*(?:\+?(\d{1,3}))?[-. (]"
+            r"*(\d{3})[-. )]*(\d{3})[-. ]"
+            r"*(\d{4})(?: *x(\d+))?\s*$"
+        )
+        if not regex_phone.fullmatch(phone):
             return RegisterResult("Invalid phone number, please try again", False)
+
         if len(password) < 8:
             return RegisterResult("Password is too short, please try again", False)
         connection = sqlite3.connect("database/database.db")
