@@ -25,10 +25,11 @@ class Login:
         """Register function, returns false if username is taken"""
         if (not username) or (not email) or (not password) or (not phone):
             return RegisterResult("Missing information, please try again", False)
-        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
-        if not re.fullmatch(regex, email):
+        regex_email = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        if not re.fullmatch(regex_email, email):
             return RegisterResult("Invalid email, please try again", False)
-        if len(phone) != 10:
+        regex_phone = r"^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$"
+        if not re.fullmatch(regex_phone, phone):
             return RegisterResult("Invalid phone number, please try again", False)
         if len(password) < 8:
             return RegisterResult("Password is too short, please try again", False)
