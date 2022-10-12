@@ -13,7 +13,7 @@ class TestLogin:
     def register_setup(self) -> bool:
         """Registers a user with first_login object"""
         register = self.first_login.register(
-            self.username, "akfda@gmail.com", "123456789", "2133421234"
+            self.username, "akfda@gmail.com", "123456789", "213-342-1234"
         )
         return register.status
 
@@ -44,10 +44,10 @@ class TestLogin:
     def test_register_invalid_email(self):
         """Invalid email string"""
         register = self.first_login.register(
-            self.username, "akfda&gmail.com", "123456789", "2133421234"
+            self.username, "akfda&gmail.com", "123456789", "213-342-1234"
         )
         register_2 = self.first_login.register(
-            self.username, "akfda@gmail", "123456789", "2133421234"
+            self.username, "akfda@gmail", "123456789", "213-342-1234"
         )
         assert register.status is False
         assert register_2.status is False
@@ -55,21 +55,21 @@ class TestLogin:
     def test_register_missing_field(self):
         """Missing certain fields"""
         register = self.first_login.register(
-            self.username, "", "123456789", "2133421234"
+            self.username, "", "123456789", "213-342-1234"
         )
         assert register.status is False
 
     def test_register_short_password(self):
         """Password is too short"""
         register = self.first_login.register(
-            self.username, "akfda@gmail.com", "1234567", "2133421234"
+            self.username, "akfda@gmail.com", "1234567", "213-342-1234"
         )
         assert register.status is False
 
     def test_register_invalid_phone_length(self):
         """Invalid phone number length"""
         register = self.first_login.register(
-            self.username, "akfda@gmail.com", "123456789", "213342123"
+            self.username, "akfda@gmail.com", "123456789", "213-342-123"
         )
         assert register.status is False
 
