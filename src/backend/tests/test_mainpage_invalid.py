@@ -160,7 +160,7 @@ class TestMainPageInvalid:
 
         self.initialize_all()
 
-        res = self.main_page.search_apartments("w")
+        res = self.main_page.search_apartments("wtf")
 
         self.clean_all()
         assert sample_search_apts == res
@@ -176,6 +176,7 @@ class TestMainPageInvalid:
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
+        self.clean_up_pics(cursor, connection)
         connection.close()
         res = self.main_page.get_apartments_pictures(sherman_id)
 
@@ -185,16 +186,14 @@ class TestMainPageInvalid:
     def test_get_apartments_reviews_empty(self):
         """Test get reviews of invalid apartments"""
         sample_apts_review = []
-
         self.initialize_all()
-
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
+        self.clean_up_reviews(cursor, connection)
         connection.close()
         res = self.main_page.get_apartments_reviews(sherman_id)
-
         self.clean_all()
         assert sample_apts_review == res
