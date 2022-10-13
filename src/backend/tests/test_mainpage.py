@@ -162,20 +162,14 @@ class TestMainPage:
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
-        par_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         connection.close()
         sample_search_apts = []
-        sample_search_apts.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
-        sample_search_apts.append(
-            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
-        )
+        sample_search_apts.append(Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500))
 
-        res = self.main_page.search_apartments("ar")
+        res = self.main_page.search_apartments("Sherma")
 
         self.clean_all()
         assert sample_search_apts == res

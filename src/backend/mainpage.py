@@ -23,13 +23,14 @@ class MainPage:
         ).fetchall()
         apts = []
         for entry in apt_query:
+            print(entry)
             rating_total = 0
             apt_id = int(entry[0])
             rating_query = cursor.execute(
                 "SELECT vote FROM Ratings WHERE apt_id = ?", (apt_id,)
             ).fetchall()
             for rating in rating_query:
-                if rating == 1:
+                if rating[0] == 1:
                     rating_total += 1
                 else:
                     rating_total -= 1
@@ -73,7 +74,8 @@ class MainPage:
         cursor = connection.cursor()
         ratings_query = cursor.execute(
             "SELECT Users.username, Ratings.date_of_rating, Ratings.comment, Ratings.vote \
-            FROM Users, Ratings WHERE Users.user_id = Ratings.user_id"
+            FROM Users, Ratings WHERE Users.user_id = Ratings.user_id AND Ratings.apt_id = ?",
+            (apt_id,)
         ).fetchall()
         reviews = []
         for entry in ratings_query:
