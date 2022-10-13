@@ -1,18 +1,17 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Login from './components/Login'
-import Header from './components/Header' 
+import Login from './components/Login';
+import Header from './components/Header';
+import LeftSection from './sections/LeftSection';
 import Searchbar from './components/Searchbar';
-import PreviewBlock from './components/PreviewBlock';
 
 function App() {
   return (
     <div className="App">
-      <Searchbar/>
-      <PreviewBlock/>
+      <LeftSection/>
       <Header/>
-      <Login/>
+      {/*<Login/>*/}
     </div>
   );
 }
