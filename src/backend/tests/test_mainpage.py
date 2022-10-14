@@ -80,7 +80,7 @@ class TestMainPage:
             (par_id, big_finger_id, "2022-10-11", "Why", -1),
         ]
         cursor.executemany(
-            "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
+            "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
             VALUES (?, ?, ?, ?, ?)",
             args,
         )
@@ -125,7 +125,7 @@ class TestMainPage:
             (far_id,),
             (par_id,),
         ]
-        cursor.executemany("DELETE FROM Ratings WHERE apt_id = ?", args)
+        cursor.executemany("DELETE FROM Reviews WHERE apt_id = ?", args)
         connection.commit()
 
     def clean_up_pics(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
