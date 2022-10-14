@@ -25,13 +25,13 @@ CREATE TABLE AptPics (
     link TEXT NOT NULL
 );
 
-CREATE TABLE Ratings (
+CREATE TABLE Reviews (
     rating_id INTEGER PRIMARY KEY AUTOINCREMENT,
     apt_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     date_of_rating DATE NOT NULL,
     comment TEXT,
-    vote BOOLEAN
+    vote INTEGER CHECK(vote = 1 OR vote = 0 OR vote = -1)
 );
 
 -- TEST
