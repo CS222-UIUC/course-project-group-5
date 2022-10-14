@@ -60,12 +60,12 @@ class MainPage:
         if rating_sort in (0, 1) and price_sort == 0:
             return self.apartments_default(num_apts)
 
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
         apts = []
         apt_query = []
 
         if rating_sort == -1 and price_sort == 0:
-            connection = sqlite3.connect("database/database.db")
-            cursor = connection.cursor()
             apt_query = cursor.execute(
                 "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
                 COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
@@ -75,15 +75,12 @@ class MainPage:
                 ORDER BY total_vote, Apartments.apt_name LIMIT ?",
                 (num_apts,),
             ).fetchall()
-            connection.close()
 
         # Sorts by price only
         if rating_sort == 0:
             desc = ""
             if price_sort == 1:
                 desc = "DESC"
-            connection = sqlite3.connect("database/database.db")
-            cursor = connection.cursor()
             apt_query = cursor.execute(
                 f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
                 COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
@@ -95,7 +92,7 @@ class MainPage:
                 LIMIT ?",
                 (num_apts,),
             ).fetchall()
-            connection.close()
+        connection.close()
         for entry in apt_query:
             apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
         return apts
