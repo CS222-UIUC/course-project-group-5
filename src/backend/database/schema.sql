@@ -54,9 +54,9 @@ INSERT INTO AptPics (apt_id, link)
 VALUES (2, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
 
 INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote)
-VALUES (1, 1, '2021-09-23', 'Great Apartment, I love it!', 't');
+VALUES (1, 1, '2021-09-23', 'Great Apartment, I love it!', 1);
 
 INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote)
-VALUES (2, 2, '2021-09-23', 'Shit Apartment, I hate it!', 't');
+VALUES (2, 2, '2021-09-23', 'Shit Apartment, I hate it!', -1);
 
 
