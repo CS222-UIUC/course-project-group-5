@@ -225,10 +225,10 @@ class TestMainPage:
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
         sample_apts_sorted.append(
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
-        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
         sample_apts_sorted.append(
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )

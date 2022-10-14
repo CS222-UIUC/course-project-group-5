@@ -10,7 +10,6 @@ class MainPage:
 
     def __init__(self) -> None:
         """Constructor"""
-        # TODO: Implement in week 3
 
     def search_apartments(self, query: str) -> List[Apt]:
         """Returns a list of apartments with name matching query"""
@@ -43,7 +42,6 @@ class MainPage:
             ORDER BY total_vote DESC, Apartments.apt_name LIMIT ?",
             (num_apts,),
         ).fetchall()
-        print(apt_query)
         apts = []
         for entry in apt_query:
             apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
@@ -54,11 +52,62 @@ class MainPage:
         self, num_apts: int, price_sort: int, rating_sort: int
     ) -> List[Apt]:
         """Returns num_apts apartments with sorting criterias"""
-        # TODO: Implement in week 3
-        #       If both price_sort and rating_sort are selected,
-        #       prioritize price_sort.
-        #       If both are 0, then use apartments_default()'s behaviour.
-        return []
+        apts = []
+        if rating_sort in (0,1) and price_sort == 0:
+            apts = self.apartments_default(num_apts)
+
+        if rating_sort == -1 and price_sort == 0:
+            connection = sqlite3.connect("database/database.db")
+            cursor = connection.cursor()
+            apt_query = cursor.execute(
+                "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+                COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+                Apartments.price_min, Apartments.price_max \
+                FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
+                GROUP BY Apartments.apt_id \
+                ORDER BY total_vote, Apartments.apt_name LIMIT ?",
+                (num_apts,),
+            ).fetchall()
+            for entry in apt_query:
+                apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
+            connection.close()
+
+        if price_sort == 1 and rating_sort == 0:
+            connection = sqlite3.connect("database/database.db")
+            cursor = connection.cursor()
+            apt_query = cursor.execute(
+                "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+                COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+                Apartments.price_min, Apartments.price_max \
+                FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
+                GROUP BY Apartments.apt_id \
+                ORDER BY (Apartments.price_min + Apartments.price_max)/2 DESC, Apartments.apt_name \
+                LIMIT ?",
+                (num_apts,),
+            ).fetchall()
+            print(apt_query)
+            for entry in apt_query:
+                apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
+            connection.close()
+
+        if price_sort == -1 and rating_sort == 0:
+            connection = sqlite3.connect("database/database.db")
+            cursor = connection.cursor()
+            apt_query = cursor.execute(
+                "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+                COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+                Apartments.price_min, Apartments.price_max \
+                FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
+                GROUP BY Apartments.apt_id \
+                ORDER BY (Apartments.price_min + Apartments.price_max)/2, Apartments.apt_name \
+                LIMIT ?",
+                (num_apts,),
+            ).fetchall()
+            print(apt_query)
+            for entry in apt_query:
+                apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
+            connection.close()
+        return apts
 
     def get_apartments_pictures(self, apt_id: int) -> List[str]:
         """Returns pictures related to an apartment"""
@@ -75,7 +124,6 @@ class MainPage:
 
     def get_apartments_reviews(self, apt_id: int) -> List[Review]:
         """Returns a list of apartment reviews"""
-        # TODO: Implement in week 3
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         ratings_query = cursor.execute(
