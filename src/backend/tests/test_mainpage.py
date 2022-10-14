@@ -182,11 +182,11 @@ class TestMainPage:
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         lincoln_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
@@ -194,10 +194,10 @@ class TestMainPage:
         connection.close()
         sample_apts_default = []
         sample_apts_default.append(
-            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+            Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000)
         )
         sample_apts_default.append(
-            Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000)
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
         sample_apts_default.append(
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)

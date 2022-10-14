@@ -18,31 +18,35 @@ class MainPage:
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         apt_query = cursor.execute(
-            "SELECT apt_id, apt_name, apt_address, price_min, price_max \
-            FROM Apartments WHERE apt_name LIKE ?", (query_sql,)
+            "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+            COALESCE(SUM(Reviews.vote), 0), Apartments.price_min, Apartments.price_max \
+            FROM Apartments, Reviews WHERE Apartments.apt_name LIKE ? \
+            AND Apartments.apt_id = Reviews.apt_id",
+            (query_sql,)
         ).fetchall()
         apts = []
         for entry in apt_query:
-            print(entry)
-            rating_total = 0
-            apt_id = int(entry[0])
-            rating_query = cursor.execute(
-                "SELECT vote FROM Ratings WHERE apt_id = ?", (apt_id,)
-            ).fetchall()
-            for rating in rating_query:
-                if rating[0] == 1:
-                    rating_total += 1
-                else:
-                    rating_total -= 1
-            apts.append(Apt(entry[0], entry[1], entry[2], rating_total, entry[3], entry[4]))
+            apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
         connection.close()
         return apts
 
     def apartments_default(self, num_apts: int) -> List[Apt]:
         """Returns num_apts apartments to populate the mainpage"""
-        # TODO: Implement in week 3
-        #       Apartments are sorted by default from most vote -> least vote
-        return []
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        apt_query = cursor.execute(
+            "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+            COALESCE(SUM(Reviews.vote), 0) as 'total_vote', Apartments.price_min, Apartments.price_max \
+            FROM Apartments, Reviews WHERE Apartments.apt_id = Reviews.apt_id \
+            ORDER BY total_vote DESC, Apartments.apt_name LIMIT ?",
+            (num_apts,)
+        ).fetchall()
+        print(apt_query)
+        apts = []
+        for entry in apt_query:
+            apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
+        connection.close()
+        return apts
 
     def apartments_sorted(
         self, num_apts: int, price_sort: int, rating_sort: int
@@ -73,12 +77,15 @@ class MainPage:
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         ratings_query = cursor.execute(
-            "SELECT Users.username, Ratings.date_of_rating, Ratings.comment, Ratings.vote \
-            FROM Users, Ratings WHERE Users.user_id = Ratings.user_id AND Ratings.apt_id = ?",
+            "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
+            FROM Users, Reviews WHERE Users.user_id = Reviews.user_id AND Reviews.apt_id = ?",
             (apt_id,)
         ).fetchall()
         reviews = []
         for entry in ratings_query:
-            reviews.append(Review(entry[0], entry[1], entry[2], entry[3]))
+            vote = False
+            if entry[3] == 1:
+                vote = True
+            reviews.append(Review(entry[0], entry[1], entry[2], vote))
         cursor.close()
         return reviews
