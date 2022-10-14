@@ -71,11 +71,11 @@ class TestMainPageInvalid:
             "SELECT user_id FROM Users WHERE (username = 'Big_finger')"
         ).fetchone()[0]
         args = [
-            (sherman_id, minh_phan_id, "2022-10-07", "Pretty good", True),
-            (sherman_id, minh_id, "2022-10-08", "Bruh this sucks", False),
-            (sherman_id, big_finger_id, "2022-10-09", "Decent", True),
-            (far_id, big_finger_id, "2022-10-10", "Decent hall", True),
-            (par_id, big_finger_id, "2022-10-11", "Why", False),
+            (sherman_id, minh_phan_id, "2022-10-07", "Pretty good", 1),
+            (sherman_id, minh_id, "2022-10-08", "Bruh this sucks", -1),
+            (sherman_id, big_finger_id, "2022-10-09", "Decent", 1),
+            (far_id, big_finger_id, "2022-10-10", "Decent hall", 1),
+            (par_id, big_finger_id, "2022-10-11", "Why", -1),
         ]
         cursor.executemany(
             "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
