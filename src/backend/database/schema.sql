@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Apartments;
 DROP TABLE IF EXISTS AptPics;
-DROP TABLE IF EXISTS Ratings;
+DROP TABLE IF EXISTS Reviews;
 CREATE TABLE Users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(255) NOT NULL, 
@@ -53,10 +53,10 @@ VALUES (2, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3Oo
 INSERT INTO AptPics (apt_id, link)
 VALUES (2, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
 
-INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote)
+INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote)
 VALUES (1, 1, '2021-09-23', 'Great Apartment, I love it!', 1);
 
-INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote)
+INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote)
 VALUES (2, 2, '2021-09-23', 'Shit Apartment, I hate it!', -1);
 
 
