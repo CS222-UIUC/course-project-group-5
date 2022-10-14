@@ -22,7 +22,7 @@ class MainPage:
             COALESCE(SUM(Reviews.vote), 0), Apartments.price_min, Apartments.price_max \
             FROM Apartments, Reviews WHERE Apartments.apt_name LIKE ? \
             AND Apartments.apt_id = Reviews.apt_id",
-            (query_sql,)
+            (query_sql,),
         ).fetchall()
         apts = []
         for entry in apt_query:
@@ -36,11 +36,12 @@ class MainPage:
         cursor = connection.cursor()
         apt_query = cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', Apartments.price_min, Apartments.price_max \
+            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+            Apartments.price_min, Apartments.price_max \
             FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
             GROUP BY Apartments.apt_id \
             ORDER BY total_vote DESC, Apartments.apt_name LIMIT ?",
-            (num_apts,)
+            (num_apts,),
         ).fetchall()
         print(apt_query)
         apts = []
@@ -80,7 +81,7 @@ class MainPage:
         ratings_query = cursor.execute(
             "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
             FROM Users, Reviews WHERE Users.user_id = Reviews.user_id AND Reviews.apt_id = ?",
-            (apt_id,)
+            (apt_id,),
         ).fetchall()
         reviews = []
         for entry in ratings_query:
