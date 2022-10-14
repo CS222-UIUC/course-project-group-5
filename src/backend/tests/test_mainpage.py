@@ -167,7 +167,9 @@ class TestMainPage:
         ).fetchone()[0]
         connection.close()
         sample_search_apts = []
-        sample_search_apts.append(Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500))
+        sample_search_apts.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
 
         res = self.main_page.search_apartments("Sherma")
 
