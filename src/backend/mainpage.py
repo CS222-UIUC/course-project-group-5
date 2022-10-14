@@ -36,8 +36,9 @@ class MainPage:
         cursor = connection.cursor()
         apt_query = cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) as 'total_vote', Apartments.price_min, Apartments.price_max \
-            FROM Apartments, Reviews WHERE Apartments.apt_id = Reviews.apt_id \
+            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', Apartments.price_min, Apartments.price_max \
+            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
+            GROUP BY Apartments.apt_id \
             ORDER BY total_vote DESC, Apartments.apt_name LIMIT ?",
             (num_apts,)
         ).fetchall()
