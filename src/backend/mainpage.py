@@ -14,13 +14,13 @@ class MainPage:
 
     def search_apartments(self, query: str) -> List[Apt]:
         """Returns a list of apartments with name matching query"""
-        query_sql = "%" + query + "%"
+        query_sql = "%" + query.lower() + "%"
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         apt_query = cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0), Apartments.price_min, Apartments.price_max \
-            FROM Apartments, Reviews WHERE Apartments.apt_name LIKE ? \
+            FROM Apartments, Reviews WHERE LOWER(Apartments.apt_name) LIKE ? \
             AND Apartments.apt_id = Reviews.apt_id",
             (query_sql,),
         ).fetchall()

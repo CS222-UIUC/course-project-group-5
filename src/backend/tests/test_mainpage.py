@@ -173,7 +173,7 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.search_apartments("Sherman")
+        res = self.main_page.search_apartments("sherma")
 
         self.clean_all()
         assert sample_search_apts == res
