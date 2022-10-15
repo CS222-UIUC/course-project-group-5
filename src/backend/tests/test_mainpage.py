@@ -17,6 +17,7 @@ class TestMainPage:
             ("FAR", "901 W College Ct", 6000, 7000, ""),
             ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
             ("PAR", "901 W College Ct", 5000, 6000, ""),
+            ("ISR", "918 W Illinois", 6000, 7000, ""),
         ]
         cursor.executemany(
             "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
@@ -105,6 +106,7 @@ class TestMainPage:
             ("FAR",),
             ("Lincoln",),
             ("PAR",),
+            ("ISR",),
         ]
         cursor.executemany("DELETE FROM Apartments WHERE apt_name = ?", args)
         connection.commit()
@@ -171,7 +173,7 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.search_apartments("Sherma")
+        res = self.main_page.search_apartments("Sherman")
 
         self.clean_all()
         assert sample_search_apts == res
@@ -188,8 +190,8 @@ class TestMainPage:
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
-        lincoln_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_default = []
@@ -199,9 +201,7 @@ class TestMainPage:
         sample_apts_default.append(
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
-        sample_apts_default.append(
-            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
-        )
+        sample_apts_default.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
 
         res = self.main_page.apartments_default(3)
 
@@ -220,8 +220,8 @@ class TestMainPage:
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
-        lincoln_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
@@ -229,9 +229,7 @@ class TestMainPage:
         sample_apts_sorted.append(
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
-        sample_apts_sorted.append(
-            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
-        )
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
 
         res = self.main_page.apartments_sorted(3, 0, 0)
 
@@ -247,8 +245,8 @@ class TestMainPage:
         par_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
         ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         lincoln_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
@@ -258,10 +256,10 @@ class TestMainPage:
         sample_apts_sorted.append(
             Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
         )
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
         sample_apts_sorted.append(
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
-        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
 
         res = self.main_page.apartments_sorted(3, 0, -1)
 
@@ -309,8 +307,8 @@ class TestMainPage:
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
-        lincoln_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
@@ -318,14 +316,78 @@ class TestMainPage:
         connection.close()
         sample_apts_sorted = []
         sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
         sample_apts_sorted.append(
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
+
+        res = self.main_page.apartments_sorted(3, 1, 0)
+
+        self.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_price_rating_reversed(self):
+        """
+        Test price from high to low
+        and rating from low to high
+        """
+        self.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
+        ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
+        connection.close()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+
+        res = self.main_page.apartments_sorted(3, 1, -1)
+
+        self.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_price_reversed_rating(self):
+        """
+        Test price from low to high
+        and rating from high to low
+        """
+        self.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        lincoln_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()[0]
+        par_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        connection.close()
+        sample_apts_sorted = []
         sample_apts_sorted.append(
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
+        sample_apts_sorted.append(
+            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        )
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
 
-        res = self.main_page.apartments_sorted(3, 1, 0)
+        res = self.main_page.apartments_sorted(3, -1, 1)
 
         self.clean_all()
         assert sample_apts_sorted == res
