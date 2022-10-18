@@ -4,6 +4,7 @@ from mainpage import MainPage
 from apt import Apt
 from review import Review
 
+
 class MainPageStaging:
     """Stage main page data for tests"""
 
@@ -154,6 +155,8 @@ class MainPageStaging:
         self.clean_up_apartments(cursor, connection)
         self.clean_up_users(cursor, connection)
         connection.close()
+
+
 class TestMainPage:
     """Test main page class"""
 

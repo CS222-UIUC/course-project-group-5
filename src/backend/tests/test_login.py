@@ -2,6 +2,7 @@
 import sqlite3
 from login import Login
 
+
 class TestLogin:
     """Test Login class"""
 
