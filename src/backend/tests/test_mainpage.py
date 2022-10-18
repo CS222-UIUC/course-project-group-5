@@ -5,10 +5,8 @@ from apt import Apt
 from review import Review
 
 
-class TestMainPage:
-    """Test main page class"""
-
-    main_page = MainPage()
+class MainPageStaging:
+    """Stage main page data for tests"""
 
     def insert_apartments(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
         """Insert apartments for use by test methods"""
@@ -17,6 +15,7 @@ class TestMainPage:
             ("FAR", "901 W College Ct", 6000, 7000, ""),
             ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
             ("PAR", "901 W College Ct", 5000, 6000, ""),
+            ("ISR", "918 W Illinois", 6000, 7000, ""),
         ]
         cursor.executemany(
             "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
@@ -73,14 +72,14 @@ class TestMainPage:
             "SELECT user_id FROM Users WHERE (username = 'Big_finger')"
         ).fetchone()[0]
         args = [
-            (sherman_id, minh_phan_id, "2022-10-07", "Pretty good", True),
-            (sherman_id, minh_id, "2022-10-08", "Bruh this sucks", False),
-            (sherman_id, big_finger_id, "2022-10-09", "Decent", True),
-            (far_id, big_finger_id, "2022-10-10", "Decent hall", True),
-            (par_id, big_finger_id, "2022-10-11", "Why", False),
+            (sherman_id, minh_phan_id, "2022-10-07", "Pretty good", 1),
+            (sherman_id, minh_id, "2022-10-08", "Bruh this sucks", -1),
+            (sherman_id, big_finger_id, "2022-10-09", "Decent", 1),
+            (far_id, big_finger_id, "2022-10-10", "Decent hall", 1),
+            (par_id, big_finger_id, "2022-10-11", "Why", -1),
         ]
         cursor.executemany(
-            "INSERT INTO Ratings (apt_id, user_id, date_of_rating, comment, vote) \
+            "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
             VALUES (?, ?, ?, ?, ?)",
             args,
         )
@@ -105,6 +104,7 @@ class TestMainPage:
             ("FAR",),
             ("Lincoln",),
             ("PAR",),
+            ("ISR",),
         ]
         cursor.executemany("DELETE FROM Apartments WHERE apt_name = ?", args)
         connection.commit()
@@ -125,7 +125,7 @@ class TestMainPage:
             (far_id,),
             (par_id,),
         ]
-        cursor.executemany("DELETE FROM Ratings WHERE apt_id = ?", args)
+        cursor.executemany("DELETE FROM Reviews WHERE apt_id = ?", args)
         connection.commit()
 
     def clean_up_pics(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
@@ -156,65 +156,66 @@ class TestMainPage:
         self.clean_up_users(cursor, connection)
         connection.close()
 
+
+class TestMainPage:
+    """Test main page class"""
+
+    main_page = MainPage()
+    main_page_stage = MainPageStaging()
+
     def test_search_apartments(self):
         """Test search_apartment() returns correct list"""
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
-        par_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         connection.close()
         sample_search_apts = []
-        sample_search_apts.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
         sample_search_apts.append(
-            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.search_apartments("ar")
+        res = self.main_page.search_apartments("sherma")
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
         assert sample_search_apts == res
 
     def test_apartments_default(self):
         """Test apartments_default() returns correct list"""
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
-        lincoln_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_default = []
         sample_apts_default.append(
-            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
-        )
-        sample_apts_default.append(
             Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000)
         )
         sample_apts_default.append(
-            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
+        sample_apts_default.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
 
         res = self.main_page.apartments_default(3)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
         assert sample_apts_default == res
 
     def test_apartments_sorted_default(self):
         """Test apartments_sorted() returns correct list"""
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
@@ -224,35 +225,33 @@ class TestMainPage:
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
-        lincoln_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
         sample_apts_sorted.append(
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
-        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
-        sample_apts_sorted.append(
-            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
-        )
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
 
         res = self.main_page.apartments_sorted(3, 0, 0)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
     def test_apartments_sorted_rating_reversed(self):
         """Test returns list rating from low to high"""
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         par_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
         ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         lincoln_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
@@ -262,19 +261,19 @@ class TestMainPage:
         sample_apts_sorted.append(
             Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
         )
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
         sample_apts_sorted.append(
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
-        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
 
         res = self.main_page.apartments_sorted(3, 0, -1)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
     def test_apartments_sorted_price_reversed(self):
         """Test returns price from low to high"""
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
@@ -301,20 +300,20 @@ class TestMainPage:
 
         res = self.main_page.apartments_sorted(3, -1, 0)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
     def test_apartments_sorted_price(self):
         """Test returns price from high to low"""
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
-        lincoln_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
@@ -322,23 +321,87 @@ class TestMainPage:
         connection.close()
         sample_apts_sorted = []
         sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
         sample_apts_sorted.append(
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
-        )
-        sample_apts_sorted.append(
-            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
 
         res = self.main_page.apartments_sorted(3, 1, 0)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_price_rating_reversed(self):
+        """
+        Test price from high to low
+        and rating from low to high
+        """
+        self.main_page_stage.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        isr_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
+        ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
+        connection.close()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+
+        res = self.main_page.apartments_sorted(3, 1, -1)
+
+        self.main_page_stage.clean_all()
+        assert sample_apts_sorted == res
+
+    def test_apartments_sorted_price_reversed_rating(self):
+        """
+        Test price from low to high
+        and rating from high to low
+        """
+        self.main_page_stage.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        lincoln_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()[0]
+        par_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        connection.close()
+        sample_apts_sorted = []
+        sample_apts_sorted.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+        )
+        sample_apts_sorted.append(
+            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        )
+        sample_apts_sorted.append(
+            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
+        )
+
+        res = self.main_page.apartments_sorted(3, -1, 1)
+
+        self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
     def test_get_apartments_pictures(self):
         """Test get_apartments_picture()"""
         sample_apts_picture = ["Link1", "Link2", "Link3"]
 
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
@@ -348,7 +411,7 @@ class TestMainPage:
         connection.close()
         res = self.main_page.get_apartments_pictures(sherman_id)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
         assert sample_apts_picture == res
 
     def test_get_apartments_reviews(self):
@@ -362,7 +425,7 @@ class TestMainPage:
         )
         sample_apts_review.append(Review("Big_finger", "2022-10-09", "Decent", True))
 
-        self.initialize_all()
+        self.main_page_stage.initialize_all()
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
@@ -372,5 +435,49 @@ class TestMainPage:
         connection.close()
         res = self.main_page.get_apartments_reviews(sherman_id)
 
-        self.clean_all()
+        self.main_page_stage.clean_all()
+        assert sample_apts_review == res
+
+    def test_search_apartments_invalid(self):
+        """Test invalid query"""
+        sample_search_apts = []
+
+        self.main_page_stage.initialize_all()
+
+        res = self.main_page.search_apartments("wtf")
+
+        self.main_page_stage.clean_all()
+        assert sample_search_apts == res
+
+    def test_get_apartments_pictures_invalid(self):
+        """Test get pics of invalid apartment"""
+        sample_apts_picture = []
+
+        self.main_page_stage.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        self.main_page_stage.clean_up_pics(cursor, connection)
+        connection.close()
+        res = self.main_page.get_apartments_pictures(sherman_id)
+
+        self.main_page_stage.clean_all()
+        assert sample_apts_picture == res
+
+    def test_get_apartments_reviews_empty(self):
+        """Test get reviews of invalid apartments"""
+        sample_apts_review = []
+        self.main_page_stage.initialize_all()
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        self.main_page_stage.clean_up_reviews(cursor, connection)
+        connection.close()
+        res = self.main_page.get_apartments_reviews(sherman_id)
+        self.main_page_stage.clean_all()
         assert sample_apts_review == res
