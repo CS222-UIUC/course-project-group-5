@@ -1,0 +1,32 @@
+{
+  "mockdata": [
+    {
+      "id": 1,
+      "name": "smile",
+      "address": "West Green",
+      "review": "Horribly awesome"
+  }, {
+      "id": 2,
+      "name": "jsm",
+      "address": "West springfield",
+      "review": "Slightly above average"
+  }, {
+      "id": 3,
+      "name": "uiuc dorm",
+      "address": "Healey street",
+      "review": "Slightly AMAZING"
+  }, {
+    "id": 4,
+    "name": "University Group",
+    "address": "Wright street",
+    "review": "Extremely average"
+}
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ]
+}

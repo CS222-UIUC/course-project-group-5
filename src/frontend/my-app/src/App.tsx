@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Login from './components/Login';
 import Header from './components/Header';
-import LeftSection from './sections/LeftSection';
+import LeftSection from './sections/MainPageLeftSection';
 import Searchbar from './components/Searchbar';
 
 function App() {
