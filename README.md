@@ -1,2 +1,1 @@
 # Dorm/Apartment Rating App
-
