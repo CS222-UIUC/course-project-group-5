@@ -1,13 +1,13 @@
 import axios from "axios";
 import SingleCard from "./SingleCard"
 
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function PreviewBlock(props: any) {
   return (
     <div style={{marginLeft: '30px'}}>
-      <Scroll/>
+      
     </div>
   );
 };
@@ -49,7 +49,7 @@ return { loading, error, apartments, hasMore }
 }
 
 */
-
+/*
 const Scroll = (props: any) => {
   const initialArray = [ // workaround until api works
     <SingleCard
@@ -69,10 +69,10 @@ const Scroll = (props: any) => {
     address="4"
     />
   ]
-  const [items, setItems] = useState(initialArray);
+  const [items, setItems] = useState<ReactElement[]>(initialArray);
   const [hasMore, setHasMore] = useState(true); // hasMore apartments
   const [name, setName] = useState("");
-  const [components, setComponents] = useState(initialArray);
+  const [components, setComponents] = useState<ReactElement[]>([]);
 
   const [count, setCount] = useState(0);
 
@@ -80,7 +80,7 @@ const Scroll = (props: any) => {
     axios.get('http://localhost:3333/mockdata')
       .then(response => {
         console.log(response.data);
-        var newCards = [];
+        var newCards: React.ReactElement[] = [];
         const names = [];
         for (let i = 0; i < response.data.length; i++) {
           names.push(response.data[i].name);
@@ -104,11 +104,15 @@ const Scroll = (props: any) => {
       return;
     }
     setTimeout(() => {
+      var newCards: React.ReactElement[] = [];
       for (let i = 0; i < 2; i++) {
         console.log(components);
-        setItems([...items, ...components]);
+        var a  = components.at(i);
+        newCards.push(SingleCard({address: "a", aptName: "b"}));
         components.shift();
+        newCards.shift();
       }
+      setItems([...items, ...newCards]);
     }, 500);
   };
 
@@ -132,3 +136,5 @@ const Scroll = (props: any) => {
     </>
   );
 }
+*/
+
