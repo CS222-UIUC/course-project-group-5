@@ -1,4 +1,4 @@
-name: Coverage - Jest Coverage Calculation
+name: Jest Coverage Calculation
 on: [push, pull_request]
 
 jobs:

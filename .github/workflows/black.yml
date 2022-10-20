@@ -1,4 +1,4 @@
-name: Styling - Black
+name: Black Styling
 
 on: [push, pull_request]
 
