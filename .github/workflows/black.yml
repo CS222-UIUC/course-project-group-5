@@ -1,4 +1,4 @@
-name: black-action
+name: Black Styling
 
  on: [push, pull_request]
  jobs:
