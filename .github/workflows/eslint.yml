@@ -26,4 +26,3 @@ jobs:
           targets: "." #optional
           eslint-lib-path: "./node_modules/eslint/lib/api.js" #optional
           eslint-bin-path: "node_modules/.bin/eslint" # optional
-        working-directory: src/frontend
