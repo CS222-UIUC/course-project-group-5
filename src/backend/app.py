@@ -32,32 +32,5 @@ def register():
     return result.message, 200
 
 
-# The routes below are not implemented yet
-# They are there as placeholders
-
-# @app.route("/login_success/<name>")
-# def login_success(name: str):
-#    """Login succesful"""
-#    return f"welcome {name}"
-
-
-# @app.route("/login_failure/<name>")
-# def login_failure():
-#    """Login failure"""
-#    return "User not found, please try again"
-
-
-# @app.route("/register_success/<name>")
-# def register_success(name: str):
-#    """Resgiter successful"""
-#    return f"Register successful, welcome {name}"
-
-
-# @app.route("/register_failure/<name>")
-# def register_failure():
-#    """Register failure"""
-#    return "Register failed due to incomplete information, please try again"
-
-
 if __name__ == "__main__":
     app.run(debug=True)  # pragma: no cover
