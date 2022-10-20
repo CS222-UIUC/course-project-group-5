@@ -1,12 +1,10 @@
 import React from "react";
-import PreviewBlock from "../components/LeftSideScrollBlocks";
-import Searchbar from "../components/Searchbar";
+import Searching from "../components/Searching";
 
 export default function LeftSection(props: any) {
     return (
         <div style={{marginTop: '200px'}}>
-            <Searchbar/>
-            <PreviewBlock/>
+            <Searching/>
         </div>
     );
 }

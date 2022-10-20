@@ -1,11 +1,11 @@
 import React from 'react';
-import Searchbar from '../components/Searchbar';
+import Searching from '../components/Searching';
 import LeftSection from '../sections/MainPageLeftSection';
 
 function MainPage() {
   return (
     <div>
-      <Searchbar/>
+      <Searching/>
       <LeftSection/>
     </div>
   );
