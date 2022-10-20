@@ -1,0 +1,29 @@
+name: ESLint
+
+ on: [push, pull_request]
+
+ jobs:
+   build:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+       - uses: actions/setup-node@v3
+         with:
+           node-version: "16"
+           check-latest: true
+
+       - name: Install dependencies
+         run: yarn install # or npm ci if you use npm and have the package-lock.json file
+         working-directory: src/frontend
+
+       - uses: CatChen/eslint-suggestion-action@v2
+         with:
+           request-changes: true # optional
+           fail-check: false # optional
+           github-token: ${{ secrets.GITHUB_TOKEN }} # optional
+           directory: "./" #optional
+           targets: "." #optional
+           eslint-lib-path: "./node_modules/eslint/lib/api.js" #optional
+           eslint-bin-path: "node_modules/.bin/eslint" # optional
+         working-directory: src/frontend
