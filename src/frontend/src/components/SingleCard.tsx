@@ -6,20 +6,20 @@ import {
   } from "@material-ui/core";
 import { CardActionArea, CardMedia } from "@mui/material";
 import styled from 'styled-components';
-import apartment from './apartment.jpeg';
+import apartment from "./apartment.jpeg";
 
 const MyCard = styled(Card)`
   height: 300px;
   width: 470px;
 `;
 
-
 interface SingleCardProps {
-    aptName: string,
+    name: string,
     address: string
-  }
+}
+
 const SingleCard = ({
-    aptName,
+    name,
     address
    }: SingleCardProps) => (
       <div>
@@ -34,7 +34,7 @@ const SingleCard = ({
                 {/*<Button size="small">Learn More</Button>*/}
                 <div style={{display: 'inline-block', width: '100%'}}>
                 <Typography gutterBottom variant="h5" component="div" style={{float: 'left'}}>
-                  {aptName}
+                  {name}
                 </Typography>
                 <Typography gutterBottom variant="body1" component="div" style={{float: 'right', marginTop: '5px'}}>
                   {address}
@@ -44,6 +44,6 @@ const SingleCard = ({
          </CardActionArea>
         </MyCard>
       </div>
-  );
+);
 
 export default SingleCard;

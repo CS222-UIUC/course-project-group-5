@@ -1,0 +1,77 @@
+{
+  "mockdata": [
+    {
+      "id": 1,
+      "name": "smile",
+      "address": "West Green",
+      "review": "Horribly awesome"
+  }, {
+      "id": 2,
+      "name": "jsm",
+      "address": "West springfield",
+      "review": "Slightly above average"
+  }, {
+      "id": 3,
+      "name": "uiuc dorm",
+      "address": "Healey street",
+      "review": "Slightly AMAZING"
+  }, {
+    "id": 4,
+    "name": "University Group",
+    "address": "Wright street",
+    "review": "Extremely average"
+  }, {
+    "id": 5,
+    "name": "jsm",
+    "address": "White St.",
+    "review": "Amazingly horrible"
+  }, {
+    "id": 6,
+    "name": "uiuc dorm",
+    "address": "1032 E Kerr Ave",
+    "review": "Slightly green"
+  }, {
+    "id": 7,
+    "name": "FAR",
+    "address": "Wright street",
+    "review": "Too yellow"
+  }, {
+    "id": 8,
+    "name": "PAR",
+    "address": "West springfield",
+    "review": "Slightly below average horrible"
+  }, {
+    "id": 9,
+    "name": "Champaign park",
+    "address": "51 E John",
+    "review": "Purple"
+  }, {
+    "id": 10,
+    "name": "University Group",
+    "address": "Wright street",
+    "review": "Orange"
+    }, {
+    "id": 11,
+    "name": "maywood apartments",
+    "address": "West springfield",
+    "review": "AMAZING AMAZING average"
+    }, {
+    "id": 12,
+    "name": "Skyscraper",
+    "address": "Green st.",
+    "review": "Slightly AMAZING AMAZING AMAZING"
+    }, {
+    "id": 13,
+    "name": "University Group",
+    "address": "202 E Daniel St.",
+    "review": "Extremely AMAZING AMAZING AMAZING"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ]
+}
