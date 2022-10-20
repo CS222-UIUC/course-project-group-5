@@ -1,4 +1,4 @@
-name: ESLint
+name: Linter - ESLint
 
 on: [push, pull_request]
 

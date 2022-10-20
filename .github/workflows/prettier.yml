@@ -1,4 +1,4 @@
-name: Prettier Styling
+name: Styling - Prettier
 
 on: [push, pull_request]
 

@@ -1,4 +1,4 @@
-name: Pylint
+name: Linter - Pylint
 
 on: [push, pull_request]
 

@@ -1,4 +1,4 @@
-name: Pytest Coverage Calculation
+name: Coverage - Pytest Coverage Calculation
 on: [push, pull_request]
 jobs:
   build:
