@@ -11,5 +11,5 @@ jobs:
       run: yarn
       working-directory: src/frontend
     - name: Run ESLint
-      run: eslint --ext .js,.jsx,.ts,.tsx
-      working-directory: src/frontend/src
+      run: npx eslint --ext .js,.jsx,.ts,.tsx
+      working-directory: src/frontend/
