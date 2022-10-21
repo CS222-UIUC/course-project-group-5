@@ -1,5 +1,15 @@
 """ Contains Login class """
+from dataclasses import dataclass
+import re
 import sqlite3
+
+
+@dataclass(frozen=True)
+class RegisterResult:
+    """Stores the register respond message and validity"""
+
+    message: str
+    status: bool
 
 
 class Login:
@@ -8,32 +18,56 @@ class Login:
     # stored_user = User()
     def __init__(self) -> None:
         """Constructor"""
-        self.connection = sqlite3.connect("database.db")
-        self.cursor = self.connection.cursor()
 
-    def register(self, username: str, email: str, password: str, phone: str) -> bool:
+    def register(
+        self, username: str, email: str, password: str, phone: str
+    ) -> RegisterResult:
         """Register function, returns false if username is taken"""
-        if "@" not in email:
-            return True
-        check = self.cursor.execute(
+        if (not username) or (not email) or (not password) or (not phone):
+            return RegisterResult("Missing information, please try again", False)
+
+        regex_email = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b")
+        if not regex_email.fullmatch(email):
+            return RegisterResult("Invalid email, please try again", False)
+
+        regex_phone = re.compile(
+            r"^\s*(?:\+?(\d{1,3}))?[-. (]"
+            r"*(\d{3})[-. )]*(\d{3})[-. ]"
+            r"*(\d{4})(?: *x(\d+))?\s*$"
+        )
+        if not regex_phone.fullmatch(phone):
+            return RegisterResult("Invalid phone number, please try again", False)
+
+        if len(password) < 8:
+            return RegisterResult("Password is too short, please try again", False)
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        check = cursor.execute(
             "SELECT username FROM Users WHERE username = ?", (username,)
-        ).fetchall()
-        if not check:  # valid
-            self.cursor.execute(
-                "INSERT INTO Users (username, email, password, phone) VALUES (?, ?, ?, ?)",
+        ).fetchone()
+        if check is None:  # valid
+            cursor.execute(
+                "INSERT INTO Users (username, email, password, phone, apt_id) \
+                VALUES (?, ?, ?, ?, 0)",
                 (username, email, password, phone),
             )
-            return True
-        return False
+            connection.commit()
+            connection.close()
+            return RegisterResult(f"Register successful, welcome {username}", True)
+        connection.close()
+        return RegisterResult(f"{username} already registered, please try again", False)
 
     def login(self, user_id: str, password: str) -> bool:
         """Login function, returns false if combination not found"""
-        user = self.cursor.execute(
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        user = cursor.execute(
             "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",
             (user_id, user_id, password),
         ).fetchall()
-        return user
+        connection.close()
+        return len(user) > 0
 
     def logout(self) -> None:
         """Logout function"""

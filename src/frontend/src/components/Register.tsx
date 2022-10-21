@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
    Grid,
    Paper,
@@ -11,15 +11,21 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
-import { useState } from 'react';
 
-function sendData(user: string, password: string) {
+function sendData(
+   username: string,
+   email: string,
+   password: string,
+   phone: string
+) {
    axios({
       method: 'post',
-      url: '/login',
+      url: '/register',
       data: {
-         user: user,
+         username: username,
+         email: email,
          password: password,
+         phone: phone,
       },
    })
       .then((response) => {
@@ -34,9 +40,11 @@ function sendData(user: string, password: string) {
       });
 }
 
-export default function Login() {
+export default function Register() {
    const [user, setUser] = useState('');
+   const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
+   const [number, setNumber] = useState('');
 
    const paperStyle = {
       padding: 20,
@@ -45,23 +53,38 @@ export default function Login() {
       margin: '20px auto',
    };
    const btnstyle = { margin: '8px 0' };
+
    return (
       <Grid>
          <Paper elevation={12} style={paperStyle}>
             <PersonIcon fontSize="large" />
-            <h2>Sign In</h2>
+            <h2>Register</h2>
             <TextField
-               label="Username/Email"
-               placeholder="Enter Username or Email"
+               label="Username"
+               placeholder="Ex: user1"
                onChange={(event) => setUser(event.target.value)}
                fullWidth
                required
             />
             <TextField
+               label="Email"
+               placeholder="Ex: user1@gmail.com"
+               onChange={(event) => setEmail(event.target.value)}
+               fullWidth
+               required
+            />
+            <TextField
                label="Password"
-               placeholder="Enter Password"
-               type="password"
+               placeholder="Ex: user1password!"
                onChange={(event) => setPassword(event.target.value)}
+               type="password"
+               fullWidth
+               required
+            />
+            <TextField
+               label="Phone"
+               placeholder="Ex: (000)-000-0000"
+               onChange={(event) => setNumber(event.target.value)}
                fullWidth
                required
             />
@@ -74,16 +97,13 @@ export default function Login() {
                color="primary"
                variant="contained"
                style={btnstyle}
-               onClick={() => sendData(user, password)}
+               onClick={() => sendData(user, email, password, number)}
                fullWidth
             >
-               Sign in
+               Sign up
             </Button>
             <Typography>
-               <Link href="#">Forgot Password</Link>
-            </Typography>
-            <Typography>
-               <Link href="#">Sign Up</Link>
+               <Link href="#">Already signed up?</Link>
             </Typography>
          </Paper>
       </Grid>
