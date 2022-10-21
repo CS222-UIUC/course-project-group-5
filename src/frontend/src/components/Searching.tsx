@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import axios from "axios";
 import React, { useState, useRef, useCallback } from "react";
 import SingleCard from "./SingleCard";
@@ -63,10 +63,19 @@ export default function Searching() {
     });
 }
 
+const [alignment, setAlignment] = React.useState(Array());
+
+  const handleToggle = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string[],
+  ) => {
+    setAlignment(newAlignment);
+  };
+
   return (
     <div className="App">
         <h1>Search For Apartments</h1>
-        <div style={{}}>
+        <div>
         <div style={{display: 'flex', justifyContent: 'center'}}>
             <div className="search" style={{width: '800px'}}>
             <TextField
@@ -82,20 +91,32 @@ export default function Searching() {
             </div>
             {/*<div>{press && amountFound === 0 && !loading && "None found"}</div>*/}
             <br/>
+            <ToggleButtonGroup
+              color="primary"
+              value={alignment}
+              onChange={handleToggle}
+              aria-label="Platform"
+            >
+              <ToggleButton value="price">Price</ToggleButton>
+              <ToggleButton value="android">Android</ToggleButton>
+              <ToggleButton value="ios">iOS</ToggleButton>
+            </ToggleButtonGroup>
             <br/>
             <br/>
-            <div style={{}}>
+            <br/>
+            <div>
                 {press && apartments.map((apartment, i) => {
+                  console.log(apartment.image);
                 if (apartments.length === i + 1) {
                     return (
-                        <div key={i} ref={lastBookElementRef} style={{}}>
+                        <div key={i} ref={lastBookElementRef}>
                             <SingleCard {...apartment} key={i} />
                         </div>
                     );
                 } else {
                     return (
                         <div key={i}>
-                            <SingleCard {...apartment} key={i} style={{backgroundColor: 'yellow'}}/>
+                            <SingleCard {...apartment} key={i}/>
                         </div>
                     );
                 }

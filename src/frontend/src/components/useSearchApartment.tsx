@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function useSearchBook(query: string, pageNum: number) {
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [apartments, setApartments] = useState(Array());
   const [hasMore, setHasMore] = useState(false);
@@ -22,13 +22,21 @@ const [loading, setLoading] = useState(true);
       params: { q: query, page: pageNum },
       cancelToken: source.token
     }).then(res => {
-      var array: any[] = [];
+      var newApartments: any[] = [];
       for (let i = 0; i < res.data.length; i++) {
         //console.log("name: " + " " + res.data[i].name);
-        array.push({'name': res.data[i].name, 'address': res.data[i].address});
+        newApartments.push({
+          'name': res.data[i].name,
+          'company': res.data[i].company,
+          'address': res.data[i].address,
+          'image': res.data[i].image,
+          'review': res.data[i].review,
+          'priceLow': res.data[i].priceLow,
+          'priceHigh': res.data[i].priceHigh
+        });
       }
       setApartments(prevApartments => {
-        return [...new Set([...prevApartments, ...array])];
+        return [...new Set([...prevApartments, ...newApartments])];
       });
       setHasMore(res.data.length > 0);
       setLoading(false);

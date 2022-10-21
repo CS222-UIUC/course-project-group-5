@@ -2,72 +2,124 @@
   "mockdata": [
     {
       "id": 1,
-      "name": "smile",
+      "name": "Champaign park",
+      "company": "smile",
       "address": "West Green",
-      "review": "Horribly awesome"
+      "review": "Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+      "priceLow": "500",
+      "priceHigh": "1000"
   }, {
       "id": 2,
-      "name": "jsm",
+      "name": "Maywoods Apartments",
+      "company": "JSM",
       "address": "West springfield",
-      "review": "Slightly above average"
-  }, {
+      "review": "Slightly above average",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/English_Bay_Vancouver.jpg/1280px-English_Bay_Vancouver.jpg",
+      "priceLow": "500",
+      "priceHigh": "1000"
+      }, {
       "id": 3,
-      "name": "uiuc dorm",
+      "name": "Town and County",
+      "company": "uiuc dorm",
       "address": "Healey street",
-      "review": "Slightly AMAZING"
+      "review": "Slightly AMAZING",
+      "image": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apartments.com%2Fchampaign-county-il%2F&psig=AOvVaw2K-r1wXR3Vsf3o850E95Rj&ust=1666400866370000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJjk_I-R8PoCFQAAAAAdAAAAABAD",
+      "priceLow": "500",
+      "priceHigh": "1000"
   }, {
     "id": 4,
-    "name": "University Group",
+    "name": "Lancaster Apartments",
+    "company": "University Group",
     "address": "Wright street",
-    "review": "Extremely average"
+    "review": "Extremely average",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
   }, {
     "id": 5,
-    "name": "jsm",
+    "name": "Champaign park",
+    "company": "renting",
     "address": "White St.",
-    "review": "Amazingly horrible"
+    "review": "Amazingly horrible",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
   }, {
     "id": 6,
-    "name": "uiuc dorm",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "1032 E Kerr Ave",
-    "review": "Slightly green"
+    "review": "Slightly green",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
   }, {
     "id": 7,
-    "name": "FAR",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "Wright street",
-    "review": "Too yellow"
+    "review": "Too yellow",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
   }, {
     "id": 8,
-    "name": "PAR",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "West springfield",
-    "review": "Slightly below average horrible"
+    "review": "Slightly below average horrible",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
   }, {
     "id": 9,
     "name": "Champaign park",
+    "company": "smile",
     "address": "51 E John",
-    "review": "Purple"
+    "review": "Purple",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
   }, {
     "id": 10,
-    "name": "University Group",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "Wright street",
-    "review": "Orange"
+    "review": "Orange",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
     }, {
     "id": 11,
-    "name": "maywood apartments",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "West springfield",
-    "review": "AMAZING AMAZING average"
+    "review": "AMAZING AMAZING average",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
     }, {
     "id": 12,
-    "name": "Skyscraper",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "Green st.",
-    "review": "Slightly AMAZING AMAZING AMAZING"
+    "review": "Slightly AMAZING AMAZING AMAZING",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
     }, {
     "id": 13,
-    "name": "University Group",
+    "name": "Champaign park",
+    "company": "smile",
     "address": "202 E Daniel St.",
-    "review": "Extremely AMAZING AMAZING AMAZING"
+    "review": "Extremely AMAZING AMAZING AMAZING",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
+    "priceLow": "500",
+    "priceHigh": "1000"
     }
   ],
-  "comments": [
+  "alturl": [
     {
       "id": 1,
       "body": "some comment",
