@@ -13,7 +13,7 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Install dependencies
-      run: npm install eslint eslint-plugin-react --legacy-peer-deps
+      run: npm install --no-package-lock eslint eslint-plugin-react --legacy-peer-deps
       working-directory: src/frontend/
 
     - name: Run ESLint
