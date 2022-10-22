@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: src/frontend
 
       - name: Run tests
