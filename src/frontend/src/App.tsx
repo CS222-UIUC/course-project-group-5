@@ -6,13 +6,13 @@ import LeftSection from './sections/MainPageLeftSection';
 import Searching from './components/Searching';
 
 function App() {
-  return (
-    <div className="App">
-      {/*<LeftSection/>
+   return (
+      <div className="App">
+         {/*<LeftSection/>
       <Header/>*/}
-      <Searching/>
-      {/*<Login/>*/}
-    </div>
-  );
+         <Searching />
+         {/*<Login/>*/}
+      </div>
+   );
 }
 export default App;
