@@ -17,5 +17,5 @@ jobs:
       working-directory: src/frontend/
 
     - name: Run ESLint
-      run: npx eslint --max-warnings $(git ls-files '*.js' '*.jsx' '*.ts' '*.tsx')
+      run: npx eslint --max-warnings 0 $(git ls-files '*.js' '*.jsx' '*.ts' '*.tsx')
       working-directory: src/frontend/
