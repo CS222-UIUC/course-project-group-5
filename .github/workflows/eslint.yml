@@ -13,5 +13,5 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Run ESLint
-      run: npx eslint src/. --ext .js,.jsx,.ts,.tsx
+      run: npx eslint $(git ls-files '*.js' '*.jsx' '*.ts' '*.tsx')
       working-directory: src/frontend/
