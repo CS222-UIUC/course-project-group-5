@@ -1,6 +1,6 @@
 {
-    "port": 3333,
-    "delay": 1000,
-    "watch": "db.json",
-    "--no-core": true
+  "port": 3333,
+  "delay": 1000,
+  "watch": "db.json",
+  "--no-core": true
 }

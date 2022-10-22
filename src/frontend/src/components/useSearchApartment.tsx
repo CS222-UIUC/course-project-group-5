@@ -4,11 +4,20 @@ import axios from 'axios';
 function useSearchBook(query: string, pageNum: number) {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(false);
-   const [apartments, setApartments] = useState(Array());
+   const array: {
+      name: string;
+      address: string;
+      image: string;
+      review: string;
+      rating: number;
+      price_min: string;
+      price_max: string;
+   }[] = [];
+   const [apartments, setApartments] = useState(array);
    const [hasMore, setHasMore] = useState(false);
 
    useEffect(() => {
-      setApartments(Array());
+      setApartments(array);
    }, [query]);
 
    useEffect(() => {
@@ -23,9 +32,16 @@ function useSearchBook(query: string, pageNum: number) {
          cancelToken: source.token,
       })
          .then((res) => {
-            const newApartments: any[] = [];
+            const newApartments: {
+               name: string;
+               address: string;
+               image: string;
+               review: string;
+               rating: number;
+               price_min: string;
+               price_max: string;
+            }[] = [];
             for (let i = 0; i < res.data.length; i++) {
-               //console.log("name: " + " " + res.data[i].name);
                newApartments.push({
                   name: res.data[i].name,
                   address: res.data[i].address,

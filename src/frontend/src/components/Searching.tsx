@@ -1,6 +1,6 @@
 import { TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import axios from 'axios';
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, KeyboardEvent } from 'react';
 import SingleCard from './SingleCard';
 import useSearchApartment from './useSearchApartment';
 
@@ -16,9 +16,9 @@ export default function Searching() {
    const [press, setPress] = useState(false);
    //const [amountFound, setAmountFound] = useState(0);
 
-   const observer = useRef<any>();
+   const observer = useRef<IntersectionObserver | null>(null);
    const lastBookElementRef = useCallback(
-      (node: any) => {
+      (node: HTMLDivElement) => {
          if (loading) return;
          if (observer.current) observer.current.disconnect();
          observer.current = new IntersectionObserver((entries) => {
@@ -31,13 +31,13 @@ export default function Searching() {
       [loading, hasMore]
    );
 
-   const handleChange = (e: any) => {
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.target.value);
       setPageNum(1);
       setPress(false);
    };
 
-   const handlePress = (e: any) => {
+   const handlePress = (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
          e.preventDefault();
          setPress(true);
@@ -66,7 +66,8 @@ export default function Searching() {
          });
    }
 
-   const [alignment, setAlignment] = useState(Array());
+   const array: string[] = [];
+   const [alignment, setAlignment] = useState(array);
 
    const handleToggle = (
       event: React.MouseEvent<HTMLElement>,
