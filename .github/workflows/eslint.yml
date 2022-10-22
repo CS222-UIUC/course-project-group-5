@@ -12,6 +12,10 @@ jobs:
         # Make sure the actual branch is checked out when running on pull requests
         ref: ${{ github.head_ref }}
 
+    - name: Install dependencies
+      run: npm install --no-package-lock eslint eslint-plugin-react --legacy-peer-deps
+      working-directory: src/frontend/
+
     - name: Run ESLint
-      run: npx eslint src/. --ext .js,.jsx,.ts,.tsx
+      run: npx eslint --max-warnings 0 $(git ls-files '*.js' '*.jsx' '*.ts' '*.tsx')
       working-directory: src/frontend/

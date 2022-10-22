@@ -8,12 +8,12 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: src/frontend
 
       - name: Run tests
         run: |
-          npx jest --coverage --coverageReporters json-summary
+          npx ts-jest config:init --coverage --coverageReporters json-summary
         working-directory: src/frontend
 
       - name: Jest coverage comment
