@@ -263,6 +263,34 @@ class TestMainPage:
         self.main_page_stage.clean_all()
         assert sample_apts_picture == res
 
+    def test_write_apartment_review(self):
+        """Test write_apartment_review()"""
+        self.main_page_stage.initialize_all()
+        sample_comment = "Bruh this really sucks"
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        fig_binger_id = cursor.execute(
+            "SELECT user_id FROM Users WHERE (username = 'Fig_binger')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        connection.close()
+        can_write = self.main_page.write_apartment_review(
+            sherman_id, "Fig_binger", sample_comment, -1
+        )
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        find_review = cursor.execute(
+            "SELECT * FROM Reviews WHERE user_id = ?", (fig_binger_id,)
+        ).fetchall()
+        cursor.execute("DELETE FROM Reviews WHERE apt_id = ?", (sherman_id,))
+        connection.close()
+        self.main_page_stage.clean_all()
+        assert can_write
+        assert find_review is not None
+
     def test_get_apartments_reviews(self):
         """Test get_apartments_reviews()"""
         sample_apts_review = []
@@ -315,6 +343,24 @@ class TestMainPage:
 
         self.main_page_stage.clean_all()
         assert sample_apts_picture == res
+
+    def test_write_apartment_review_invalid(self):
+        """Test write review while having existing review"""
+        self.main_page_stage.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        sample_comment = "Bruh this really sucks"
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        connection.close()
+        can_write = self.main_page.write_apartment_review(
+            sherman_id, "Big_finger", sample_comment, -1
+        )
+        self.main_page_stage.clean_all()
+
+        assert not can_write
 
     def test_get_apartments_reviews_empty(self):
         """Test get reviews of invalid apartments"""

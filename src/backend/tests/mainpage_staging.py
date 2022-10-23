@@ -27,6 +27,7 @@ class MainPageStaging:
             ("Minh Phan", "", "", ""),
             ("Minh", "", "", ""),
             ("Big_finger", "", "", ""),
+            ("Fig_binger", "", "", ""),
         ]
         cursor.executemany(
             "INSERT INTO Users (username, password, email, phone) \
@@ -84,11 +85,7 @@ class MainPageStaging:
 
     def clean_up_users(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
         """Delete users inserted during test"""
-        args = [
-            ("Minh Phan",),
-            ("Minh",),
-            ("Big_finger",),
-        ]
+        args = [("Minh Phan",), ("Minh",), ("Big_finger",), ("Fig_binger",)]
         cursor.executemany("DELETE FROM Users WHERE username = ?", args)
         connection.commit()
 
