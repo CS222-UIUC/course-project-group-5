@@ -26,8 +26,8 @@ function useSearchBook(query: string, pageNum: number) {
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
       axios({
-         method: 'GET',
-         url: `http://localhost:3333/mockdata?q=${query}&_page=${pageNum}&_limit=2`,
+         method: 'GET', //http://localhost:3333/mockdata?q=${query}&_page=${pageNum}&_limit=2
+         url: `/home`,
          params: { q: query, page: pageNum },
          cancelToken: source.token,
       })

@@ -85,3 +85,26 @@ def test_login_invalid(client):
     log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
     assert res.status_code == 404
+
+def test_query_invalid(client):
+    """A query is invalid when a query is empty"""
+    query_info = {"q": "", "selected": []}
+    res = client.post("/home", json=query_info)
+    assert res.status_code == 400
+
+def test_query_none_selected(client):
+    """Test query"""
+    connection = sqlite3.connect("database/database.db")
+    cursor = connection.cursor()
+    cursor.execute(
+            "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
+            VALUES (?, ?, ?, ?, ?)",
+            ("smile", "909 S 5th St", 5500, 6500, ""),
+    )
+    connection.commit()
+    query_info = {"q": "smile", "selected": []}
+    res = client.post("/home", json=query_info)
+    cursor.execute("DELETE FROM Apartments WHERE apt_name = ?", ("smile",))
+    connection.commit()
+    connection.close()
+    assert res.status_code == 200

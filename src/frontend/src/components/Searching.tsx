@@ -41,18 +41,22 @@ export default function Searching() {
       if (e.key === 'Enter') {
          e.preventDefault();
          setPress(true);
-         handlePost;
+         handlePost(query, selected);
          //setAmountFound(apartments.length);
       }
    };
 
-   function handlePost(query: string) {
+   function handlePost(query: string, select: string[]) {
       axios({
-         method: 'post',
-         url: 'http://localhost:3333/mockdata', // need mainpage.py url
+         method: 'POST',
+         url: '/home',
          data: {
             q: query,
+            selected: select,
          },
+         headers: {
+            'Content-Type': 'application/json',
+         }
       })
          .then((response) => {
             console.log(response);
@@ -67,13 +71,13 @@ export default function Searching() {
    }
 
    const array: string[] = [];
-   const [alignment, setAlignment] = useState(array);
+   const [selected, setSelected] = useState(array);
 
    const handleToggle = (
       event: React.MouseEvent<HTMLElement>,
-      newAlignment: string[]
+      newSelected: string[]
    ) => {
-      setAlignment(newAlignment);
+      setSelected(newSelected);
    };
 
    return (
@@ -97,13 +101,13 @@ export default function Searching() {
             <br />
             <ToggleButtonGroup
                color="primary"
-               value={alignment}
+               value={selected}
                onChange={handleToggle}
                aria-label="Platform"
             >
-               <ToggleButton value="price">Price</ToggleButton>
-               <ToggleButton value="android">Android</ToggleButton>
-               <ToggleButton value="ios">iOS</ToggleButton>
+               <ToggleButton value="low-high">Low-High</ToggleButton>
+               <ToggleButton value="high-low">High-Low</ToggleButton>
+               <ToggleButton value="most popular">Most Popular</ToggleButton>
             </ToggleButtonGroup>
             <br />
             <br />
