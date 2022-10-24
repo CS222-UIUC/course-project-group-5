@@ -12,6 +12,7 @@ app = Flask(__name__)
 
 CORS(app)
 
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     """Handles login routing"""
@@ -36,6 +37,7 @@ def register():
         return result.message, 400
     return result.message, 200
 
+
 @app.route("/", methods=["POST", "GET"])
 @app.route("/home", methods=["POST", "GET"])
 def home():
@@ -51,19 +53,19 @@ def home():
     print(type(example), example)
     json_string = apt_schema.dumps(example, many=True)
     print(json_string)
-    #pics = mainpage.get_apartments_pictures(len(apts))
+    # pics = mainpage.get_apartments_pictures(len(apts))
     if not selected:
         apts = mainpage.apartments_default(len(apts))
         return "success", 200
     if ("low-high" in selected and "most popular" in selected) or (
-        "low-high" in selected and "high-low" in selected and
-        "most popular" in selected): # if both prices pressed it will sort low-high
+        "low-high" in selected and "high-low" in selected and "most popular" in selected
+    ):  # if both prices pressed it will sort low-high
         apts = mainpage.apartments_sorted(len(apts), -1, -1)
     elif "high-low" in selected and "most popular" in selected:
         apts = mainpage.apartments_sorted(len(apts), 1, -1)
     elif "most popular" in selected:
         apts = mainpage.apartments_sorted(len(apts), 1, 0)
-    elif "low-high" in selected: # if both prices pressed it will sort low-high
+    elif "low-high" in selected:  # if both prices pressed it will sort low-high
         apts = mainpage.apartments_sorted(len(apts), -1, 0)
     elif "high-low" in selected:
         apts = mainpage.apartments_sorted(len(apts), 1, 0)

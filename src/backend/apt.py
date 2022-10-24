@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from marshmallow import Schema, fields
 
+
 @dataclass
 class Apt:
     """Apt class, stores detail about an apartment"""
@@ -13,7 +14,10 @@ class Apt:
     price_min: int
     price_max: int
 
+
 class ObjectSchema(Schema):
+    """schema for serializing the Apartment JSON"""
+
     apt_id = fields.Int()
     name = fields.Str()
     address = fields.Str()
