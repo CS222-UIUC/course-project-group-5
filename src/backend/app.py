@@ -1,12 +1,10 @@
 """ This is a module docstring """
 from flask import Flask, request
+from flask_cors import CORS
 from apt import ObjectSchema
 from apt import Apt
 from mainpage import MainPage
 from login import Login
-from flask_cors import CORS
-import json
-from marshmallow import Schema, fields
 
 # from logging import FileHandler, WARNING
 
@@ -41,6 +39,7 @@ def register():
 @app.route("/", methods=["POST", "GET"])
 @app.route("/home", methods=["POST", "GET"])
 def home():
+    """Takes in query string returns json of apartments"""
     mainpage = MainPage()
     query = request.json["q"]
     selected = request.json["selected"]
@@ -52,12 +51,13 @@ def home():
     print(type(example), example)
     json_string = apt_schema.dumps(example, many=True)
     print(json_string)
-    pics = mainpage.get_apartments_pictures(len(apts))
+    #pics = mainpage.get_apartments_pictures(len(apts))
     if not selected:
         apts = mainpage.apartments_default(len(apts))
         return "success", 200
     if ("low-high" in selected and "most popular" in selected) or (
-        "low-high" in selected and "high-low" in selected and "most popular" in selected): # if both prices pressed it will sort low-high
+        "low-high" in selected and "high-low" in selected and
+        "most popular" in selected): # if both prices pressed it will sort low-high
         apts = mainpage.apartments_sorted(len(apts), -1, -1)
     elif "high-low" in selected and "most popular" in selected:
         apts = mainpage.apartments_sorted(len(apts), 1, -1)

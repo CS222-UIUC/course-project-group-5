@@ -108,3 +108,4 @@ def test_query_none_selected(client):
     connection.commit()
     connection.close()
     assert res.status_code == 200
+    
