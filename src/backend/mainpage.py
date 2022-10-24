@@ -157,6 +157,30 @@ class MainPage:
         cursor.close()
         return res
 
+    def write_apartment_review(
+        self, apt_id: int, username: str, comment: str, vote: int
+    ) -> bool:
+        """Write a new review for apartment"""
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        user_id = cursor.execute(
+            "SELECT user_id FROM Users WHERE username = ?", (username,)
+        ).fetchone()[0]
+        current_review = cursor.execute(
+            "SELECT user_id FROM Reviews WHERE user_id = ?", (user_id,)
+        ).fetchone()
+        if current_review is None:
+            cursor.execute(
+                "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
+                VALUES (?, ?, date(), ?, ?)",
+                (apt_id, user_id, comment, vote),
+            )
+            connection.commit()
+            connection.close()
+            return True
+        connection.close()
+        return False
+
     def get_apartments_reviews(self, apt_id: int) -> List[Review]:
         """Returns a list of apartment reviews"""
         connection = sqlite3.connect("database/database.db")
