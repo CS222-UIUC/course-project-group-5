@@ -3,158 +3,7 @@ import sqlite3
 from mainpage import MainPage
 from apt import Apt
 from review import Review
-
-
-class MainPageStaging:
-    """Stage main page data for tests"""
-
-    def insert_apartments(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Insert apartments for use by test methods"""
-        args = [
-            ("Sherman", "909 S 5th St", 5500, 6500, ""),
-            ("FAR", "901 W College Ct", 6000, 7000, ""),
-            ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
-            ("PAR", "901 W College Ct", 5000, 6000, ""),
-            ("ISR", "918 W Illinois", 6000, 7000, ""),
-        ]
-        cursor.executemany(
-            "INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link) \
-            VALUES (?, ?, ?, ?, ?)",
-            args,
-        )
-        connection.commit()
-
-    def insert_users(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Initialize users for use by test methods"""
-        args = [
-            ("Minh Phan", "", "", ""),
-            ("Minh", "", "", ""),
-            ("Big_finger", "", "", ""),
-        ]
-        cursor.executemany(
-            "INSERT INTO Users (username, password, email, phone) \
-            VALUES (?, ?, ?, ?)",
-            args,
-        )
-        connection.commit()
-
-    def insert_pics(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Initialize pics for use by test methods"""
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
-        args = [
-            (sherman_id, "Link1"),
-            (sherman_id, "Link2"),
-            (sherman_id, "Link3"),
-        ]
-        cursor.executemany("INSERT INTO AptPics (apt_id, link) VALUES (?, ?)", args)
-        connection.commit()
-
-    def insert_reviews(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Initialize reviews for use by test methods"""
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
-        par_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
-        ).fetchone()[0]
-        minh_phan_id = cursor.execute(
-            "SELECT user_id FROM Users WHERE (username = 'Minh Phan')"
-        ).fetchone()[0]
-        minh_id = cursor.execute(
-            "SELECT user_id FROM Users WHERE (username = 'Minh')"
-        ).fetchone()[0]
-        big_finger_id = cursor.execute(
-            "SELECT user_id FROM Users WHERE (username = 'Big_finger')"
-        ).fetchone()[0]
-        args = [
-            (sherman_id, minh_phan_id, "2022-10-07", "Pretty good", 1),
-            (sherman_id, minh_id, "2022-10-08", "Bruh this sucks", -1),
-            (sherman_id, big_finger_id, "2022-10-09", "Decent", 1),
-            (far_id, big_finger_id, "2022-10-10", "Decent hall", 1),
-            (par_id, big_finger_id, "2022-10-11", "Why", -1),
-        ]
-        cursor.executemany(
-            "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, ?, ?, ?)",
-            args,
-        )
-        connection.commit()
-
-    def clean_up_users(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Delete users inserted during test"""
-        args = [
-            ("Minh Phan",),
-            ("Minh",),
-            ("Big_finger",),
-        ]
-        cursor.executemany("DELETE FROM Users WHERE username = ?", args)
-        connection.commit()
-
-    def clean_up_apartments(
-        self, cursor: sqlite3.Cursor, connection: sqlite3.Connection
-    ):
-        """Delete apartments inserted during test"""
-        args = [
-            ("Sherman",),
-            ("FAR",),
-            ("Lincoln",),
-            ("PAR",),
-            ("ISR",),
-        ]
-        cursor.executemany("DELETE FROM Apartments WHERE apt_name = ?", args)
-        connection.commit()
-
-    def clean_up_reviews(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Delete reviews inserted during test"""
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
-        par_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
-        ).fetchone()[0]
-        args = [
-            (sherman_id,),
-            (far_id,),
-            (par_id,),
-        ]
-        cursor.executemany("DELETE FROM Reviews WHERE apt_id = ?", args)
-        connection.commit()
-
-    def clean_up_pics(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
-        """Clean up pics inserted during test"""
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
-        cursor.execute("DELETE FROM AptPics WHERE apt_id = ?", (sherman_id,))
-        connection.commit()
-
-    def initialize_all(self):
-        """Initialize test data"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        self.insert_apartments(cursor, connection)
-        self.insert_users(cursor, connection)
-        self.insert_reviews(cursor, connection)
-        self.insert_pics(cursor, connection)
-        connection.close()
-
-    def clean_all(self):
-        """Clean up test data"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        self.clean_up_reviews(cursor, connection)
-        self.clean_up_pics(cursor, connection)
-        self.clean_up_apartments(cursor, connection)
-        self.clean_up_users(cursor, connection)
-        connection.close()
+from tests.mainpage_staging import MainPageStaging
 
 
 class TestMainPage:
@@ -222,11 +71,11 @@ class TestMainPage:
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
         isr_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
+        ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
@@ -414,6 +263,34 @@ class TestMainPage:
         self.main_page_stage.clean_all()
         assert sample_apts_picture == res
 
+    def test_write_apartment_review(self):
+        """Test write_apartment_review()"""
+        self.main_page_stage.initialize_all()
+        sample_comment = "Bruh this really sucks"
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        fig_binger_id = cursor.execute(
+            "SELECT user_id FROM Users WHERE (username = 'Fig_binger')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        connection.close()
+        can_write = self.main_page.write_apartment_review(
+            sherman_id, "Fig_binger", sample_comment, -1
+        )
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        find_review = cursor.execute(
+            "SELECT * FROM Reviews WHERE user_id = ?", (fig_binger_id,)
+        ).fetchall()
+        cursor.execute("DELETE FROM Reviews WHERE apt_id = ?", (sherman_id,))
+        connection.close()
+        self.main_page_stage.clean_all()
+        assert can_write
+        assert find_review is not None
+
     def test_get_apartments_reviews(self):
         """Test get_apartments_reviews()"""
         sample_apts_review = []
@@ -466,6 +343,24 @@ class TestMainPage:
 
         self.main_page_stage.clean_all()
         assert sample_apts_picture == res
+
+    def test_write_apartment_review_invalid(self):
+        """Test write review while having existing review"""
+        self.main_page_stage.initialize_all()
+
+        connection = sqlite3.connect("database/database.db")
+        cursor = connection.cursor()
+        sample_comment = "Bruh this really sucks"
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        connection.close()
+        can_write = self.main_page.write_apartment_review(
+            sherman_id, "Big_finger", sample_comment, -1
+        )
+        self.main_page_stage.clean_all()
+
+        assert not can_write
 
     def test_get_apartments_reviews_empty(self):
         """Test get reviews of invalid apartments"""
