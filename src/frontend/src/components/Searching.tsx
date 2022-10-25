@@ -1,20 +1,28 @@
 import { TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import axios from 'axios';
-import React, { useState, useRef, useCallback, KeyboardEvent } from 'react';
+import React, {
+   useState,
+   useRef,
+   useCallback,
+   KeyboardEvent,
+   useEffect,
+} from 'react';
 import SingleCard from './SingleCard';
 import useSearchApartment from './useSearchApartment';
 
 export default function Searching() {
    const [query, setQuery] = useState('');
    const [pageNum, setPageNum] = useState(1);
+   const [press, setPress] = useState(false);
+   const emptyarray: string[] = [];
+   const [selected, setSelected] = useState(emptyarray);
    const { loading, error, apartments, hasMore } = useSearchApartment(
       query,
-      pageNum
+      pageNum,
+      press,
+      selected
    );
-   console.log(apartments);
-
-   const [press, setPress] = useState(false);
-   //const [amountFound, setAmountFound] = useState(0);
+   //console.log(apartments);
 
    const observer = useRef<IntersectionObserver | null>(null);
    const lastBookElementRef = useCallback(
@@ -42,21 +50,20 @@ export default function Searching() {
          e.preventDefault();
          setPress(true);
          handlePost(query, selected);
-         //setAmountFound(apartments.length);
       }
    };
 
    function handlePost(query: string, select: string[]) {
       axios({
          method: 'POST',
-         url: '/home',
+         url: 'http://localhost:3333/mockdata',
          data: {
             q: query,
             selected: select,
          },
          headers: {
             'Content-Type': 'application/json',
-         }
+         },
       })
          .then((response) => {
             console.log(response);
@@ -70,13 +77,24 @@ export default function Searching() {
          });
    }
 
-   const array: string[] = [];
-   const [selected, setSelected] = useState(array);
+   useEffect(() => {
+      handlePost(query, selected);
+   }, [selected]);
 
    const handleToggle = (
       event: React.MouseEvent<HTMLElement>,
       newSelected: string[]
    ) => {
+      if (
+         newSelected.includes('low-high') &&
+         newSelected.includes('high-low')
+      ) {
+         if (newSelected.at(0) !== 'most popular') {
+            newSelected.shift();
+         } else {
+            newSelected.splice(1, 1);
+         }
+      }
       setSelected(newSelected);
    };
 
@@ -97,7 +115,6 @@ export default function Searching() {
                   />
                </div>
             </div>
-            {/*<div>{press && amountFound === 0 && !loading && "None found"}</div>*/}
             <br />
             <ToggleButtonGroup
                color="primary"
@@ -113,23 +130,24 @@ export default function Searching() {
             <br />
             <br />
             <div>
-               {press &&
-                  apartments.map((apartment, i) => {
-                     console.log(apartment.image);
-                     if (apartments.length === i + 1) {
-                        return (
-                           <div key={i} ref={lastBookElementRef}>
-                              <SingleCard {...apartment} key={i} />
-                           </div>
-                        );
-                     } else {
-                        return (
-                           <div key={i}>
-                              <SingleCard {...apartment} key={i} />
-                           </div>
-                        );
-                     }
-                  })}
+               {press && apartments.length === 0 && !loading && 'None found'}
+            </div>
+            <div>
+               {apartments.map((apartment, i) => {
+                  if (apartments.length === i + 1) {
+                     return (
+                        <div key={i} ref={lastBookElementRef}>
+                           <SingleCard {...apartment} key={i} />
+                        </div>
+                     );
+                  } else {
+                     return (
+                        <div key={i}>
+                           <SingleCard {...apartment} key={i} />
+                        </div>
+                     );
+                  }
+               })}
             </div>
             <div>{press && loading && 'Loading...'}</div>
             <div>{press && error && 'Error...'}</div>
