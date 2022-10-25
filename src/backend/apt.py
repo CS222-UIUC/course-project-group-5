@@ -1,6 +1,7 @@
 """Contains Apartment class"""
 from dataclasses import dataclass
 
+
 @dataclass
 class Apt:
     """Apt class, stores detail about an apartment"""
