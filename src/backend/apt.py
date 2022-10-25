@@ -1,7 +1,5 @@
 """Contains Apartment class"""
 from dataclasses import dataclass
-from marshmallow import Schema, fields
-
 
 @dataclass
 class Apt:

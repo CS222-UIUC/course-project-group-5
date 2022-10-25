@@ -48,7 +48,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:5000",
+  "proxy": "http://localhost:5000",
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
     "prettier": "2.7.1",
