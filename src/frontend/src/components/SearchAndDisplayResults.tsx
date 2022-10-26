@@ -1,10 +1,5 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React, {
-   useState,
-   useRef,
-   useCallback,
-   KeyboardEvent,
-} from 'react';
+import React, { useState, useRef, useCallback, KeyboardEvent } from 'react';
 import SingleCard from './SingleCard';
 import useSearchApartment from './getsApartments';
 import SearchBar from './SearchBar';
@@ -78,7 +73,7 @@ export default function Searching() {
    }*/
 
    //useEffect(() => {
-      // triggers a post request whenever a button is selected
+   // triggers a post request whenever a button is selected
    //   handlePost(query, selected);
    //}, [selected]);
 
@@ -115,8 +110,8 @@ export default function Searching() {
                      onChange={handleChange}
                   />
                </div>*/}
-               </div>
-            <SearchBar/>
+            </div>
+            <SearchBar />
             <br />
             <ToggleButtonGroup
                color="primary"

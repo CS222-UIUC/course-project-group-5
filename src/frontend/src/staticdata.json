@@ -1,4 +1,5 @@
-[{
+[
+   {
       "id": 1,
       "name": "Champaign park",
       "address": "West Green",
@@ -7,8 +8,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 2,
       "name": "Maywoods Apartments",
       "address": "West springfield",
@@ -17,8 +18,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 3,
       "name": "Town and County",
       "address": "Healey street",
@@ -27,8 +28,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 4,
       "name": "Lancaster Apartments",
       "address": "Wright street",
@@ -37,8 +38,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 5,
       "name": "cool park",
       "address": "White St.",
@@ -47,8 +48,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 6,
       "name": "Champaign park",
       "address": "1032 E Kerr Ave",
@@ -57,8 +58,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 7,
       "name": "not a park",
       "address": "Wright street",
@@ -67,8 +68,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 8,
       "name": "park park",
       "address": "West springfield",
@@ -77,8 +78,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 9,
       "name": "Urbana park",
       "address": "51 E John",
@@ -87,8 +88,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 10,
       "name": "Good park",
       "address": "Wright street",
@@ -97,8 +98,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 11,
       "name": "Bad park",
       "address": "West springfield",
@@ -107,8 +108,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 12,
       "name": "Spooky park",
       "address": "Green st.",
@@ -117,8 +118,8 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    },
-    {
+   },
+   {
       "id": 13,
       "name": "Corporate park",
       "address": "202 E Daniel St.",
@@ -127,4 +128,5 @@
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-}]
+   }
+]
