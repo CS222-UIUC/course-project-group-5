@@ -6,9 +6,9 @@ function App() {
    return (
       <div className="App">
          {/*<LeftSection/>
-      <Header/>*/}
+         <Header/>
+         <Login/>*/}
          <Searching />
-         {/*<Login/>*/}
       </div>
    );
 }

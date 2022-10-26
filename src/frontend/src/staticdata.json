@@ -1,6 +1,4 @@
-{
-  "mockdata": [
-    {
+[{
       "id": 1,
       "name": "Champaign park",
       "address": "West Green",
@@ -42,7 +40,7 @@
     },
     {
       "id": 5,
-      "name": "Champaign park",
+      "name": "cool park",
       "address": "White St.",
       "review": "Amazingly horrible",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -62,7 +60,7 @@
     },
     {
       "id": 7,
-      "name": "Champaign park",
+      "name": "not a park",
       "address": "Wright street",
       "review": "Too yellow",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -72,7 +70,7 @@
     },
     {
       "id": 8,
-      "name": "Champaign park",
+      "name": "park park",
       "address": "West springfield",
       "review": "Slightly below average horrible",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -82,7 +80,7 @@
     },
     {
       "id": 9,
-      "name": "Champaign park",
+      "name": "Urbana park",
       "address": "51 E John",
       "review": "Purple",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -92,7 +90,7 @@
     },
     {
       "id": 10,
-      "name": "Champaign park",
+      "name": "Good park",
       "address": "Wright street",
       "review": "Orange",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -102,7 +100,7 @@
     },
     {
       "id": 11,
-      "name": "Champaign park",
+      "name": "Bad park",
       "address": "West springfield",
       "review": "AMAZING AMAZING average",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -112,7 +110,7 @@
     },
     {
       "id": 12,
-      "name": "Champaign park",
+      "name": "Spooky park",
       "address": "Green st.",
       "review": "Slightly AMAZING AMAZING AMAZING",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
@@ -122,20 +120,11 @@
     },
     {
       "id": 13,
-      "name": "Champaign park",
+      "name": "Corporate park",
       "address": "202 E Daniel St.",
       "review": "Extremely AMAZING AMAZING AMAZING",
       "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
       "price_min": "500",
       "price_max": "1000"
-    }
-  ],
-  "alturl": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ]
-}
+}]

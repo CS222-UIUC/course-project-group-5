@@ -1,14 +1,13 @@
-import { TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import axios from 'axios';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, {
    useState,
    useRef,
    useCallback,
    KeyboardEvent,
-   useEffect,
 } from 'react';
 import SingleCard from './SingleCard';
 import useSearchApartment from './getsApartments';
+import SearchBar from './SearchBar';
 
 export default function Searching() {
    const [query, setQuery] = useState('');
@@ -39,7 +38,7 @@ export default function Searching() {
       [loading, hasMore]
    );
 
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   /*const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setQuery(e.target.value);
       setPageNum(1);
       setPress(false);
@@ -50,7 +49,6 @@ export default function Searching() {
       if (e.key === 'Enter') {
          e.preventDefault();
          setPress(true);
-         handlePost(query, selected);
       }
    };
 
@@ -77,12 +75,12 @@ export default function Searching() {
                console.log(error.response.headers);
             }
          });
-   }
+   }*/
 
-   useEffect(() => {
+   //useEffect(() => {
       // triggers a post request whenever a button is selected
-      handlePost(query, selected);
-   }, [selected]);
+   //   handlePost(query, selected);
+   //}, [selected]);
 
    const handleToggle = (
       event: React.MouseEvent<HTMLElement>,
@@ -104,10 +102,9 @@ export default function Searching() {
 
    return (
       <div className="App">
-         <h1>Search For Apartments</h1>
          <div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-               <div className="search" style={{ width: '800px' }}>
+               {/*<div className="search" style={{ width: '800px' }}>
                   <TextField
                      id="outlined-basic"
                      variant="outlined"
@@ -117,8 +114,9 @@ export default function Searching() {
                      onKeyDown={handlePress}
                      onChange={handleChange}
                   />
+               </div>*/}
                </div>
-            </div>
+            <SearchBar/>
             <br />
             <ToggleButtonGroup
                color="primary"
