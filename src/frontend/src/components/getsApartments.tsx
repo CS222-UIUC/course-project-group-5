@@ -28,8 +28,10 @@ function useSearchApartment(
    }, [press, selected]);
 
    /* 
-   All useEffect functions are performed on page load and whenever the properties in the end array change.
-   For example, in the array above, whenever "press" or "selected" change, the useEffect is triggered.
+   All useEffect functions are performed on page load and whenever the properties 
+   in the dependency array changes. For example, in the useEffect above, the 
+   dependency array is [press, selected], so whenever "press" or "selected" change, 
+   the useEffect is triggered.
    */
 
    const isInitialMount = useRef<boolean>(true); // this prevents useEffect from triggering everytime query is changed
