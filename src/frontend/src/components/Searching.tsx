@@ -22,9 +22,9 @@ export default function Searching() {
       press,
       selected
    );
-   //console.log(apartments);
 
    const observer = useRef<IntersectionObserver | null>(null);
+   // prevents the infinite scroll from triggering forever
    const lastBookElementRef = useCallback(
       (node: HTMLDivElement) => {
          if (loading) return;
@@ -46,6 +46,7 @@ export default function Searching() {
    };
 
    const handlePress = (e: KeyboardEvent<HTMLInputElement>) => {
+      // POST request when enter is pressed
       if (e.key === 'Enter') {
          e.preventDefault();
          setPress(true);
@@ -54,6 +55,7 @@ export default function Searching() {
    };
 
    function handlePost(query: string, select: string[]) {
+      // POST request of the query and buttons selected
       axios({
          method: 'POST',
          url: 'http://localhost:3333/mockdata',
@@ -78,6 +80,7 @@ export default function Searching() {
    }
 
    useEffect(() => {
+      // triggers a post request whenever a button is selected
       handlePost(query, selected);
    }, [selected]);
 
@@ -85,6 +88,7 @@ export default function Searching() {
       event: React.MouseEvent<HTMLElement>,
       newSelected: string[]
    ) => {
+      // prevents "high-low" and "low-high" from being selected at the same time
       if (
          newSelected.includes('low-high') &&
          newSelected.includes('high-low')
@@ -136,6 +140,7 @@ export default function Searching() {
                {apartments.map((apartment, i) => {
                   if (apartments.length === i + 1) {
                      return (
+                        // handles last element
                         <div key={i} ref={lastBookElementRef}>
                            <SingleCard {...apartment} key={i} />
                         </div>
