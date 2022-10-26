@@ -8,7 +8,7 @@ import React, {
    useEffect,
 } from 'react';
 import SingleCard from './SingleCard';
-import useSearchApartment from './useSearchApartment';
+import useSearchApartment from './getsApartments';
 
 export default function Searching() {
    const [query, setQuery] = useState('');

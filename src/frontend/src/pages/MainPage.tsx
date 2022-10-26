@@ -1,5 +1,5 @@
 import React from 'react';
-import Searching from '../components/Searching';
+import Searching from '../components/SearchAndDisplayResults';
 import LeftSection from '../sections/MainPageLeftSection';
 
 function MainPage() {

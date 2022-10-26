@@ -1,5 +1,5 @@
 import React from 'react';
-import Searching from '../components/Searching';
+import Searching from '../components/SearchAndDisplayResults';
 
 export default function LeftSection() {
    return (
