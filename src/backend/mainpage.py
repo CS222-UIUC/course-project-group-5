@@ -171,14 +171,16 @@ class MainPage:
             VALUES (?, ?, date(), ?, ?) \
             ON CONFLICT DO UPDATE SET \
                 date_of_rating = excluded.date_of_rating, \
-                comment = excluded.comment \
+                comment = excluded.comment, \
                 vote = excluded.vote",
             (apt_id, user_id, comment, vote),
         )
         connection.commit()
         connection.close()
         new_reviews = self.get_apartments_reviews(apt_id)
-        new_review_ind = [i for i, x in enumerate(new_reviews) if x.username == username][0]
+        new_review_ind = [
+            i for i, x in enumerate(new_reviews) if x.username == username
+        ][0]
         new_reviews.insert(0, new_reviews.pop(new_review_ind))
         return new_reviews
 
@@ -196,9 +198,10 @@ class MainPage:
         ).fetchall()
         reviews = []
         for entry in ratings_query:
-            vote = False
-            if entry[3] == 1:
-                vote = True
-            reviews.append(Review(entry[0], entry[1], entry[2], vote))
+            if entry[0] is not None:
+                vote = False
+                if entry[3] == 1:
+                    vote = True
+                reviews.append(Review(entry[0], entry[1], entry[2], vote))
         cursor.close()
         return reviews
