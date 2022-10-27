@@ -159,27 +159,24 @@ class MainPage:
 
     def write_apartment_review(
         self, apt_id: int, username: str, comment: str, vote: int
-    ) -> bool:
+    ) -> List[Review]:
         """Write a new review for apartment"""
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
         user_id = cursor.execute(
             "SELECT user_id FROM Users WHERE username = ?", (username,)
         ).fetchone()[0]
-        current_review = cursor.execute(
-            "SELECT user_id FROM Reviews WHERE user_id = ?", (user_id,)
-        ).fetchone()
-        if current_review is None:
-            cursor.execute(
-                "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
-                VALUES (?, ?, date(), ?, ?)",
-                (apt_id, user_id, comment, vote),
-            )
-            connection.commit()
-            connection.close()
-            return True
+        cursor.execute(
+            "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
+            VALUES (?, ?, date(), ?, ?)",
+            (apt_id, user_id, comment, vote),
+        )
+        connection.commit()
         connection.close()
-        return False
+        new_reviews = self.get_apartments_reviews(apt_id)
+        new_review_ind = [i for i, x in enumerate(new_reviews) if x.username == username][0]
+        new_reviews.insert(0, new_reviews.pop(new_review_ind))
+        return new_reviews
 
     def get_apartments_reviews(self, apt_id: int) -> List[Review]:
         """Returns a list of apartment reviews"""
@@ -187,7 +184,10 @@ class MainPage:
         cursor = connection.cursor()
         ratings_query = cursor.execute(
             "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
-            FROM Users, Reviews WHERE Users.user_id = Reviews.user_id AND Reviews.apt_id = ?",
+            FROM Users INNER JOIN Reviews \
+            ON Users.user_id = Reviews.user_id \
+            WHERE Reviews.apt_id = ? \
+            ORDER BY Reviews.date_of_rating DESC",
             (apt_id,),
         ).fetchall()
         reviews = []
