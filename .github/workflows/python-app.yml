@@ -50,4 +50,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        LD_LIBRARY_PATH: /usr/local/lib
       working-directory: src/backend
