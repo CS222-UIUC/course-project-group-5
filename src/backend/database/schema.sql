@@ -28,10 +28,11 @@ CREATE TABLE AptPics (
 CREATE TABLE Reviews (
     rating_id INTEGER PRIMARY KEY AUTOINCREMENT,
     apt_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL UNIQUE,
+    user_id INTEGER NOT NULL,
     date_of_rating DATE NOT NULL,
     comment TEXT,
-    vote INTEGER CHECK(vote = 1 OR vote = 0 OR vote = -1)
+    vote INTEGER CHECK(vote = 1 OR vote = 0 OR vote = -1),
+    UNIQUE(apt_id, user_id)
 );
 
 -- TEST
