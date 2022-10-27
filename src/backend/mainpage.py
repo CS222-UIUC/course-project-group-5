@@ -168,7 +168,11 @@ class MainPage:
         ).fetchone()[0]
         cursor.execute(
             "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, date(), ?, ?)",
+            VALUES (?, ?, date(), ?, ?) \
+            ON CONFLICT DO UPDATE SET \
+                date_of_rating = excluded.date_of_rating, \
+                comment = excluded.comment \
+                vote = excluded.vote",
             (apt_id, user_id, comment, vote),
         )
         connection.commit()
