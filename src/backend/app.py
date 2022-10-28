@@ -66,7 +66,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     )
     param = params(
         args.get("numApts", type=int),
-        args.get("aptId", default=0, type=int),
+        args.get("aptId", type=int),
         args.get("searchQuery", type=str),
         args.get("priceSort", type=int),
         args.get("ratingSort", type=int),
