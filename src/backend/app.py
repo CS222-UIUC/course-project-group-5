@@ -75,6 +75,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     query_result = ""
     if action.is_search is not None and param.search_query is not None:
         query_result = json.dumps(mainpage_obj.search_apartments(param.search_query))
+
     elif action.is_populate is not None and param.num_apts is not None:
         apts = []
         if param.price_sort is not None and param.rating_sort is not None:
@@ -85,13 +86,18 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
             apts = mainpage_obj.apartments_default(param.num_apts)
         apts_dict = [dataclasses.asdict(apt) for apt in apts]
         query_result = json.dumps(apts_dict)
+
     elif action.is_review is not None and param.apt_id is not None:
         reviews = mainpage_obj.get_apartments_reviews(param.apt_id)
         reviews_dict = [dataclasses.asdict(review) for review in reviews]
         query_result = json.dumps(reviews_dict)
+
     elif action.is_pictures is not None and param.apt_id is not None:
         query_result = json.dumps(mainpage_obj.get_apartments_pictures(param.apt_id))
-    return query_result, 200 if len(query_result) != 0 else query_result, 400
+
+    if len(query_result) != 0:
+        return query_result, 200
+    return "", 400
 
 
 def mainpage_post(mainpage_obj: MainPage):
@@ -100,12 +106,14 @@ def mainpage_post(mainpage_obj: MainPage):
     username = request.json["username"]
     comment = request.json["comment"]
     vote = request.json["vote"]
-    query_result = ""
+
     if None not in (apt_id, username, comment, vote):
+        query_result = ""
         reviews = mainpage_obj.write_apartment_review(apt_id, username, comment, vote)
         reviews_dict = [dataclasses.asdict(review) for review in reviews]
         query_result = json.dumps(reviews_dict)
-    return query_result, 201 if len(query_result) != 0 else query_result, 400
+        return query_result, 201
+    return "", 400
 
 
 if __name__ == "__main__":
