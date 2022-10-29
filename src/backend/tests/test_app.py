@@ -163,11 +163,11 @@ def test_mainpage_get_valid_pictures(client):
     connection = sqlite3.connect("database/database.db")
     cursor = connection.cursor()
 
-    sherman_id = cursor.execute(
+    sample_id = cursor.execute(
         "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
     ).fetchone()[0]
 
-    query = {"pictures": "True", "aptId": sherman_id}
+    query = {"pictures": "True", "aptId": sample_id}
     res = client.get("/main", query_string=query)
 
     sample_json = '["Link1", "Link2", "Link3"]'
