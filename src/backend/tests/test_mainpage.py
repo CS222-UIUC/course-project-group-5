@@ -39,14 +39,14 @@ class TestMainPage:
 
         connection = sqlite3.connect("database/database.db")
         cursor = connection.cursor()
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         isr_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
+        ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_default = []

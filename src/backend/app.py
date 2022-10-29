@@ -111,7 +111,9 @@ def mainpage_post(mainpage_obj: MainPage):
         vote = json_form.get("vote")
         if None not in (apt_id, username, comment, vote):
             query_result = ""
-            reviews = mainpage_obj.write_apartment_review(apt_id, username, comment, vote)
+            reviews = mainpage_obj.write_apartment_review(
+                apt_id, username, comment, vote
+            )
             reviews_dict = [dataclasses.asdict(review) for review in reviews]
             query_result = json.dumps(reviews_dict)
             return query_result, 201
