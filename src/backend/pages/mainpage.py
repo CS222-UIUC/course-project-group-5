@@ -3,8 +3,8 @@ import sqlite3
 from datetime import date
 from typing import List
 from typing import Tuple
-from apt import Apt
-from review import Review
+from dataholders.apt import Apt
+from dataholders.review import Review
 
 
 class MainPage:
@@ -20,9 +20,11 @@ class MainPage:
         cursor = connection.cursor()
         apt_query = cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0), Apartments.price_min, Apartments.price_max \
-            FROM Apartments, Reviews WHERE LOWER(Apartments.apt_name) LIKE ? \
-            AND Apartments.apt_id = Reviews.apt_id",
+            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+            Apartments.price_min, Apartments.price_max \
+            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
+            WHERE LOWER(Apartments.apt_name) LIKE ? \
+            GROUP BY Apartments.apt_id",
             (query_sql,),
         ).fetchall()
         apts = []

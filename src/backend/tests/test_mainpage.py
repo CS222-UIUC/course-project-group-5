@@ -1,9 +1,9 @@
 """Test mainpage.py"""
 import sqlite3
 from datetime import date
-from mainpage import MainPage
-from apt import Apt
-from review import Review
+from pages.mainpage import MainPage
+from dataholders.apt import Apt
+from dataholders.review import Review
 from tests.mainpage_staging import MainPageStaging
 
 

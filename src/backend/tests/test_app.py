@@ -19,7 +19,7 @@ def fixture_client(config_app):
 
 
 def test_register_valid(client):
-    """Test register returns valid (200) network code"""
+    """Test register handles valid request"""
     reg_info = {
         "username": "big_finger",
         "email": "junk@gmail.com",
@@ -36,10 +36,7 @@ def test_register_valid(client):
 
 
 def test_register_invalid_input(client):
-    """
-    Test register returns invalid (400) network code
-    for invalid register attempt
-    """
+    """Test register handles invalid register attempt"""
     reg_info = {
         "username": "big_finger",
         "email": "junk@gmail.com",
@@ -64,17 +61,16 @@ def test_register_invalid_input(client):
     assert res_2.text == "big_finger already registered, please try again"
     assert res_2.status_code == 400
 
+
 def test_register_not_json(client):
-    """
-    Test register returns invalid (400)
-    network code for a non-json
-    """
-    res = client.post("/register", json = 0)
+    """Test register handles non-json"""
+    res = client.post("/register", json="")
     assert res.text == ""
     assert res.status_code == 400
 
+
 def test_login_valid(client):
-    """Test login returns valid (200) network code"""
+    """Test login handles valid request"""
     connection = sqlite3.connect("database/database.db")
     cursor = connection.cursor()
     cursor.execute(
@@ -93,25 +89,20 @@ def test_login_valid(client):
 
 
 def test_login_invalid_user(client):
-    """
-    Test login returns invalid (401) network code
-    for non-existant user
-    """
+    """Test handles non-existant user"""
     log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
     assert res.status_code == 401
 
+
 def test_login_not_json(client):
-    """
-    Test login returns invalid (400) network code
-    for a non-json
-    """
-    res = client.post("/register", json = 0)
+    """Test login handles non-json"""
+    res = client.post("login", json="")
     assert res.status_code == 400
 
 
-def test_mainpage_get_valid(client):
-    """Test mainpage handles valid get request"""
+def test_mainpage_get_valid_review(client):
+    """Test mainpage handles valid reviwew request"""
     mainpage = MainPageStaging()
     mainpage.initialize_all()
     connection = sqlite3.connect("database/database.db")
@@ -120,8 +111,8 @@ def test_mainpage_get_valid(client):
     far_id = cursor.execute(
         "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
     ).fetchone()[0]
-
-    res = client.get("/main", query_string={"review": "True", "aptId": far_id})
+    query = {"review": "True", "aptId": far_id}
+    res = client.get("/main", query_string=query)
     sample_json = (
         '[{"username": "Big_finger", '
         '"date": "2022-10-10", '
@@ -135,7 +126,77 @@ def test_mainpage_get_valid(client):
     assert res.text == sample_json
 
 
-def test_mainpage_get_invalid(client):
+def test_mainpage_get_valid_search(client):
+    """Test mainpage handles valid search request"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+
+    connection = sqlite3.connect("database/database.db")
+    cursor = connection.cursor()
+
+    isr_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
+    ).fetchone()[0]
+
+    query = {"search": "True", "searchQuery": "is"}
+    res = client.get("/main", query_string=query)
+    sample_json = (
+        f'[{{"apt_id": {isr_id}, '
+        '"name": "ISR", '
+        '"address": "918 W Illinois", '
+        '"rating": 0, '
+        '"price_min": 6000, '
+        '"price_max": 7000}]'
+    )
+
+    connection.close()
+    mainpage.clean_all()
+    assert res.status_code == 200
+    assert res.text == sample_json
+
+
+def test_mainpage_get_valid_pictures(client):
+    """Test mainpage handles valid picture query"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+
+    connection = sqlite3.connect("database/database.db")
+    cursor = connection.cursor()
+
+    sherman_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+    ).fetchone()[0]
+
+    query = {"pictures": "True", "aptId": sherman_id}
+    res = client.get("/main", query_string=query)
+
+    sample_json = '["Link1", "Link2", "Link3"]'
+
+    connection.close()
+    mainpage.clean_all()
+
+    assert res.status_code == 200
+    assert res.text == sample_json
+
+
+def test_mainpage_get_valid_populate(client):
+    """Test mainpage handles valid populate query"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+
+    query_1 = {"populate": "True", "numApts": 1}
+    query_2 = {"populate": "True", "numApts": 1, "priceSort": 0, "ratingSort": 0}
+
+    res_1 = client.get("/main", query_string=query_1)
+    res_2 = client.get("/main", query_string=query_2)
+    mainpage.clean_all()
+
+    assert res_1.status_code == 200
+    assert res_2.status_code == 200
+    assert res_1.text == res_2.text
+
+
+def test_mainpage_get_invalid_query(client):
     """Test mainpage handles invalid get request"""
     res = client.get("/main", query_string={"search": "True"})
     assert res.status_code == 400

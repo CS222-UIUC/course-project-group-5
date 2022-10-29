@@ -4,8 +4,8 @@ import dataclasses
 from collections import namedtuple
 from werkzeug.datastructures import MultiDict
 from flask import Flask, request
-from login import Login
-from mainpage import MainPage
+from pages.login import Login
+from pages.mainpage import MainPage
 
 # from logging import FileHandler, WARNING
 
@@ -15,7 +15,6 @@ app = Flask(__name__)
 @app.route("/login", methods=["POST", "GET"])
 def login():
     """Handles login routing"""
-    user_login = Login()
     user_login = Login()
     json_form = request.get_json(force=True)
 
@@ -64,10 +63,10 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         "action_type", ["is_search", "is_populate", "is_review", "is_pictures"]
     )
     action = action_type(
-        args.get("search"),
-        args.get("populate"),
-        args.get("review"),
-        args.get("pictures"),
+        args.get("search", default=False, type=bool),
+        args.get("populate", default=False, type=bool),
+        args.get("review", default=False, type=bool),
+        args.get("pictures", default=False, type=bool),
     )
 
     params = namedtuple(
@@ -82,10 +81,12 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     )
 
     query_result = ""
-    if action.is_search is not None and param.search_query is not None:
-        query_result = json.dumps(mainpage_obj.search_apartments(param.search_query))
+    if action.is_search is True and param.search_query is not None:
+        apts = mainpage_obj.search_apartments(param.search_query)
+        apts_dict = [dataclasses.asdict(apt) for apt in apts]
+        query_result = json.dumps(apts_dict)
 
-    elif action.is_populate is not None and param.num_apts is not None:
+    elif action.is_populate is True and param.num_apts is not None:
         apts = []
         if param.price_sort is not None and param.rating_sort is not None:
             apts = mainpage_obj.apartments_sorted(
@@ -96,12 +97,12 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         apts_dict = [dataclasses.asdict(apt) for apt in apts]
         query_result = json.dumps(apts_dict)
 
-    elif action.is_review is not None and param.apt_id is not None:
+    elif action.is_review is True and param.apt_id is not None:
         reviews = mainpage_obj.get_apartments_reviews(param.apt_id)
         reviews_dict = [dataclasses.asdict(review) for review in reviews]
         query_result = json.dumps(reviews_dict)
 
-    elif action.is_pictures is not None and param.apt_id is not None:
+    elif action.is_pictures is True and param.apt_id is not None:
         query_result = json.dumps(mainpage_obj.get_apartments_pictures(param.apt_id))
 
     if len(query_result) != 0:

@@ -1,6 +1,6 @@
 """Test login.py"""
 import sqlite3
-from login import Login
+from pages.login import Login
 
 
 class TestLogin:
