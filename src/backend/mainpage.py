@@ -1,5 +1,6 @@
 """Contains Main page class"""
 import sqlite3
+from datetime import date
 from typing import List
 from typing import Tuple
 from apt import Apt
@@ -166,14 +167,15 @@ class MainPage:
         user_id = cursor.execute(
             "SELECT user_id FROM Users WHERE username = ?", (username,)
         ).fetchone()[0]
+        today = date.today().strftime("%Y-%m-%d")
         cursor.execute(
             "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
-            VALUES (?, ?, date(), ?, ?) \
+            VALUES (?, ?, ?, ?, ?) \
             ON CONFLICT DO UPDATE SET \
                 date_of_rating = excluded.date_of_rating, \
                 comment = excluded.comment, \
                 vote = excluded.vote",
-            (apt_id, user_id, comment, vote),
+            (apt_id, user_id, today, comment, vote),
         )
         connection.commit()
         connection.close()

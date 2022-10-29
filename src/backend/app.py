@@ -102,17 +102,19 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
 
 def mainpage_post(mainpage_obj: MainPage):
     """Helper for mainpage post requests"""
-    apt_id = request.json["apt_id"]
-    username = request.json["username"]
-    comment = request.json["comment"]
-    vote = request.json["vote"]
+    json_form = request.get_json(force=True)
 
-    if None not in (apt_id, username, comment, vote):
-        query_result = ""
-        reviews = mainpage_obj.write_apartment_review(apt_id, username, comment, vote)
-        reviews_dict = [dataclasses.asdict(review) for review in reviews]
-        query_result = json.dumps(reviews_dict)
-        return query_result, 201
+    if json_form is not None:
+        apt_id = json_form.get("apt_id")
+        username = json_form.get("username")
+        comment = json_form.get("comment")
+        vote = json_form.get("vote")
+        if None not in (apt_id, username, comment, vote):
+            query_result = ""
+            reviews = mainpage_obj.write_apartment_review(apt_id, username, comment, vote)
+            reviews_dict = [dataclasses.asdict(review) for review in reviews]
+            query_result = json.dumps(reviews_dict)
+            return query_result, 201
     return "", 400
 
 

@@ -2,6 +2,7 @@
 import sqlite3
 import pytest
 from app import app
+from tests.mainpage_staging import MainPageStaging
 
 
 @pytest.fixture(name="config_app")
@@ -85,3 +86,43 @@ def test_login_invalid(client):
     log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
     assert res.status_code == 404
+
+
+def test_mainpage_get_valid(client):
+    """Test mainpage handles valid get request"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+    connection = sqlite3.connect("database/database.db")
+    cursor = connection.cursor()
+
+    far_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+    ).fetchone()[0]
+
+    res = client.get("/main", query_string={"review": "True", "aptId": far_id})
+    sample_json = ('[{"username": "Big_finger", '
+    '"date": "2022-10-10", '
+    '"comment": "Decent hall", '
+    '"vote": true}]')
+
+    connection.close()
+    mainpage.clean_all()
+    assert res.status_code == 200
+    assert res.text == sample_json
+
+
+def test_mainpage_get_invalid(client):
+    """Test mainpage handles invalid get request"""
+    res = client.get("/main", query_string={"search": "True"})
+    assert res.status_code == 400
+
+
+def test_mainpage_post_valid(client):
+    """Test mainpage handles valid post request"""
+
+
+def test_mainpage_post_invalid(client):
+    """Test mainpage handles invalid post request"""
+    sample_review = {"username": "User McUserFace", "comment": "Ho ho ho ho"}
+    res = client.post("/main", json=sample_review)
+    assert res.status_code == 400
