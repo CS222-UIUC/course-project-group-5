@@ -16,26 +16,34 @@ app = Flask(__name__)
 def login():
     """Handles login routing"""
     user_login = Login()
-    user = request.json["user"]
-    password = request.json["password"]
-    if user_login.login(user, password):
-        return f"welcome {user}", 200
-    return "User not found, please try again", 404
+    user_login = Login()
+    json_form = request.get_json(force=True, silent=True)
+
+    if json_form is not None:
+        user = json_form.get("user")
+        password = json_form.get("password")
+        if user_login.login(user, password):
+            return f"welcome {user}", 200
+        return "User not found, please try again", 401
+    return "", 404
 
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
     """Handles register routing"""
     user_login = Login()
-    username = request.json["username"]
-    email = request.json["email"]
-    password = request.json["password"]
-    phone = request.json["phone"]
-    result = user_login.register(username, email, password, phone)
-    if not result.status:
-        return result.message, 400
-    return result.message, 200
+    json_form = request.get_json(force=True, silent=True)
 
+    if json_form is not None:
+        username = json_form.get("username", "")
+        email = json_form.get("email", "")
+        password = json_form.get("password", "")
+        phone = json_form.get("phone", "")
+        result = user_login.register(username, email, password, phone)
+        if not result.status:
+            return result.message, 400
+        return result.message, 200
+    return "", 404
 
 @app.route("/", methods=["POST", "GET"])
 @app.route("/main", methods=["POST", "GET"])
@@ -102,7 +110,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
 
 def mainpage_post(mainpage_obj: MainPage):
     """Helper for mainpage post requests"""
-    json_form = request.get_json(force=True)
+    json_form = request.get_json(force=True, silent=True)
 
     if json_form is not None:
         apt_id = json_form.get("apt_id")

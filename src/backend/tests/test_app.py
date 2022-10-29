@@ -85,7 +85,7 @@ def test_login_invalid(client):
     """Test login returns invalid (404) network code"""
     log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
-    assert res.status_code == 404
+    assert res.status_code == 401
 
 
 def test_mainpage_get_valid(client):
