@@ -119,7 +119,24 @@ def test_mainpage_get_invalid(client):
 
 def test_mainpage_post_valid(client):
     """Test mainpage handles valid post request"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+    connection = sqlite3.connect("database/database.db")
+    cursor = connection.cursor()
 
+    isr_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
+    ).fetchone()[0]
+    sample_review = {"apt_id": isr_id, "username": "Minh Phan", "comment": "Good", "vote": 1}
+    res = client.post("/main", json=sample_review)
+
+    cursor.execute(
+        "DELETE FROM Reviews WHERE apt_id = ?", (isr_id,)
+    )
+    connection.commit()
+    connection.close()
+    mainpage.clean_all()
+    assert res.status_code == 201
 
 def test_mainpage_post_invalid(client):
     """Test mainpage handles invalid post request"""
