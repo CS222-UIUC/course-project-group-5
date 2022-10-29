@@ -17,24 +17,24 @@ def login():
     """Handles login routing"""
     user_login = Login()
     user_login = Login()
-    json_form = request.get_json(force=True, silent=True)
+    json_form = request.get_json(force=True)
 
-    if json_form is not None:
-        user = json_form.get("user")
-        password = json_form.get("password")
+    if isinstance(json_form, dict):
+        user = json_form.get("user", "")
+        password = json_form.get("password", "")
         if user_login.login(user, password):
             return f"welcome {user}", 200
         return "User not found, please try again", 401
-    return "", 404
+    return "", 400
 
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
     """Handles register routing"""
     user_login = Login()
-    json_form = request.get_json(force=True, silent=True)
+    json_form = request.get_json(force=True)
 
-    if json_form is not None:
+    if isinstance(json_form, dict):
         username = json_form.get("username", "")
         email = json_form.get("email", "")
         password = json_form.get("password", "")
@@ -42,8 +42,9 @@ def register():
         result = user_login.register(username, email, password, phone)
         if not result.status:
             return result.message, 400
-        return result.message, 200
-    return "", 404
+        return result.message, 201
+    return "", 400
+
 
 @app.route("/", methods=["POST", "GET"])
 @app.route("/main", methods=["POST", "GET"])
@@ -110,14 +111,19 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
 
 def mainpage_post(mainpage_obj: MainPage):
     """Helper for mainpage post requests"""
-    json_form = request.get_json(force=True, silent=True)
+    json_form = request.get_json(force=True)
 
-    if json_form is not None:
+    if isinstance(json_form, dict):
         apt_id = json_form.get("apt_id")
         username = json_form.get("username")
         comment = json_form.get("comment")
         vote = json_form.get("vote")
-        if None not in (apt_id, username, comment, vote):
+        if (
+            apt_id is not None
+            and username is not None
+            and comment is not None
+            and vote is not None
+        ):
             query_result = ""
             reviews = mainpage_obj.write_apartment_review(
                 apt_id, username, comment, vote

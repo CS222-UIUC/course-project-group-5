@@ -32,11 +32,14 @@ def test_register_valid(client):
     cursor.execute("DELETE FROM Users WHERE username = ?", ("big_finger",))
     connection.commit()
     connection.close()
-    assert res.status_code == 200
+    assert res.status_code == 201
 
 
-def test_register_invalid(client):
-    """Test register returns invalid (400) network code"""
+def test_register_invalid_input(client):
+    """
+    Test register returns invalid (400) network code
+    for invalid register attempt
+    """
     reg_info = {
         "username": "big_finger",
         "email": "junk@gmail.com",
@@ -58,9 +61,17 @@ def test_register_invalid(client):
     cursor.execute("DELETE FROM Users WHERE username = ?", ("big_finger",))
     connection.commit()
     connection.close()
-
+    assert res_2.text == "big_finger already registered, please try again"
     assert res_2.status_code == 400
 
+def test_register_not_json(client):
+    """
+    Test register returns invalid (400)
+    network code for a non-json
+    """
+    res = client.post("/register", json = 0)
+    assert res.text == ""
+    assert res.status_code == 400
 
 def test_login_valid(client):
     """Test login returns valid (200) network code"""
@@ -81,11 +92,22 @@ def test_login_valid(client):
     assert res.status_code == 200
 
 
-def test_login_invalid(client):
-    """Test login returns invalid (404) network code"""
+def test_login_invalid_user(client):
+    """
+    Test login returns invalid (401) network code
+    for non-existant user
+    """
     log_info = {"user": "big_finger", "password": "123456789"}
     res = client.post("/login", json=log_info)
     assert res.status_code == 401
+
+def test_login_not_json(client):
+    """
+    Test login returns invalid (400) network code
+    for a non-json
+    """
+    res = client.post("/register", json = 0)
+    assert res.status_code == 400
 
 
 def test_mainpage_get_valid(client):
