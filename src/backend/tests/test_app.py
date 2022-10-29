@@ -100,10 +100,12 @@ def test_mainpage_get_valid(client):
     ).fetchone()[0]
 
     res = client.get("/main", query_string={"review": "True", "aptId": far_id})
-    sample_json = ('[{"username": "Big_finger", '
-    '"date": "2022-10-10", '
-    '"comment": "Decent hall", '
-    '"vote": true}]')
+    sample_json = (
+        '[{"username": "Big_finger", '
+        '"date": "2022-10-10", '
+        '"comment": "Decent hall", '
+        '"vote": true}]'
+    )
 
     connection.close()
     mainpage.clean_all()
@@ -127,16 +129,20 @@ def test_mainpage_post_valid(client):
     isr_id = cursor.execute(
         "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
     ).fetchone()[0]
-    sample_review = {"apt_id": isr_id, "username": "Minh Phan", "comment": "Good", "vote": 1}
+    sample_review = {
+        "apt_id": isr_id,
+        "username": "Minh Phan",
+        "comment": "Good",
+        "vote": 1,
+    }
     res = client.post("/main", json=sample_review)
 
-    cursor.execute(
-        "DELETE FROM Reviews WHERE apt_id = ?", (isr_id,)
-    )
+    cursor.execute("DELETE FROM Reviews WHERE apt_id = ?", (isr_id,))
     connection.commit()
     connection.close()
     mainpage.clean_all()
     assert res.status_code == 201
+
 
 def test_mainpage_post_invalid(client):
     """Test mainpage handles invalid post request"""
