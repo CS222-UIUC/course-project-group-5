@@ -16,7 +16,6 @@ export default function Searching() {
    const [query, setQuery] = useState('');
    const [searchParams, setSearchParams] = useSearchParams();
    const [pageNum, setPageNum] = useState(1);
-   const press = false;
    const emptyarray: string[] = [];
    const [selected, setSelected] = useState(emptyarray);
    const { loading, error, apartments, hasMore } = getApartments(
@@ -123,7 +122,7 @@ export default function Searching() {
             <br />
             <br />
             <div>
-               {press && apartments.length === 0 && !loading && 'None found'}
+               {apartments.length === 0 && !loading && 'None found'}
             </div>
             <div>
                {apartments.map((apartment, i) => {
@@ -143,8 +142,8 @@ export default function Searching() {
                   }
                })}
             </div>
-            <div>{press && loading && 'Loading...'}</div>
-            <div>{press && error && 'Error...'}</div>
+            <div>{loading && 'Loading...'}</div>
+            <div>{error && 'Error...'}</div>
          </div>
       </div>
    );
