@@ -1,5 +1,5 @@
 """Test review.py"""
-from review import Review
+from dataholders.review import Review
 
 
 class TestReview:

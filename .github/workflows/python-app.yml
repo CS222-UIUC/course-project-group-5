@@ -19,6 +19,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - run: wget https://sqlite.org/2022/sqlite-autoconf-3380500.tar.gz
+    - run: tar -xvf sqlite-autoconf-3380500.tar.gz
+    - run: ./configure
+      working-directory: sqlite-autoconf-3380500
+    - run: make
+      working-directory: sqlite-autoconf-3380500
+    - run: sudo make install
+      working-directory: sqlite-autoconf-3380500
+    - run: export PATH="/usr/local/lib:$PATH"
+
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -39,4 +50,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        LD_LIBRARY_PATH: /usr/local/lib
       working-directory: src/backend

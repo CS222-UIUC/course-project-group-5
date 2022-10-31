@@ -1,5 +1,5 @@
 """Test apt.py"""
-from apt import Apt
+from dataholders.apt import Apt
 
 
 class TestApt:
