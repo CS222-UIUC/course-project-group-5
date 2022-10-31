@@ -58,7 +58,14 @@ def mainpage():
 
 
 def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
-    """Helper for mainpage get requests"""
+    """
+    Helper for mainpage get requests
+    Actions that use get requests:
+    - Searching apartments
+    - Populating the mainpage with apartments
+    - Getting reviews of an apartment
+    - Getting pictures of an apartment
+    """
     action_type = namedtuple(
         "action_type", ["is_search", "is_populate", "is_review", "is_pictures"]
     )
@@ -111,7 +118,11 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
 
 
 def mainpage_post(mainpage_obj: MainPage):
-    """Helper for mainpage post requests"""
+    """
+    Helper for mainpage post requests
+    Actions that use post request:
+    - Writing a review to an apartment
+    """
     json_form = request.get_json(force=True)
 
     if isinstance(json_form, dict):
