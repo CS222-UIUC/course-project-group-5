@@ -1,6 +1,4 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
-import Searching from '../components/Searching';
 import LeftSection from '../sections/MainPageLeftSection';
 import RightSection from '../sections/MainPageRightSection';
 
