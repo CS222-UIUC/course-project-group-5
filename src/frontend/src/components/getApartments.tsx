@@ -4,7 +4,7 @@ import axios from 'axios';
 function getApartments(query: string, pageNum: number, selected: string[]) {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(false);
-   const array: {
+   const emptyarray: {
       // avoids linting warnings
       name: string;
       address: string;
@@ -14,12 +14,12 @@ function getApartments(query: string, pageNum: number, selected: string[]) {
       price_min: string;
       price_max: string;
    }[] = [];
-   const [apartments, setApartments] = useState(array);
+   const [apartments, setApartments] = useState(emptyarray);
    const [hasMore, setHasMore] = useState(false);
 
    useEffect(() => {
       // clears the apartments
-      setApartments(array);
+      setApartments(emptyarray);
       pageNum = 1;
    }, [query, selected]);
 

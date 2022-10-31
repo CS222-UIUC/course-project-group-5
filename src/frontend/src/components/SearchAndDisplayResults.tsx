@@ -121,9 +121,7 @@ export default function Searching() {
             <br />
             <br />
             <br />
-            <div>
-               {apartments.length === 0 && !loading && 'None found'}
-            </div>
+            <div>{apartments.length === 0 && !loading && 'None found'}</div>
             <div>
                {apartments.map((apartment, i) => {
                   if (apartments.length === i + 1) {
