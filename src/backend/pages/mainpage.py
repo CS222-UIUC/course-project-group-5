@@ -5,7 +5,7 @@ from typing import List
 from typing import Tuple
 from dataholders.apt import Apt
 from dataholders.review import Review
-
+from decorators import use_database
 
 class MainPage:
     """Mainpage class, interacts with the mainpage frontend"""
@@ -13,12 +13,11 @@ class MainPage:
     def __init__(self) -> None:
         """Constructor"""
 
+    @use_database
     def search_apartments(self, query: str) -> List[Apt]:
         """Returns a list of apartments with name matching query"""
         query_sql = "%" + query.lower() + "%"
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        apt_query = cursor.execute(
+        apt_query = self.search_apartments.cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
             Apartments.price_min, Apartments.price_max \
@@ -33,14 +32,12 @@ class MainPage:
                 apts.append(
                     Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5])
                 )
-        connection.close()
         return apts
 
+    @use_database
     def apartments_default(self, num_apts: int) -> List[Apt]:
         """Returns num_apts apartments to populate the mainpage"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        apt_query = cursor.execute(
+        apt_query = self.apartments_default.cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
             Apartments.price_min, Apartments.price_max \
@@ -52,27 +49,23 @@ class MainPage:
         apts = []
         for entry in apt_query:
             apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
-        connection.close()
         return apts
 
+    @use_database
     def apartments_sorted(
         self, num_apts: int, price_sort: int, rating_sort: int
     ) -> List[Apt]:
         """Returns num_apts apartments with sorting criterias"""
 
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
         apts = []
         apt_query = []
 
         if price_sort == 0:
-            apt_query = self.rating_sort_helper(num_apts, rating_sort, cursor)
+            apt_query = self.rating_sort_helper(num_apts, rating_sort, self.apartments_sorted.cursor)
         elif rating_sort == 0 and price_sort != 0:
-            apt_query = self.price_sort_helper(num_apts, price_sort, cursor)
+            apt_query = self.price_sort_helper(num_apts, price_sort, self.apartments_sorted.cursor)
         else:
-            apt_query = self.both_sort_helper(num_apts, price_sort, rating_sort, cursor)
-
-        connection.close()
+            apt_query = self.both_sort_helper(num_apts, price_sort, rating_sort, self.apartments_sorted.cursor)
 
         for entry in apt_query:
             apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
@@ -147,30 +140,27 @@ class MainPage:
 
         return apt_query
 
+    @use_database
     def get_apartments_pictures(self, apt_id: int) -> List[str]:
         """Returns pictures related to an apartment"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        pic_query = cursor.execute(
+        pic_query = self.get_apartments_pictures.cursor.execute(
             "SELECT link FROM AptPics WHERE apt_id = ?", (apt_id,)
         ).fetchall()
         res = []
         for entry in pic_query:
             res.append(entry[0])
-        cursor.close()
         return res
 
+    @use_database
     def write_apartment_review(
         self, apt_id: int, username: str, comment: str, vote: int
     ) -> List[Review]:
         """Write a new review for apartment"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        user_id = cursor.execute(
+        user_id = self.write_apartment_review.cursor.execute(
             "SELECT user_id FROM Users WHERE username = ?", (username,)
         ).fetchone()[0]
         today = date.today().strftime("%Y-%m-%d")
-        cursor.execute(
+        self.write_apartment_review.cursor.execute(
             "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
             VALUES (?, ?, ?, ?, ?) \
             ON CONFLICT DO UPDATE SET \
@@ -179,20 +169,22 @@ class MainPage:
                 vote = excluded.vote",
             (apt_id, user_id, today, comment, vote),
         )
-        connection.commit()
-        connection.close()
-        new_reviews = self.get_apartments_reviews(apt_id)
-        new_review_ind = [
-            i for i, x in enumerate(new_reviews) if x.username == username
-        ][0]
-        new_reviews.insert(0, new_reviews.pop(new_review_ind))
-        return new_reviews
+        self.write_apartment_review.connection.commit()
 
+        ratings_query = self.write_apartment_review.cursor.execute(
+            "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
+            FROM Users INNER JOIN Reviews \
+            ON Users.user_id = Reviews.user_id \
+            WHERE Reviews.apt_id = ? \
+            ORDER BY Users.username = ? DESC, Reviews.date_of_rating DESC",
+            (apt_id, username),
+        ).fetchall()
+        return self.create_reviews_helper(ratings_query)
+
+    @use_database
     def get_apartments_reviews(self, apt_id: int) -> List[Review]:
         """Returns a list of apartment reviews"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        ratings_query = cursor.execute(
+        ratings_query = self.get_apartments_reviews.cursor.execute(
             "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
             FROM Users INNER JOIN Reviews \
             ON Users.user_id = Reviews.user_id \
@@ -200,6 +192,9 @@ class MainPage:
             ORDER BY Reviews.date_of_rating DESC",
             (apt_id,),
         ).fetchall()
+        return self.create_reviews_helper(ratings_query)
+
+    def create_reviews_helper(self, ratings_query: List[Tuple]) -> List[Review]:
         reviews = []
         for entry in ratings_query:
             if entry[0] is not None:
@@ -207,5 +202,4 @@ class MainPage:
                 if entry[3] == 1:
                     vote = True
                 reviews.append(Review(entry[0], entry[1], entry[2], vote))
-        cursor.close()
         return reviews
