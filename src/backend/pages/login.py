@@ -42,12 +42,10 @@ class Login:
         if len(password) < 8:
             return RegisterResult("Password is too short, please try again", False)
 
-        # pylint: disable=no-member
         check = self.register.cursor.execute(
             "SELECT username FROM Users WHERE username = ?", (username,)
         ).fetchone()
         if check is None:  # valid
-            # pylint: disable=no-member
             self.register.cursor.execute(
                 "INSERT INTO Users (username, email, password, phone, apt_id) \
                 VALUES (?, ?, ?, ?, 0)",
@@ -59,7 +57,6 @@ class Login:
     @use_database
     def login(self, user_id: str, password: str) -> bool:
         """Login function, returns false if combination not found"""
-        # pylint: disable=no-member
         user = self.login.cursor.execute(
             "SELECT username, email, password FROM Users WHERE (username = ? OR email = ?) \
             AND password = ?",

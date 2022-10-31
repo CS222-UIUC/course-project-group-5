@@ -18,7 +18,6 @@ class MainPage:
     def search_apartments(self, query: str) -> List[Apt]:
         """Returns a list of apartments with name matching query"""
         query_sql = "%" + query.lower() + "%"
-        # pylint: disable=no-member
         apt_query = self.search_apartments.cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
@@ -39,7 +38,6 @@ class MainPage:
     @use_database
     def apartments_default(self, num_apts: int) -> List[Apt]:
         """Returns num_apts apartments to populate the mainpage"""
-        # pylint: disable=no-member
         apt_query = self.apartments_default.cursor.execute(
             "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
@@ -65,17 +63,14 @@ class MainPage:
 
         if price_sort == 0:
             apt_query = self.rating_sort_helper(
-                # pylint: disable=no-member
                 num_apts, rating_sort, self.apartments_sorted.cursor
             )
         elif rating_sort == 0 and price_sort != 0:
             apt_query = self.price_sort_helper(
-                # pylint: disable=no-member
                 num_apts, price_sort, self.apartments_sorted.cursor
             )
         else:
             apt_query = self.both_sort_helper(
-                # pylint: disable=no-member
                 num_apts, price_sort, rating_sort, self.apartments_sorted.cursor
             )
 
@@ -155,7 +150,6 @@ class MainPage:
     @use_database
     def get_apartments_pictures(self, apt_id: int) -> List[str]:
         """Returns pictures related to an apartment"""
-        # pylint: disable=no-member
         pic_query = self.get_apartments_pictures.cursor.execute(
             "SELECT link FROM AptPics WHERE apt_id = ?", (apt_id,)
         ).fetchall()
@@ -169,7 +163,6 @@ class MainPage:
         self, apt_id: int, username: str, comment: str, vote: int
     ) -> List[Review]:
         """Write a new review for apartment"""
-        # pylint: disable=no-member
         user_id = self.write_apartment_review.cursor.execute(
             "SELECT user_id FROM Users WHERE username = ?", (username,)
         ).fetchone()[0]
@@ -183,9 +176,7 @@ class MainPage:
                 vote = excluded.vote",
             (apt_id, user_id, today, comment, vote),
         )
-        # pylint: disable=no-member
         self.write_apartment_review.connection.commit()
-        # pylint: disable=no-member
         ratings_query = self.write_apartment_review.cursor.execute(
             "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
             FROM Users INNER JOIN Reviews \
@@ -199,7 +190,6 @@ class MainPage:
     @use_database
     def get_apartments_reviews(self, apt_id: int) -> List[Review]:
         """Returns a list of apartment reviews"""
-        # pylint: disable=no-member
         ratings_query = self.get_apartments_reviews.cursor.execute(
             "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
             FROM Users INNER JOIN Reviews \
