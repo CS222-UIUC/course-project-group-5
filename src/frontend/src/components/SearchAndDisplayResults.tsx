@@ -1,19 +1,27 @@
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import React, { useState, useRef, useCallback, KeyboardEvent } from 'react';
+import {
+   Autocomplete,
+   Stack,
+   TextField,
+   ToggleButton,
+   ToggleButtonGroup,
+} from '@mui/material';
+import React, { useState, useRef, useCallback } from 'react';
 import SingleCard from './SingleCard';
-import useSearchApartment from './getsApartments';
-import SearchBar from './SearchBar';
+import data from '../staticdata.json';
+import getApartments from './getApartments';
+import { useSearchParams } from 'react-router-dom';
+import './SearchBarStyles.css';
 
 export default function Searching() {
    const [query, setQuery] = useState('');
+   const [searchParams, setSearchParams] = useSearchParams();
    const [pageNum, setPageNum] = useState(1);
-   const [press, setPress] = useState(false);
+   const press = false;
    const emptyarray: string[] = [];
    const [selected, setSelected] = useState(emptyarray);
-   const { loading, error, apartments, hasMore } = useSearchApartment(
+   const { loading, error, apartments, hasMore } = getApartments(
       query,
       pageNum,
-      press,
       selected
    );
 
@@ -33,52 +41,25 @@ export default function Searching() {
       [loading, hasMore]
    );
 
-   /*const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setQuery(e.target.value);
-      setPageNum(1);
-      setPress(false);
-   };
-
-   const handlePress = (e: KeyboardEvent<HTMLInputElement>) => {
-      // POST request when enter is pressed
-      if (e.key === 'Enter') {
-         e.preventDefault();
-         setPress(true);
+   const handleSubmit = (
+      event: React.SyntheticEvent<Element, Event>,
+      value: string
+   ) => {
+      event.preventDefault();
+      setQuery(value);
+      if (value === '') {
+         searchParams.delete('searchQuery');
+         searchParams.set('search', 'False');
+      } else {
+         searchParams.set('searchQuery', value);
+         searchParams.set('search', 'True');
       }
+      searchParams.set('numApts', '10');
+      setSearchParams(searchParams);
    };
-
-   function handlePost(query: string, select: string[]) {
-      // POST request of the query and buttons selected
-      axios({
-         method: 'POST',
-         url: 'http://localhost:3333/mockdata',
-         data: {
-            q: query,
-            selected: select,
-         },
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      })
-         .then((response) => {
-            console.log(response);
-         })
-         .catch((error) => {
-            if (error.response) {
-               console.log(error.response);
-               console.log(error.response.status);
-               console.log(error.response.headers);
-            }
-         });
-   }*/
-
-   //useEffect(() => {
-   // triggers a post request whenever a button is selected
-   //   handlePost(query, selected);
-   //}, [selected]);
 
    const handleToggle = (
-      event: React.MouseEvent<HTMLElement>,
+      event: React.SyntheticEvent<Element, Event>,
       newSelected: string[]
    ) => {
       // prevents "high-low" and "low-high" from being selected at the same time
@@ -93,25 +74,40 @@ export default function Searching() {
          }
       }
       setSelected(newSelected);
+      // sets URL
+      if (newSelected.includes('low-high')) {
+         searchParams.set('priceSort', '-1');
+      } else if (newSelected.includes('high-low')) {
+         searchParams.set('priceSort', '1');
+      } else {
+         searchParams.delete('priceSort');
+      }
+      if (newSelected.includes('most popular')) {
+         searchParams.set('ratingSort', '1');
+      } else {
+         searchParams.delete('ratingSort');
+      }
+      setSearchParams(searchParams);
    };
 
    return (
       <div className="App">
          <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-               {/*<div className="search" style={{ width: '800px' }}>
-                  <TextField
-                     id="outlined-basic"
-                     variant="outlined"
-                     fullWidth
-                     value={query || ''}
-                     label="Apartment Search"
-                     onKeyDown={handlePress}
-                     onChange={handleChange}
+            <div style={{ display: 'flex', justifyContent: 'center' }}></div>
+            <h1>Apartment Search</h1>
+            <div className="search">
+               <Stack spacing={2} sx={{ width: 500 }}>
+                  <Autocomplete
+                     id="free-solo-demo"
+                     freeSolo
+                     onInputChange={handleSubmit}
+                     options={data.map((option) => option.name)}
+                     renderInput={(params) => (
+                        <TextField {...params} label="Search" />
+                     )}
                   />
-               </div>*/}
+               </Stack>
             </div>
-            <SearchBar />
             <br />
             <ToggleButtonGroup
                color="primary"
