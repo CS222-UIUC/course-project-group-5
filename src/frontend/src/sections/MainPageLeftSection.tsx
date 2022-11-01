@@ -1,5 +1,4 @@
 import React from 'react';
-import Searching from '../components/SearchAndDisplayResults';
 
 interface Props {
    onChange: (e: boolean) => void;
@@ -7,6 +6,6 @@ interface Props {
    onSelect: () => void;
 }
 
-export default function LeftSection({ onChange }: Props) {
+export default function LeftSection({ }: Props) {
    return <div style={{ marginTop: '200px' }}>{/*<Searching />*/}</div>;
 }
