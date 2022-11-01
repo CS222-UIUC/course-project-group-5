@@ -6,6 +6,7 @@ interface Props {
    onSelect: () => void;
 }
 
+// eslint-disable-next-line
 export default function LeftSection({}: Props) {
    return (
       <div style={{ marginTop: '200px' }}>
