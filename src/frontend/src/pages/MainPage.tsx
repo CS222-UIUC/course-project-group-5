@@ -1,12 +1,11 @@
 import React from 'react';
 import Searching from '../components/SearchAndDisplayResults';
-import LeftSection from '../sections/MainPageLeftSection';
 
 function MainPage() {
+   //const [to, setTo] = useState(data[0]);
    return (
       <div>
          <Searching />
-         <LeftSection />
       </div>
    );
 }

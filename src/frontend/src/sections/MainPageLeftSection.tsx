@@ -1,10 +1,12 @@
 import React from 'react';
 import Searching from '../components/SearchAndDisplayResults';
 
-export default function LeftSection() {
-   return (
-      <div style={{ marginTop: '200px' }}>
-         <Searching />
-      </div>
-   );
+interface Props {
+   onChange: (e: boolean) => void;
+   selectedCard: React.ComponentType;
+   onSelect: () => void;
+}
+
+export default function LeftSection({ onChange }: Props) {
+   return <div style={{ marginTop: '200px' }}>{/*<Searching />*/}</div>;
 }

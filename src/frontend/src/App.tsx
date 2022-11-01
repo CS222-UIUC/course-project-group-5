@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Login from './components/Login';
-import Searching from './components/SearchAndDisplayResults';
+import MainPage from './pages/MainPage';
 
 function App() {
    return (
@@ -15,7 +15,7 @@ function App() {
                   <Route index element={<Login />} />
                </Route>
                <Route path="/">
-                  <Route index element={<Searching />} />
+                  <Route index element={<MainPage />} />
                </Route>
             </Routes>
          </BrowserRouter>

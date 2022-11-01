@@ -16,6 +16,8 @@ export default function Searching() {
    const [query, setQuery] = useState('');
    const [searchParams, setSearchParams] = useSearchParams();
    const [pageNum, setPageNum] = useState(1);
+   // eslint-disable-next-line
+   const [id, setId] = useState(-1);
    const emptyarray: string[] = [];
    const [selected, setSelected] = useState(emptyarray);
    const { loading, error, apartments, hasMore } = getApartments(
@@ -54,6 +56,9 @@ export default function Searching() {
          searchParams.set('search', 'True');
       }
       searchParams.set('numApts', '10');
+      searchParams.set('pictures', 'True');
+      searchParams.set('review', 'True');
+      searchParams.set('aptId', id.toString());
       setSearchParams(searchParams);
    };
 
@@ -83,8 +88,10 @@ export default function Searching() {
       }
       if (newSelected.includes('most popular')) {
          searchParams.set('ratingSort', '1');
+         searchParams.set('popular', 'True');
       } else {
          searchParams.delete('ratingSort');
+         searchParams.delete('popular');
       }
       setSearchParams(searchParams);
    };
