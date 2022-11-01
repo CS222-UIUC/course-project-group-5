@@ -6,6 +6,11 @@ interface Props {
    onSelect: () => void;
 }
 
-export default function LeftSection({ }: Props) {
-   return <div style={{ marginTop: '200px' }}>{/*<Searching />*/}</div>;
+export default function LeftSection({}: Props) {
+   return (
+      <div style={{ marginTop: '200px' }}>
+         {/*<Searching />*/}
+         <h1>Hi</h1>
+      </div>
+   );
 }
