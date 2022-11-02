@@ -31,7 +31,8 @@ CREATE TABLE Reviews (
     user_id INTEGER NOT NULL,
     date_of_rating DATE NOT NULL,
     comment TEXT,
-    vote INTEGER CHECK(vote = 1 OR vote = 0 OR vote = -1)
+    vote INTEGER CHECK(vote = 1 OR vote = 0 OR vote = -1),
+    UNIQUE(apt_id, user_id)
 );
 
 -- TEST
