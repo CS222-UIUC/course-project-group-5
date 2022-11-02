@@ -41,16 +41,21 @@ export default function Populate() {
       newSelected: string[]
    ) => {
       // prevents "high-low" and "low-high" from being selected at the same time
-      if (
-         newSelected.includes('low-high') &&
-         newSelected.includes('high-low')
-      ) {
-         if (newSelected.at(0) !== 'most popular') {
-            newSelected.shift();
-         } else {
-            newSelected.splice(1, 1);
-         }
+      const newPrice: string[] = [];
+      const newPopular: string[] = [];
+      if (newSelected.includes('low-high')) {
+         newPrice.push('low-high');
       }
+      if (newSelected.includes('high-low')) {
+         newPrice.push('high-low');
+      }
+      if (newSelected.includes('least popular')) {
+         newPrice.push('least popular');
+      }
+      if (newSelected.includes('most popular')) {
+         newPrice.push('most popular');
+      }
+      newSelected = [...newPrice, ...newPopular];
       setSelected(newSelected);
       // sets URL
       if (newSelected.includes('low-high')) {
@@ -62,6 +67,9 @@ export default function Populate() {
       }
       if (newSelected.includes('most popular')) {
          searchParams.set('ratingSort', '1');
+         searchParams.set('popular', 'True');
+      } else if (newSelected.includes('least popular')) {
+         searchParams.set('ratingSort', '-1');
          searchParams.set('popular', 'True');
       } else {
          searchParams.delete('ratingSort');
@@ -86,6 +94,7 @@ export default function Populate() {
             >
                <ToggleButton value="low-high">Low-High</ToggleButton>
                <ToggleButton value="high-low">High-Low</ToggleButton>
+               <ToggleButton value="least popular">Least Popular</ToggleButton>
                <ToggleButton value="most popular">Most Popular</ToggleButton>
             </ToggleButtonGroup>
             <br />
