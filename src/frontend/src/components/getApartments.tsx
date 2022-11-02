@@ -8,11 +8,9 @@ function getApartments(query: string, pageNum: number, selected: string[]) {
       // avoids linting warnings
       name: string;
       address: string;
-      image: string;
-      review: string;
       rating: number;
-      price_min: string;
-      price_max: string;
+      price_min: number;
+      price_max: number;
    }[] = [];
    const [apartments, setApartments] = useState(emptyarray);
    const [hasMore, setHasMore] = useState(false);
@@ -42,19 +40,15 @@ function getApartments(query: string, pageNum: number, selected: string[]) {
             const newApartments: {
                name: string;
                address: string;
-               image: string;
-               review: string;
                rating: number;
-               price_min: string;
-               price_max: string;
+               price_min: number;
+               price_max: number;
             }[] = [];
             for (let i = 0; i < res.data.length; i++) {
                if (res.data[i].name !== undefined) {
                   newApartments.push({
                      name: res.data[i].name,
                      address: res.data[i].address,
-                     image: res.data[i].image,
-                     review: res.data[i].review,
                      rating: res.data[i].rating,
                      price_min: res.data[i].price_min,
                      price_max: res.data[i].price_max,

@@ -4,131 +4,105 @@
       "id": 1,
       "name": "Champaign park",
       "address": "West Green",
-      "review": "Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome Horribly awesome",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 2,
       "name": "Maywoods Apartments",
       "address": "West springfield",
-      "review": "Slightly above average",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/English_Bay_Vancouver.jpg/1280px-English_Bay_Vancouver.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 3,
       "name": "Town and County",
       "address": "Healey street",
-      "review": "Slightly AMAZING",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Dingbat_MaryJane.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 4,
       "name": "Lancaster Apartments",
       "address": "Wright street",
-      "review": "Extremely average",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 5,
       "name": "Champaign park",
       "address": "White St.",
-      "review": "Amazingly horrible",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 6,
       "name": "Champaign park",
       "address": "1032 E Kerr Ave",
-      "review": "Slightly green",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 7,
       "name": "Champaign park",
       "address": "Wright street",
-      "review": "Too yellow",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 8,
       "name": "Champaign park",
       "address": "West springfield",
-      "review": "Slightly below average horrible",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 9,
       "name": "Champaign park",
       "address": "51 E John",
-      "review": "Purple",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 10,
       "name": "Champaign park",
       "address": "Wright street",
-      "review": "Orange",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 11,
       "name": "Champaign park",
       "address": "West springfield",
-      "review": "AMAZING AMAZING average",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 12,
       "name": "Champaign park",
       "address": "Green st.",
-      "review": "Slightly AMAZING AMAZING AMAZING",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     },
     {
       "id": 13,
       "name": "Champaign park",
       "address": "202 E Daniel St.",
-      "review": "Extremely AMAZING AMAZING AMAZING",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7f/St_James_Town1.jpg",
       "rating": 0,
-      "price_min": "500",
-      "price_max": "1000"
+      "price_min": 500,
+      "price_max": 1000
     }
   ],
   "alturl": [
