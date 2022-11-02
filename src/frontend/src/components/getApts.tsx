@@ -19,7 +19,7 @@ function getApartments(query: string, pageNum: number, selected: string[]) {
       // clears the apartments
       setApartments(emptyarray);
       pageNum = 1;
-   }, [query, selected]);
+   }, [selected]);
 
    useEffect(() => {
       // GETs new apartments whenever a button is selected
@@ -33,7 +33,7 @@ function getApartments(query: string, pageNum: number, selected: string[]) {
       const source = CancelToken.source();
       axios({
          method: 'GET', //http://localhost:3333/mockdata?q=${query}&_page=${pageNum}&_limit=2
-         url: `http://localhost:3333/mockdata?q=${query}&_page=${pageNum}&_limit=${limit}`,
+         url: `http://localhost:3333/mockdata?q=&_page=${pageNum}&_limit=${limit}`,
          cancelToken: source.token,
       })
          .then((res) => {
@@ -68,7 +68,7 @@ function getApartments(query: string, pageNum: number, selected: string[]) {
       return () => {
          source.cancel();
       };
-   }, [query, pageNum, selected]);
+   }, [pageNum, selected]);
 
    return { loading, error, apartments, hasMore };
 }

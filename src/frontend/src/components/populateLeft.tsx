@@ -1,18 +1,12 @@
-import {
-   Autocomplete,
-   Stack,
-   TextField,
-   ToggleButton,
-   ToggleButtonGroup,
-} from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useState, useRef, useCallback } from 'react';
 import SingleCard from './SingleCard';
-import data from '../staticdata.json';
-import getApartments from './getApartments';
 import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
+import getApartments from './getApts';
 
-export default function Searching() {
+export default function Populate() {
+   // eslint-disable-next-line
    const [query, setQuery] = useState('');
    const [searchParams, setSearchParams] = useSearchParams();
    const [pageNum, setPageNum] = useState(1);
@@ -28,7 +22,7 @@ export default function Searching() {
 
    const observer = useRef<IntersectionObserver | null>(null);
    // prevents the infinite scroll from triggering forever
-   const lastBookElementRef = useCallback(
+   const lastAptElementRef = useCallback(
       (node: HTMLDivElement) => {
          if (loading) return;
          if (observer.current) observer.current.disconnect();
@@ -41,26 +35,6 @@ export default function Searching() {
       },
       [loading, hasMore]
    );
-
-   const handleSubmit = (
-      event: React.SyntheticEvent<Element, Event>,
-      value: string
-   ) => {
-      event.preventDefault();
-      setQuery(value);
-      if (value === '') {
-         searchParams.delete('searchQuery');
-         searchParams.set('search', 'False');
-      } else {
-         searchParams.set('searchQuery', value);
-         searchParams.set('search', 'True');
-      }
-      searchParams.set('numApts', '10');
-      searchParams.set('pictures', 'True');
-      searchParams.set('review', 'True');
-      searchParams.set('aptId', id.toString());
-      setSearchParams(searchParams);
-   };
 
    const handleToggle = (
       event: React.SyntheticEvent<Element, Event>,
@@ -93,27 +67,16 @@ export default function Searching() {
          searchParams.delete('ratingSort');
          searchParams.delete('popular');
       }
+      searchParams.set('populate', 'True');
+      if (newSelected.length == 0) {
+         searchParams.set('populate', 'False');
+      }
       setSearchParams(searchParams);
    };
 
    return (
       <div className="App">
          <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}></div>
-            <h1>Apartment Search</h1>
-            <div className="search">
-               <Stack spacing={2} sx={{ width: 500 }}>
-                  <Autocomplete
-                     id="free-solo-demo"
-                     freeSolo
-                     onInputChange={handleSubmit}
-                     options={data.map((option) => option.name)}
-                     renderInput={(params) => (
-                        <TextField {...params} label="Search" />
-                     )}
-                  />
-               </Stack>
-            </div>
             <br />
             <ToggleButtonGroup
                color="primary"
@@ -134,7 +97,7 @@ export default function Searching() {
                   if (apartments.length === i + 1) {
                      return (
                         // handles last element
-                        <div key={i} ref={lastBookElementRef}>
+                        <div key={i} ref={lastAptElementRef}>
                            <SingleCard {...apartment} key={i} />
                         </div>
                      );
