@@ -9,6 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: wget https://sqlite.org/2022/sqlite-autoconf-3380500.tar.gz
+      - run: tar -xvf sqlite-autoconf-3380500.tar.gz
+      - run: ./configure
+        working-directory: sqlite-autoconf-3380500
+      - run: make
+        working-directory: sqlite-autoconf-3380500
+      - run: sudo make install
+        working-directory: sqlite-autoconf-3380500
+      - run: export PATH="/usr/local/lib:$PATH"
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
@@ -23,7 +33,9 @@ jobs:
 
       - name: Build coverage file
         run: |
-          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=. | tee pytest-coverage.txt
+          pytest --junitxml=pytest.xml --cov-report=term-missing --cov=. | tee pytest-coverage.txt
+        env:
+          LD_LIBRARY_PATH: /usr/local/lib
         working-directory: src/backend
       
       - name: Pytest coverage comment
