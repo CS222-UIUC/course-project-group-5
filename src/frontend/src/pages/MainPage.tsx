@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { AptType } from '../components/Types';
 import LeftSection from '../sections/MainPageLeftSection';
 import RightSection from '../sections/MainPageRightSection';
 
 function MainPage() {
+   const [apt, setApt] = useState<AptType>({
+      id: 2,
+      name: 'sample apartment',
+      address: 'sample address',
+      price_min: 0,
+      price_max: 0,
+      votes: 0,
+   });
+
    return (
       <div>
          <div className="d-flex flex-row">
@@ -10,7 +20,7 @@ function MainPage() {
                <LeftSection />
             </div>
             <div className="w-50">
-               <RightSection />
+               <RightSection apt={apt} />
             </div>
          </div>
       </div>
