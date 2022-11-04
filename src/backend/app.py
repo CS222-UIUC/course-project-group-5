@@ -4,15 +4,11 @@ import dataclasses
 from collections import namedtuple
 from werkzeug.datastructures import MultiDict
 from flask import Flask, request
-from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
 
-
 # from logging import FileHandler, WARNING
-
 app = Flask(__name__)
-CORS(app)
 
 
 @app.route("/login", methods=["POST", "GET"])
