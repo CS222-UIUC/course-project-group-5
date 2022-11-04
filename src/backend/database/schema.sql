@@ -37,10 +37,13 @@ CREATE TABLE Reviews (
 
 -- TEST
 -- INSERT INTO Users (username, password, email, phone, apt_id)
--- VALUES ('Zongxian Feng', '12345abcde', 'Zongxian@Feng.com', '1234567890', 1);
+-- VALUES ('Zongxian', '12345abcde', 'Zongxian@Feng.com', '1234567890', 1);
 
 -- INSERT INTO Users (username, password, email, phone, apt_id)
--- VALUES ('Monte Carlo', 'qwert#6767', 'Monte@Carlo.com', '9876543210', 2);
+-- VALUES ('MonteCarlo', 'qwert#6767', 'Monte@Carlo.com', '9876543210', 2);
+
+-- INSERT INTO Users (username, password, email, phone, apt_id)
+-- VALUES ('Minh', 'hello123', 'Minh.com', '9876543210', 2);
 
 -- INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link)
 -- VALUES ('The Dean Campustown', '708 S 6th St, Champaign, IL 61820', 860, 1900, 'https://www.apartmentfinder.com/Illinois/Champaign-Apartments/The-Dean-Campustown-Apartments-ttrtct8');

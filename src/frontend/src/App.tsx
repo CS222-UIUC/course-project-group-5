@@ -1,14 +1,11 @@
 import React from 'react';
 import './App.css';
-import Searching from './components/Searching';
+import MainPage from './pages/MainPage';
 
 function App() {
    return (
       <div className="App">
-         {/*<LeftSection/>
-      <Header/>*/}
-         <Searching />
-         {/*<Login/>*/}
+         <MainPage />
       </div>
    );
 }

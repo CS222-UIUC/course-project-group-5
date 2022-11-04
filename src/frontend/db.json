@@ -137,5 +137,49 @@
       "body": "some comment",
       "postId": 1
     }
+  ],
+  "reviews": [
+    {
+      "id": 1667162661762,
+      "name": "Zongxian Feng",
+      "date": "Sun Oct 30 2022 15:44:21 GMT-0500 (Central Daylight Time)",
+      "text": "This is an amazing place to live, I love it",
+      "vote": true
+    },
+    {
+      "id": 1667162869459,
+      "name": "Zongxian Feng",
+      "date": "Sun Oct 30 2022 15:47:49 GMT-0500 (Central Daylight Time)",
+      "text": "SHit shit shitshitshit",
+      "vote": false
+    },
+    {
+      "id": 1667166019563,
+      "name": "Zongxian Feng",
+      "date": "Sun Oct 30 2022 16:40:19 GMT-0500 (Central Daylight Time)",
+      "text": "sdf",
+      "vote": true
+    }
+  ],
+  "pics": [
+    {
+      "url": "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+    },
+    {
+      "url": "https://media.istockphoto.com/photos/exterior-view-of-modern-apartment-building-offering-luxury-rental-in-picture-id1322575582?b=1&k=20&m=1322575582&s=170667a&w=0&h=bGCtLpgCEorQuVdW2lbWguNZHcOGPePSwDibgbgyh0U="
+    },
+    {
+      "url": "https://images1.apartments.com/i2/jvLRkH1L1XC4jO5qlpRV1IBCov_KYYwWbUIYii9rhqA/117/capstone-quarters-urbana-il-building-photo.jpg"
+    }
+  ],
+  "apt": [
+    {
+      "name": "Illini Tower",
+      "address": "405 E John Street, Champaign, IL, 61820",
+      "price_min": 200,
+      "price_max": 1600,
+      "upvotes": 32,
+      "downvotes": 17
+    }
   ]
 }
