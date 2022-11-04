@@ -5,6 +5,11 @@ import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
 import getApartments from './getApts';
 
+//interface Props {
+//   selectedApt: number;
+
+//}
+
 export default function Populate() {
    // eslint-disable-next-line
    const [query, setQuery] = useState('');
@@ -13,15 +18,16 @@ export default function Populate() {
    // eslint-disable-next-line
    const [id, setId] = useState(-1);
    const emptyarray: string[] = [];
-   const [selected, setSelected] = useState(emptyarray);
+   const [priceSort, setPriceSort] = useState(emptyarray);
+   const [ratingSort, setRatingSort] = useState(emptyarray);
    const { loading, error, apartments, hasMore } = getApartments(
       query,
       pageNum,
-      selected
+      priceSort,
+      ratingSort
    );
 
    const observer = useRef<IntersectionObserver | null>(null);
-   // prevents the infinite scroll from triggering forever
    const lastAptElementRef = useCallback(
       (node: HTMLDivElement) => {
          if (loading) return;
@@ -41,22 +47,13 @@ export default function Populate() {
       newSelected: string[]
    ) => {
       // prevents "high-low" and "low-high" from being selected at the same time
-      const newPrice: string[] = [];
-      const newPopular: string[] = [];
-      if (newSelected.includes('low-high')) {
-         newPrice.push('low-high');
+      if (
+         newSelected.includes('low-high') &&
+         newSelected.includes('high-low')
+      ) {
+         newSelected.shift();
       }
-      if (newSelected.includes('high-low')) {
-         newPrice.push('high-low');
-      }
-      if (newSelected.includes('least popular')) {
-         newPrice.push('least popular');
-      }
-      if (newSelected.includes('most popular')) {
-         newPrice.push('most popular');
-      }
-      newSelected = [...newPrice, ...newPopular];
-      setSelected(newSelected);
+      setPriceSort(newSelected);
       // sets URL
       if (newSelected.includes('low-high')) {
          searchParams.set('priceSort', '-1');
@@ -65,21 +62,39 @@ export default function Populate() {
       } else {
          searchParams.delete('priceSort');
       }
-      if (newSelected.includes('most popular')) {
-         searchParams.set('ratingSort', '1');
-         searchParams.set('popular', 'True');
-      } else if (newSelected.includes('least popular')) {
-         searchParams.set('ratingSort', '-1');
-         searchParams.set('popular', 'True');
-      } else {
-         searchParams.delete('ratingSort');
-         searchParams.delete('popular');
-      }
       searchParams.set('populate', 'True');
       if (newSelected.length == 0) {
          searchParams.set('populate', 'False');
       }
       setSearchParams(searchParams);
+   };
+
+   const handlePopular = (
+      event: React.SyntheticEvent<Element, Event>,
+      newSelected: string[]
+   ) => {
+      if (
+         newSelected.includes('least popular') &&
+         newSelected.includes('most popular')
+      ) {
+         newSelected.shift();
+      }
+      if (newSelected.includes('most popular')) {
+         searchParams.set('ratingSort', '1');
+      } else if (newSelected.includes('least popular')) {
+         searchParams.set('ratingSort', '-1');
+      } else {
+         searchParams.delete('ratingSort');
+      }
+      if (newSelected.length != 0) {
+         searchParams.set('populate', 'True');
+         searchParams.set('numApts', '10');
+      } else {
+         searchParams.set('populate', 'False');
+         searchParams.delete('numApts');
+      }
+      setSearchParams(searchParams);
+      setRatingSort(newSelected);
    };
 
    return (
@@ -88,12 +103,19 @@ export default function Populate() {
             <br />
             <ToggleButtonGroup
                color="primary"
-               value={selected}
+               value={priceSort}
                onChange={handleToggle}
                aria-label="Platform"
             >
                <ToggleButton value="low-high">Low-High</ToggleButton>
                <ToggleButton value="high-low">High-Low</ToggleButton>
+            </ToggleButtonGroup>
+            <ToggleButtonGroup
+               color="primary"
+               value={ratingSort}
+               onChange={handlePopular}
+               aria-label="Platform"
+            >
                <ToggleButton value="least popular">Least Popular</ToggleButton>
                <ToggleButton value="most popular">Most Popular</ToggleButton>
             </ToggleButtonGroup>

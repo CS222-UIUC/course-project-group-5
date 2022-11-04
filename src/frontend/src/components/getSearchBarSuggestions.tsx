@@ -13,12 +13,12 @@ export default function getSuggestions(query: string, search: boolean) {
    }, [query]);
 
    useEffect(() => {
-      // GETs new names whenever a button is selected
+      // gets new names whenever query changes
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
       axios({
          method: 'GET',
-         url: `http://localhost:3333/mockdata?search=${search}&searchQuery=${query}`,
+         url: `http://127.0.0.1:5000/?search=${search}&searchQuery=${query}`,
          cancelToken: source.token,
       })
          .then((res) => {
@@ -32,9 +32,6 @@ export default function getSuggestions(query: string, search: boolean) {
                   });
                }
             }
-            //setNames((prevNames) => {
-            //   return [...new Set([...prevApartments, ...newApartments])];
-            //});
             setNames(newNames);
          })
          .catch((e) => {

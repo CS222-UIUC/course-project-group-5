@@ -1,19 +1,16 @@
 import { Autocomplete, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import data from '../staticdata.json';
 import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
 import getSuggestions from './getSearchBarSuggestions';
 
 export default function SearchBar() {
-   // eslint-disable-next-line
    const [query, setQuery] = useState('');
    const [searchParams, setSearchParams] = useSearchParams();
    const [search, setSearch] = useState(false);
-   // eslint-disable-next-line
    const { names } = getSuggestions(query, search);
 
-   const handleSubmit = (
+   const handleChange = (
       event: React.SyntheticEvent<Element, Event>,
       value: string
    ) => {
@@ -39,8 +36,8 @@ export default function SearchBar() {
                <Autocomplete
                   id="free-solo-demo"
                   freeSolo
-                  onInputChange={handleSubmit}
-                  options={data.map((option) => option.name)}
+                  onInputChange={handleChange}
+                  options={names.map((option) => option.name)}
                   renderInput={(params) => (
                      <TextField {...params} label="Search" />
                   )}
