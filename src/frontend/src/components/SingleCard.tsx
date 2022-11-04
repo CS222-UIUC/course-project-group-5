@@ -1,8 +1,7 @@
 import React from 'react';
 import { Typography, Card, CardContent } from '@material-ui/core';
-import { CardActionArea, CardMedia } from '@mui/material';
+import { CardActionArea } from '@mui/material';
 import styled from 'styled-components';
-import image from '../image.jpeg';
 
 const Container = styled.div``;
 
@@ -32,7 +31,7 @@ const SingleCard = ({
       <MyCard>
          {' '}
          <CardActionArea>
-            <CardMedia component="img" src={image} height="150" />
+            {/*<CardMedia component="img" src={} height="150" />*/}
             <CardContent style={{ height: '300px' }}>
                {/*<Button size="small">Learn More</Button>*/}
                <div style={{ display: 'inline-block', width: '100%' }}>
