@@ -6,12 +6,11 @@ from werkzeug.datastructures import MultiDict
 from flask import Flask, request
 from pages.login import Login
 from pages.mainpage import MainPage
-from flask_cors import CORS
 
 # from logging import FileHandler, WARNING
 
 app = Flask(__name__)
-CORS(app)
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -81,7 +80,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         "params", ["num_apts", "apt_id", "search_query", "price_sort", "rating_sort"]
     )
     param = params(
-        #args.get("numApts", type=int),
+        # args.get("numApts", type=int),
         args.get("aptId", type=int),
         args.get("searchQuery", type=str),
         args.get("priceSort", type=int),
