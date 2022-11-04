@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReviewsList from '../components/ReviewsList';
 import AddReview from '../components/AddReview';
 import ImagesGallery from '../components/ImagesGallery';
-import { PicType, ReviewType, AptType } from '../components/Types';
+import { ReviewType, AptType } from '../components/Types';
 import { AptInfo } from '../components/AptInfo';
 import axios from 'axios';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { PicType } from './Types';
+// import { PicType } from './Types';
 import Carousel from 'react-bootstrap/Carousel';
 
 export interface IImagesGalleryProps {
