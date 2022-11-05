@@ -3,18 +3,18 @@ import { Container } from 'react-bootstrap';
 import { AptType } from './Types';
 
 export interface IAptInfoProps {
-   apt: AptType;
+   apt: AptType | undefined;
 }
 
 export function AptInfo({ apt }: IAptInfoProps) {
    return (
       <Container>
-         <h1 className="text-center">{apt.name}</h1>
-         <h6 className="text-center">{apt.address}</h6>
+         <h1 className="text-center">{apt?.name}</h1>
+         <h6 className="text-center">{apt?.address}</h6>
          <h5 className="text-center">
-            Price Range: ${apt.price_min}~${apt.price_max}
+            Price Range: ${apt?.price_min}~${apt?.price_max}
          </h5>
-         <h5>Rating: ${apt.votes}</h5>
+         <h5>Rating: ${apt?.votes || 0}</h5>
          {/* <div className="d-flex align-items-center justify-content-evenly">
         <span className="fs-2 text-success">
           <svg
