@@ -10,7 +10,7 @@ from pages.mainpage import MainPage
 
 # from logging import FileHandler, WARNING
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -96,12 +96,16 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
 
     elif action.is_populate is True and param.num_apts is not None:
         apts = []
-        if param.price_sort is not None and param.rating_sort is not None:
-            apts = mainpage_obj.apartments_sorted(
-                param.num_apts, param.price_sort, param.rating_sort
-            )
-        else:
-            apts = mainpage_obj.apartments_default(param.num_apts)
+        price_sort = 0
+        rating_sort = 0
+        if param.price_sort is not None:
+            price_sort = param.price_sort
+
+        if param.rating_sort is not None:
+            rating_sort = param.rating_sort
+        apts = mainpage_obj.apartments_sorted(
+            param.num_apts, price_sort, rating_sort
+        )
         apts_dict = [dataclasses.asdict(apt) for apt in apts]
         query_result = json.dumps(apts_dict)
 
