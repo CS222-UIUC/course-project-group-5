@@ -75,7 +75,8 @@ class MainPage:
             FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
             GROUP BY Apartments.apt_id \
             ORDER BY total_vote {rating_order}, \
-            Apartments.apt_name \
+            Apartments.apt_name, \
+            Apartments.apt_id \
             LIMIT ?",
             (num_apts,),
         ).fetchall()
@@ -96,7 +97,8 @@ class MainPage:
             FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
             GROUP BY Apartments.apt_id \
             ORDER BY (Apartments.price_min + Apartments.price_max)/2 {price_order}, \
-            Apartments.apt_name \
+            Apartments.apt_name, \
+            Apartments.apt_id \
             LIMIT ?",
             (num_apts,),
         ).fetchall()
@@ -123,7 +125,8 @@ class MainPage:
             GROUP BY Apartments.apt_id \
             ORDER BY (Apartments.price_min + Apartments.price_max)/2 {price_order}, \
             total_vote {rating_order}, \
-            Apartments.apt_name \
+            Apartments.apt_name, \
+            Apartments.apt_id \
             LIMIT ?",
             (num_apts,),
         ).fetchall()
