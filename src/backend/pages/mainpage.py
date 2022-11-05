@@ -1,5 +1,4 @@
 """Contains Main page class"""
-import sqlite3
 from datetime import date
 from typing import List
 from typing import Tuple
@@ -45,30 +44,23 @@ class MainPage:
         apt_query = []
 
         if price_sort == 0:
-            apt_query = self.rating_sort_helper(
-                num_apts, rating_sort, self.populate_apartments.cursor
-            )
+            apt_query = self.rating_sort_helper(num_apts, rating_sort)
         elif rating_sort == 0 and price_sort != 0:
-            apt_query = self.price_sort_helper(
-                num_apts, price_sort, self.populate_apartments.cursor
-            )
+            apt_query = self.price_sort_helper(num_apts, price_sort)
         else:
-            apt_query = self.both_sort_helper(
-                num_apts, price_sort, rating_sort, self.populate_apartments.cursor
-            )
+            apt_query = self.both_sort_helper(num_apts, price_sort, rating_sort)
 
         for entry in apt_query:
             apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
         return apts
 
-    def rating_sort_helper(
-        self, num_apts: int, rating_sort: int, cursor: sqlite3.Cursor
-    ) -> List[Tuple]:
+    @use_database
+    def rating_sort_helper(self, num_apts: int, rating_sort: int) -> List[Tuple]:
         """Helper for rating-only sort"""
         rating_order = ""
         if rating_sort in (0, 1):
             rating_order = "DESC"
-        apt_query = cursor.execute(
+        apt_query = self.rating_sort_helper.cursor.execute(
             f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
             Apartments.price_min, Apartments.price_max \
@@ -83,14 +75,13 @@ class MainPage:
 
         return apt_query
 
-    def price_sort_helper(
-        self, num_apts: int, price_sort: int, cursor: sqlite3.Cursor
-    ) -> List[Tuple]:
+    @use_database
+    def price_sort_helper(self, num_apts: int, price_sort: int) -> List[Tuple]:
         """Helper for price-only sorts"""
         price_order = ""
         if price_sort == 1:
             price_order = "DESC"
-        apt_query = cursor.execute(
+        apt_query = self.price_sort_helper.cursor.execute(
             f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
             Apartments.price_min, Apartments.price_max \
@@ -105,8 +96,9 @@ class MainPage:
 
         return apt_query
 
+    @use_database
     def both_sort_helper(
-        self, num_apts: int, price_sort: int, rating_sort: int, cursor: sqlite3.Cursor
+        self, num_apts: int, price_sort: int, rating_sort: int
     ) -> List[Tuple]:
         """Helper to sort both params"""
 
@@ -117,7 +109,7 @@ class MainPage:
         if rating_sort == 1:
             rating_order = "DESC"
 
-        apt_query = cursor.execute(
+        apt_query = self.both_sort_helper.cursor.execute(
             f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
             COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
             Apartments.price_min, Apartments.price_max \
