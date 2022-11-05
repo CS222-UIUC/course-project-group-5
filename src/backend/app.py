@@ -103,9 +103,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
 
         if param.rating_sort is not None:
             rating_sort = param.rating_sort
-        apts = mainpage_obj.populate_apartments(
-            param.num_apts, price_sort, rating_sort
-        )
+        apts = mainpage_obj.populate_apartments(param.num_apts, price_sort, rating_sort)
         apts_dict = [dataclasses.asdict(apt) for apt in apts]
         query_result = json.dumps(apts_dict)
 
