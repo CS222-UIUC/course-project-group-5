@@ -8,7 +8,6 @@ from pages.login import Login
 from pages.mainpage import MainPage
 
 # from logging import FileHandler, WARNING
-
 app = Flask(__name__)
 
 

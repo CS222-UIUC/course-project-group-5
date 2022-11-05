@@ -19,6 +19,7 @@ function App() {
                </Route>
             </Routes>
          </BrowserRouter>
+         <MainPage />
       </div>
    );
 }
