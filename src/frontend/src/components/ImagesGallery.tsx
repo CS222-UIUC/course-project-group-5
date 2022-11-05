@@ -8,7 +8,6 @@ export interface IImagesGalleryProps {
 }
 
 const ImagesGallery = ({ pics }: IImagesGalleryProps) => {
-   console.log(pics);
    return (
       <Carousel>
          {pics.map((pic) => (
