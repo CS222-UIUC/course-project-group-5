@@ -31,5 +31,6 @@
 
    "overrides": [],
    "plugins": ["react", "@typescript-eslint"],
-   "rules": {}
+   "rules": {},
+   "ignorePatterns": ["**/*.css"]
 }
