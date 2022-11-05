@@ -52,8 +52,6 @@ function RightSection({ apt }: apt) {
       };
       getAllReviews();
    }, []);
-   console.log(pics);
-   console.log(reviews);
    return (
       <div className="container">
          <ImagesGallery pics={pics} />

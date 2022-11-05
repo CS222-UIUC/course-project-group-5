@@ -26,7 +26,6 @@ export default function Populate() {
       priceSort,
       ratingSort
    );
-
    const observer = useRef<IntersectionObserver | null>(null);
    const lastAptElementRef = useCallback(
       (node: HTMLDivElement) => {

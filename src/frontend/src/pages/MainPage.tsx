@@ -1,5 +1,5 @@
 import React from 'react';
-import Populate from '../components/populateLeft';
+import Populate from '../components/PopulateLeft';
 import SearchBar from '../components/SearchBar';
 // import { AptType } from '../components/Types';
 import RightSection from '../sections/MainPageRightSection';

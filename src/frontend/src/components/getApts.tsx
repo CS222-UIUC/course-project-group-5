@@ -11,6 +11,7 @@ function getApartments(
    const [error, setError] = useState(false);
    const emptyarray: {
       // avoids linting warnings
+      apt_id: number;
       name: string;
       address: string;
       rating: number;
@@ -45,11 +46,12 @@ function getApartments(
       axios({
          // http://127.0.0.1:5000/?populate=${populate}&priceSort=${priceNum}&ratingSort=${ratingNum}&numApts=${limit}&_page=${pageNum}
          method: 'GET', //http://localhost:3333/mockdata?q=${query}&_page=${pageNum}&_limit=2
-         url: ` http://127.0.0.1:5000/?populate=${populate}&priceSort=${priceNum}&ratingSort=${ratingNum}&numApts=${limit}`,
+         url: `http://127.0.0.1:5000/?populate=${populate}&priceSort=${priceNum}&ratingSort=${ratingNum}&numApts=${limit}`,
          cancelToken: source.token,
       })
          .then((res) => {
             const newApartments: {
+               apt_id: number;
                name: string;
                address: string;
                rating: number;
@@ -59,6 +61,7 @@ function getApartments(
             for (let i = 0; i < res.data.length; i++) {
                if (res.data[i].name !== undefined && pageNum == 1) {
                   newApartments.push({
+                     apt_id: res.data[i].apt_id,
                      name: res.data[i].name,
                      address: res.data[i].address,
                      rating: res.data[i].rating,
