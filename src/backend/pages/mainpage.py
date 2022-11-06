@@ -2,13 +2,30 @@
 from datetime import date
 from typing import List
 from typing import Tuple
+from dataclasses import dataclass
 from dataholders.apt import Apt
 from dataholders.review import Review
 from decorators import use_database
 
 
+@dataclass(frozen=True)
+class LatestPopulatedApt:
+    """Stores details related to the latest apt in a scroll"""
+
+    apt_name: str
+    apt_id: int
+
+
 class MainPage:
     """Mainpage class, interacts with the mainpage frontend"""
+
+    populate_query = "WITH temp(id, name, address, total_vote, p_min, p_max, p_avg) AS \
+    (SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+    COALESCE(SUM(Reviews.vote), 0), \
+    Apartments.price_min, Apartments.price_max, \
+    (Apartments.price_min + Apartments.price_max)/2 \
+    FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
+    GROUP BY Apartments.apt_id) "
 
     def __init__(self) -> None:
         """Constructor"""
@@ -36,92 +53,157 @@ class MainPage:
 
     @use_database
     def populate_apartments(
-        self, num_apts: int, price_sort: int, rating_sort: int
+        self, num_apts: int, price_sort: int, rating_sort: int, apt_id: int
     ) -> List[Apt]:
         """Returns num_apts apartments with sorting criterias"""
 
         apts = []
         apt_query = []
 
+        apt_name = ""
+        if apt_id >= 0:
+            apt_name = self.populate_apartments.cursor.execute(
+                "SELECT apt_name FROM Apartments WHERE apt_id = ?", (apt_id,)
+            ).fetchone()[0]
+        latest_row = LatestPopulatedApt(apt_name, apt_id)
         if price_sort == 0:
-            apt_query = self.rating_sort_helper(num_apts, rating_sort)
+            apt_query = self.rating_sort_helper(num_apts, rating_sort, latest_row)
         elif rating_sort == 0 and price_sort != 0:
-            apt_query = self.price_sort_helper(num_apts, price_sort)
+            apt_query = self.price_sort_helper(num_apts, price_sort, latest_row)
         else:
-            apt_query = self.both_sort_helper(num_apts, price_sort, rating_sort)
+            apt_query = self.both_sort_helper(
+                num_apts, price_sort, rating_sort, latest_row
+            )
 
         for entry in apt_query:
             apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
         return apts
 
     @use_database
-    def rating_sort_helper(self, num_apts: int, rating_sort: int) -> List[Tuple]:
+    def rating_sort_helper(
+        self, num_apts: int, rating_sort: int, latest_row: LatestPopulatedApt
+    ) -> List[Tuple]:
         """Helper for rating-only sort"""
-        rating_order = ""
-        if rating_sort in (0, 1):
-            rating_order = "DESC"
-        apt_query = self.rating_sort_helper.cursor.execute(
-            f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
-            Apartments.price_min, Apartments.price_max \
-            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
-            GROUP BY Apartments.apt_id \
-            ORDER BY total_vote {rating_order}, \
-            Apartments.apt_name, \
-            Apartments.apt_id \
-            LIMIT ?",
-            (num_apts,),
-        ).fetchall()
-
+        rating_order = "DESC" if rating_sort in (0, 1) else ""
+        rating_comp = "<" if rating_sort in (0, 1) else ">"
+        apt_query = []
+        if latest_row.apt_id >= 0:
+            apt_query = self.rating_sort_helper.cursor.execute(
+                self.populate_query
+                + f"SELECT * FROM temp \
+                WHERE \
+                (total_vote = (SELECT total_vote FROM temp WHERE id = ?) \
+                AND (name, id) > (?, ?)) \
+                OR total_vote {rating_comp} \
+                (SELECT total_vote FROM temp WHERE id = ?) \
+                ORDER BY total_vote {rating_order}, name, id \
+                LIMIT ?",
+                (
+                    latest_row.apt_id,
+                    latest_row.apt_name,
+                    latest_row.apt_id,
+                    latest_row.apt_id,
+                    num_apts,
+                ),
+            ).fetchall()
+        else:
+            apt_query = self.rating_sort_helper.cursor.execute(
+                self.populate_query
+                + f"SELECT * FROM temp \
+                ORDER BY total_vote {rating_order}, name, id \
+                LIMIT ?",
+                (num_apts,),
+            ).fetchall()
         return apt_query
 
     @use_database
-    def price_sort_helper(self, num_apts: int, price_sort: int) -> List[Tuple]:
+    def price_sort_helper(
+        self, num_apts: int, price_sort: int, latest_row: LatestPopulatedApt
+    ) -> List[Tuple]:
         """Helper for price-only sorts"""
-        price_order = ""
-        if price_sort == 1:
-            price_order = "DESC"
-        apt_query = self.price_sort_helper.cursor.execute(
-            f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
-            Apartments.price_min, Apartments.price_max \
-            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
-            GROUP BY Apartments.apt_id \
-            ORDER BY (Apartments.price_min + Apartments.price_max)/2 {price_order}, \
-            Apartments.apt_name, \
-            Apartments.apt_id \
-            LIMIT ?",
-            (num_apts,),
-        ).fetchall()
-
+        price_order = "DESC" if price_sort == 1 else ""
+        price_comp = "<" if price_sort == 1 else ">"
+        apt_query = []
+        if latest_row.apt_id >= 0:
+            apt_query = self.price_sort_helper.cursor.execute(
+                self.populate_query
+                + f"SELECT * FROM temp \
+                WHERE \
+                (p_avg = (SELECT p_avg FROM temp WHERE id = ?) \
+                AND (name, id) > (?, ?)) \
+                OR p_avg {price_comp} \
+                (SELECT p_avg FROM temp WHERE id = ?) \
+                ORDER BY p_avg {price_order}, name, id \
+                LIMIT ?",
+                (
+                    latest_row.apt_id,
+                    latest_row.apt_name,
+                    latest_row.apt_id,
+                    latest_row.apt_id,
+                    num_apts,
+                ),
+            ).fetchall()
+        else:
+            apt_query = self.price_sort_helper.cursor.execute(
+                self.populate_query
+                + f"SELECT * FROM temp \
+                ORDER BY p_avg {price_order}, name, id \
+                LIMIT ?",
+                (num_apts,),
+            ).fetchall()
         return apt_query
 
     @use_database
     def both_sort_helper(
-        self, num_apts: int, price_sort: int, rating_sort: int
+        self,
+        num_apts: int,
+        price_sort: int,
+        rating_sort: int,
+        latest_row: LatestPopulatedApt,
     ) -> List[Tuple]:
         """Helper to sort both params"""
 
-        price_order = ""
-        if price_sort == 1:
-            price_order = "DESC"
-        rating_order = ""
-        if rating_sort == 1:
-            rating_order = "DESC"
+        price_comp = "<" if price_sort == 1 else ">"
+        price_order = "DESC" if price_sort == 1 else ""
 
-        apt_query = self.both_sort_helper.cursor.execute(
-            f"SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
-            Apartments.price_min, Apartments.price_max \
-            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
-            GROUP BY Apartments.apt_id \
-            ORDER BY (Apartments.price_min + Apartments.price_max)/2 {price_order}, \
-            total_vote {rating_order}, \
-            Apartments.apt_name, \
-            Apartments.apt_id \
-            LIMIT ?",
-            (num_apts,),
-        ).fetchall()
+        rating_comp = "<" if rating_sort == 1 else ">"
+        rating_order = "DESC" if rating_sort == 1 else ""
+
+        if latest_row.apt_id >= 0:
+            apt_query = self.both_sort_helper.cursor.execute(
+                self.populate_query
+                + f"SELECT * FROM temp \
+                WHERE p_avg {price_comp} \
+                (SELECT p_avg FROM temp WHERE id = ?) \
+                OR ( \
+                p_avg = (SELECT p_avg FROM temp WHERE id = ?) \
+                AND ( \
+                total_vote {rating_comp} \
+                (SELECT total_vote FROM temp WHERE id = ?) \
+                OR (total_vote = (SELECT total_vote FROM temp WHERE id = ?) \
+                AND (name, id) > (?, ?)) \
+                ) \
+                ) \
+                ORDER BY p_avg {price_order}, total_vote {rating_order}, name, id \
+                LIMIT ?",
+                (
+                    latest_row.apt_id,
+                    latest_row.apt_id,
+                    latest_row.apt_id,
+                    latest_row.apt_id,
+                    latest_row.apt_name,
+                    latest_row.apt_id,
+                    num_apts,
+                ),
+            ).fetchall()
+        else:
+            apt_query = self.both_sort_helper.cursor.execute(
+                self.populate_query
+                + f"SELECT * FROM temp \
+                ORDER BY p_avg {price_order}, total_vote {rating_order}, name, id \
+                LIMIT ?",
+                (num_apts,),
+            ).fetchall()
 
         return apt_query
 

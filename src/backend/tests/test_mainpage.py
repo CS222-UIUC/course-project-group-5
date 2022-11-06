@@ -48,6 +48,9 @@ class TestMainPage:
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
+        lincoln_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Lincoln')"
+        ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
         sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
@@ -56,10 +59,18 @@ class TestMainPage:
         )
         sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
 
-        res = self.main_page.populate_apartments(3, 0, 0)
+        res = self.main_page.populate_apartments(3, 0, 0, -1)
+        res_2 = self.main_page.populate_apartments(3, 0, 0, far_id)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
+
+        sample_apts_sorted.pop(0)
+        sample_apts_sorted.append(
+            Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
+        )
+
+        assert sample_apts_sorted == res_2
 
     def test_populate_apartments_rating_reversed(self):
         """Test returns list rating from low to high"""
@@ -86,7 +97,7 @@ class TestMainPage:
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
 
-        res = self.main_page.populate_apartments(3, 0, -1)
+        res = self.main_page.populate_apartments(3, 0, -1, -1)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
@@ -106,6 +117,9 @@ class TestMainPage:
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
         sample_apts_sorted.append(
@@ -118,10 +132,15 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.populate_apartments(3, -1, 0)
+        res = self.main_page.populate_apartments(3, -1, 0, -1)
+        res_2 = self.main_page.populate_apartments(3, -1, 0, lincoln_id)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
+
+        sample_apts_sorted.pop(0)
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        assert sample_apts_sorted == res_2
 
     def test_populate_apartments_price(self):
         """Test returns price from high to low"""
@@ -146,7 +165,7 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.populate_apartments(3, 1, 0)
+        res = self.main_page.populate_apartments(3, 1, 0, -1)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
@@ -169,6 +188,9 @@ class TestMainPage:
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
+        par_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
         sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
@@ -177,10 +199,17 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.populate_apartments(3, 1, -1)
+        res = self.main_page.populate_apartments(3, 1, -1, -1)
+        res_2 = self.main_page.populate_apartments(3, 1, -1, isr_id)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
+
+        sample_apts_sorted.pop(0)
+        sample_apts_sorted.append(
+            Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        )
+        assert sample_apts_sorted == res_2
 
     def test_populate_apartments_price_reversed_rating(self):
         """
@@ -200,6 +229,9 @@ class TestMainPage:
         sherman_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
         sample_apts_sorted.append(
@@ -212,10 +244,15 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.populate_apartments(3, -1, 1)
+        res = self.main_page.populate_apartments(3, -1, 1, -1)
+        res_2 = self.main_page.populate_apartments(3, -1, 1, lincoln_id)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
+
+        sample_apts_sorted.pop(0)
+        sample_apts_sorted.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
+        assert sample_apts_sorted == res_2
 
     def test_get_apartments_pictures(self):
         """Test get_apartments_picture()"""

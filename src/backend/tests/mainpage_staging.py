@@ -10,8 +10,8 @@ class MainPageStaging:
         args = [
             ("Sherman", "909 S 5th St", 5500, 6500, ""),
             ("FAR", "901 W College Ct", 6000, 7000, ""),
-            ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
             ("PAR", "901 W College Ct", 5000, 6000, ""),
+            ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
             ("ISR", "918 W Illinois", 6000, 7000, ""),
         ]
         cursor.executemany(

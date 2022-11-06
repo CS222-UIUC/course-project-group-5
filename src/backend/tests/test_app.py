@@ -186,14 +186,18 @@ def test_mainpage_get_valid_populate(client):
 
     query_1 = {"populate": "True", "numApts": 1}
     query_2 = {"populate": "True", "numApts": 1, "priceSort": 0, "ratingSort": 0}
+    query_3 = {"populate": "True", "numApts": 1, "aptId": -1}
 
     res_1 = client.get("/main", query_string=query_1)
     res_2 = client.get("/main", query_string=query_2)
+    res_3 = client.get("/main", query_string=query_3)
     mainpage.clean_all()
 
     assert res_1.status_code == 200
     assert res_2.status_code == 200
+    assert res_3.status_code == 200
     assert res_1.text == res_2.text
+    assert res_1.text == res_3.text
 
 
 def test_mainpage_get_invalid_query(client):
