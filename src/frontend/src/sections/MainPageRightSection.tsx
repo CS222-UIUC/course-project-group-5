@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const baseURL = 'http://127.0.0.1:5000/main';
 interface apt {
-   apt: AptType;
+   apt: AptType | undefined; // in case of null
 }
 function RightSection({ apt }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
@@ -26,16 +26,14 @@ function RightSection({ apt }: apt) {
    // setAptInfo(apt);
    const retrieveReviews = async () => {
       const response = await axios.get(
-         `${baseURL}?review=True&aptId=${apt.id}`
+         `${baseURL}?review=True&aptId=${apt?.id || 1}`
       );
-      console.log(response.data);
       return response.data;
    };
    const retrievePics = async () => {
       const response = await axios.get(
-         `${baseURL}?pictures=True&aptId=${apt.id}`
+         `${baseURL}?pictures=True&aptId=${apt?.id || 1}`
       );
-      console.log(response.data);
       return response.data;
    };
    useEffect(() => {
@@ -44,14 +42,14 @@ function RightSection({ apt }: apt) {
          if (allPics) setPics(allPics);
       };
       getAllPics();
-   }, []);
+   }, [apt]);
    useEffect(() => {
       const getAllReviews = async () => {
          const allReviews = await retrieveReviews();
          if (allReviews) setReviews(allReviews);
       };
       getAllReviews();
-   }, []);
+   }, [apt]);
    return (
       <div className="container">
          <ImagesGallery pics={pics} />

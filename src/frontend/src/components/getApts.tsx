@@ -4,19 +4,20 @@ import axios from 'axios';
 function getApartments(
    query: string,
    pageNum: number,
-   priceSort: string[],
-   ratingSort: string[]
+   priceSort: string,
+   ratingSort: string
 ) {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(false);
    const emptyarray: {
       // avoids linting warnings
-      apt_id: number;
+      id: number;
       name: string;
       address: string;
       rating: number;
       price_min: number;
       price_max: number;
+      votes: number;
    }[] = [];
    const [apartments, setApartments] = useState(emptyarray);
    const [hasMore, setHasMore] = useState(false);
@@ -51,22 +52,24 @@ function getApartments(
       })
          .then((res) => {
             const newApartments: {
-               apt_id: number;
+               id: number;
                name: string;
                address: string;
                rating: number;
                price_min: number;
                price_max: number;
+               votes: number;
             }[] = [];
             for (let i = 0; i < res.data.length; i++) {
                if (res.data[i].name !== undefined && pageNum == 1) {
                   newApartments.push({
-                     apt_id: res.data[i].apt_id,
+                     id: res.data[i].apt_id,
                      name: res.data[i].name,
                      address: res.data[i].address,
                      rating: res.data[i].rating,
                      price_min: res.data[i].price_min,
                      price_max: res.data[i].price_max,
+                     votes: res.data[i].votes,
                   });
                }
             }
@@ -88,20 +91,20 @@ function getApartments(
    return { loading, error, apartments, hasMore };
 }
 
-function convertPriceSort(sort: string[]) {
-   if (sort.includes('low-high')) {
+function convertPriceSort(sort: string) {
+   if (sort === 'low-high') {
       return -1;
-   } else if (sort.includes('high-low')) {
+   } else if (sort === 'high-low') {
       return 1;
    } else {
       return 0;
    }
 }
 
-function convertRatingSort(sort: string[]) {
-   if (sort.includes('least popular')) {
+function convertRatingSort(sort: string) {
+   if (sort === 'least popular') {
       return -1;
-   } else if (sort.includes('most popular')) {
+   } else if (sort === 'most popular') {
       return 1;
    } else {
       return 0;
