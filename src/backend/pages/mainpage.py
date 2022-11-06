@@ -94,8 +94,7 @@ class MainPage:
                 WHERE \
                 (total_vote = (SELECT total_vote FROM temp WHERE id = ?) \
                 AND (name, id) > (?, ?)) \
-                OR total_vote {rating_comp} \
-                (SELECT total_vote FROM temp WHERE id = ?) \
+                OR total_vote {rating_comp} (SELECT total_vote FROM temp WHERE id = ?) \
                 ORDER BY total_vote {rating_order}, name, id \
                 LIMIT ?",
                 (
@@ -131,8 +130,7 @@ class MainPage:
                 WHERE \
                 (p_avg = (SELECT p_avg FROM temp WHERE id = ?) \
                 AND (name, id) > (?, ?)) \
-                OR p_avg {price_comp} \
-                (SELECT p_avg FROM temp WHERE id = ?) \
+                OR p_avg {price_comp} (SELECT p_avg FROM temp WHERE id = ?) \
                 ORDER BY p_avg {price_order}, name, id \
                 LIMIT ?",
                 (
@@ -173,13 +171,11 @@ class MainPage:
             apt_query = self.both_sort_helper.cursor.execute(
                 self.populate_query
                 + f"SELECT * FROM temp \
-                WHERE p_avg {price_comp} \
-                (SELECT p_avg FROM temp WHERE id = ?) \
+                WHERE p_avg {price_comp} (SELECT p_avg FROM temp WHERE id = ?) \
                 OR ( \
                 p_avg = (SELECT p_avg FROM temp WHERE id = ?) \
                 AND ( \
-                total_vote {rating_comp} \
-                (SELECT total_vote FROM temp WHERE id = ?) \
+                total_vote {rating_comp} (SELECT total_vote FROM temp WHERE id = ?) \
                 OR (total_vote = (SELECT total_vote FROM temp WHERE id = ?) \
                 AND (name, id) > (?, ?)) \
                 ) \

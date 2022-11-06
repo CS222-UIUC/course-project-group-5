@@ -114,11 +114,11 @@ class TestMainPage:
         par_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
         ).fetchone()[0]
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
@@ -185,11 +185,11 @@ class TestMainPage:
         isr_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
         ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
         par_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
@@ -226,11 +226,11 @@ class TestMainPage:
         par_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
         ).fetchone()[0]
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
         far_id = cursor.execute(
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+        ).fetchone()[0]
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         connection.close()
         sample_apts_sorted = []
