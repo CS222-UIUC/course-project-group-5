@@ -144,8 +144,8 @@ class MainPageStaging:
     @use_database
     def clean_all(self):
         """Clean up test data"""
-        conn = self.initialize_all.connection
-        cur = self.initialize_all.cursor
+        conn = self.clean_all.connection
+        cur = self.clean_all.cursor
         self.clean_up_reviews(cur, conn)
         self.clean_up_pics(cur, conn)
         self.clean_up_apartments(cur, conn)

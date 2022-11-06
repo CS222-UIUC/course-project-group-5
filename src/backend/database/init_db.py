@@ -2,8 +2,8 @@
 import sqlite3
 import sys
 
-arg = sys.argv[1]
-connection = sqlite3.connect(arg)
+ARG = sys.argv[1]
+connection = sqlite3.connect(ARG)
 with open("schema.sql", "r", encoding="utf-8") as f:
     connection.executescript(f.read())
 cur = connection.cursor()

@@ -36,7 +36,7 @@ def use_test(func):
         """Wrapper around the actual function"""
         config.DB_NAME = "database_test.db"
         func_instance = func(*args, **kwargs)
-        config.DB_NAME = "database.db"
+        config.DB_NAME = "database_prod.db"
         return func_instance
 
     return wrapped

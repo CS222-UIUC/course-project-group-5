@@ -92,6 +92,7 @@ def test_login_valid(client):
     assert res.status_code == 200
 
 
+@use_test
 def test_login_invalid_user(client):
     """Test handles non-existant user"""
     log_info = {"user": "big_finger", "password": "123456789"}
