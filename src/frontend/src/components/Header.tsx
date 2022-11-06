@@ -4,9 +4,9 @@ import HomeWorkIcon from '@mui/icons-material/HomeWork';
 export default function Header() {
    return (
       <div>
-         <h3>
+         {/* <h3>
             View apartment or dorm ratings! <HomeWorkIcon />
-         </h3>
+         </h3> */}
       </div>
    );
 }

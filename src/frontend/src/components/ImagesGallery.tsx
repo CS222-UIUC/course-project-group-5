@@ -9,13 +9,15 @@ export interface IImagesGalleryProps {
 
 const ImagesGallery = ({ pics }: IImagesGalleryProps) => {
    return (
-      <Carousel>
-         {pics.map((pic) => (
-            <Carousel.Item key={pic}>
-               <img className="d-block w-100" src={pic} alt="" />
-            </Carousel.Item>
-         ))}
-      </Carousel>
+      <div className="d-flex text-center">
+         <Carousel>
+            {pics.map((pic) => (
+               <Carousel.Item key={pic}>
+                  <img className="d-block w-100" src={pic} alt="" />
+               </Carousel.Item>
+            ))}
+         </Carousel>
+      </div>
    );
 };
 

@@ -26,9 +26,9 @@ function MainPage() {
 
    return (
       <div>
+         <SearchBar />
          <div className="d-flex flex-row">
             <div className="w-50">
-               <SearchBar />
                <Populate />
             </div>
             <div className="w-50">

@@ -2,14 +2,15 @@ import React from 'react';
 import { Typography, Card, CardContent } from '@material-ui/core';
 import { CardActionArea } from '@mui/material';
 import styled from 'styled-components';
+// import { Alert } from 'react-bootstrap';
 
 const Container = styled.div``;
 
 const MyCard = styled(Card)`
    margin-left: 20px;
    margin-bottom: 20px;
-   height: 300px;
-   width: 470px;
+   height: 20%;
+   width: 80%;
 `;
 
 interface SingleCardProps {
@@ -27,12 +28,22 @@ const SingleCard = ({
    price_min,
    price_max,
 }: SingleCardProps) => (
-   <Container>
+   // <Container>
+   //    <Alert variant="secondary">
+   //       <h5>{name}</h5>
+   //       <h6>{address}</h6>
+   //       <h4>
+   //          ${price_min}-${price_max}
+   //       </h4>
+   //       <h2>{rating}</h2>
+   //    </Alert>
+   // </Container>
+   <Container className="h-25">
       <MyCard>
          {' '}
          <CardActionArea>
             {/*<CardMedia component="img" src={} height="150" />*/}
-            <CardContent style={{ height: '300px' }}>
+            <CardContent style={{ height: '30px' }}>
                {/*<Button size="small">Learn More</Button>*/}
                <div style={{ display: 'inline-block', width: '100%' }}>
                   <Typography
