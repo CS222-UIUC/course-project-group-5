@@ -28,14 +28,12 @@ function RightSection({ apt }: apt) {
       const response = await axios.get(
          `${baseURL}?review=True&aptId=${apt?.id || 1}`
       );
-      console.log(response.data);
       return response.data;
    };
    const retrievePics = async () => {
       const response = await axios.get(
          `${baseURL}?pictures=True&aptId=${apt?.id || 1}`
       );
-      console.log(response.data);
       return response.data;
    };
    useEffect(() => {
