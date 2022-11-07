@@ -3,6 +3,7 @@ import sqlite3
 import pytest
 from app import app
 from tests.mainpage_staging import MainPageStaging
+from decorators import use_test
 
 
 @pytest.fixture(name="config_app")
@@ -18,6 +19,7 @@ def fixture_client(config_app):
     return config_app.test_client()
 
 
+@use_test
 def test_register_valid(client):
     """Test register handles valid request"""
     reg_info = {
@@ -27,7 +29,7 @@ def test_register_valid(client):
         "phone": "0003335555",
     }
     res = client.post("/register", json=reg_info)
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
     cursor.execute("DELETE FROM Users WHERE username = ?", ("big_finger",))
     connection.commit()
@@ -35,6 +37,7 @@ def test_register_valid(client):
     assert res.status_code == 201
 
 
+@use_test
 def test_register_invalid_input(client):
     """Test register handles invalid register attempt"""
     reg_info = {
@@ -53,7 +56,7 @@ def test_register_invalid_input(client):
     client.post("/register", json=reg_info)
     res_2 = client.post("/register", json=reg_info_2)
 
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
     cursor.execute("DELETE FROM Users WHERE username = ?", ("big_finger",))
     connection.commit()
@@ -69,9 +72,10 @@ def test_register_not_json(client):
     assert res.status_code == 400
 
 
+@use_test
 def test_login_valid(client):
     """Test login handles valid request"""
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
     cursor.execute(
         "INSERT INTO Users (username, password, email, phone)\
@@ -88,6 +92,7 @@ def test_login_valid(client):
     assert res.status_code == 200
 
 
+@use_test
 def test_login_invalid_user(client):
     """Test handles non-existant user"""
     log_info = {"user": "big_finger", "password": "123456789"}
@@ -101,11 +106,12 @@ def test_login_not_json(client):
     assert res.status_code == 400
 
 
+@use_test
 def test_mainpage_get_valid_review(client):
     """Test mainpage handles valid reviwew request"""
     mainpage = MainPageStaging()
     mainpage.initialize_all()
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
 
     far_id = cursor.execute(
@@ -126,12 +132,13 @@ def test_mainpage_get_valid_review(client):
     assert res.text == sample_json
 
 
+@use_test
 def test_mainpage_get_valid_search(client):
     """Test mainpage handles valid search request"""
     mainpage = MainPageStaging()
     mainpage.initialize_all()
 
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
 
     isr_id = cursor.execute(
@@ -155,12 +162,13 @@ def test_mainpage_get_valid_search(client):
     assert res.text == sample_json
 
 
+@use_test
 def test_mainpage_get_valid_pictures(client):
     """Test mainpage handles valid picture query"""
     mainpage = MainPageStaging()
     mainpage.initialize_all()
 
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
 
     sample_id = cursor.execute(
@@ -179,6 +187,7 @@ def test_mainpage_get_valid_pictures(client):
     assert res.text == sample_json
 
 
+@use_test
 def test_mainpage_get_valid_populate(client):
     """Test mainpage handles valid populate query"""
     mainpage = MainPageStaging()
@@ -186,14 +195,18 @@ def test_mainpage_get_valid_populate(client):
 
     query_1 = {"populate": "True", "numApts": 1}
     query_2 = {"populate": "True", "numApts": 1, "priceSort": 0, "ratingSort": 0}
+    query_3 = {"populate": "True", "numApts": 1, "aptId": -1}
 
     res_1 = client.get("/main", query_string=query_1)
     res_2 = client.get("/main", query_string=query_2)
+    res_3 = client.get("/main", query_string=query_3)
     mainpage.clean_all()
 
     assert res_1.status_code == 200
     assert res_2.status_code == 200
+    assert res_3.status_code == 200
     assert res_1.text == res_2.text
+    assert res_1.text == res_3.text
 
 
 def test_mainpage_get_invalid_query(client):
@@ -202,11 +215,12 @@ def test_mainpage_get_invalid_query(client):
     assert res.status_code == 400
 
 
+@use_test
 def test_mainpage_post_valid(client):
     """Test mainpage handles valid post request"""
     mainpage = MainPageStaging()
     mainpage.initialize_all()
-    connection = sqlite3.connect("database/database.db")
+    connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
 
     isr_id = cursor.execute(

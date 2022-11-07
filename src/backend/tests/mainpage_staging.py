@@ -1,5 +1,6 @@
 """Stage the database for"""
 import sqlite3
+from decorators import use_database
 
 
 class MainPageStaging:
@@ -10,8 +11,8 @@ class MainPageStaging:
         args = [
             ("Sherman", "909 S 5th St", 5500, 6500, ""),
             ("FAR", "901 W College Ct", 6000, 7000, ""),
-            ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
             ("PAR", "901 W College Ct", 5000, 6000, ""),
+            ("Lincoln", "1005 S Lincoln Ave", 5000, 6000, ""),
             ("ISR", "918 W Illinois", 6000, 7000, ""),
         ]
         cursor.executemany(
@@ -130,22 +131,22 @@ class MainPageStaging:
         cursor.execute("DELETE FROM AptPics WHERE apt_id = ?", (sherman_id,))
         connection.commit()
 
+    @use_database
     def initialize_all(self):
         """Initialize test data"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        self.insert_apartments(cursor, connection)
-        self.insert_users(cursor, connection)
-        self.insert_reviews(cursor, connection)
-        self.insert_pics(cursor, connection)
-        connection.close()
+        conn = self.initialize_all.connection
+        cur = self.initialize_all.cursor
+        self.insert_apartments(cur, conn)
+        self.insert_users(cur, conn)
+        self.insert_reviews(cur, conn)
+        self.insert_pics(cur, conn)
 
+    @use_database
     def clean_all(self):
         """Clean up test data"""
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        self.clean_up_reviews(cursor, connection)
-        self.clean_up_pics(cursor, connection)
-        self.clean_up_apartments(cursor, connection)
-        self.clean_up_users(cursor, connection)
-        connection.close()
+        conn = self.clean_all.connection
+        cur = self.clean_all.cursor
+        self.clean_up_reviews(cur, conn)
+        self.clean_up_pics(cur, conn)
+        self.clean_up_apartments(cur, conn)
+        self.clean_up_users(cur, conn)
