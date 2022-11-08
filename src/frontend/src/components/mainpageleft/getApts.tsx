@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AptType } from './Types';
+import { AptType } from '../Types';
 
 function getApartments(priceSort: string, ratingSort: string, id: number) {
    const [loading, setLoading] = useState(true);

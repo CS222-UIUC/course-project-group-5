@@ -1,10 +1,10 @@
 import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useState, useRef, useCallback } from 'react';
-import SingleCard from './SingleCard';
+import SingleCard from '../SingleCard';
 import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
 import getApartments from './getApts';
-import { AptType } from './Types';
+import { AptType } from '../Types';
 
 interface Props {
    onSelect: (apt: AptType) => void;

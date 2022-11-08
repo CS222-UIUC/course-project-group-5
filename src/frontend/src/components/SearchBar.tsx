@@ -2,7 +2,7 @@ import { Autocomplete, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
-import getSuggestions from './getSearchBarSuggestions';
+import getSuggestions from './mainpageleft/getSearchBarSuggestions';
 
 export default function SearchBar() {
    const [query, setQuery] = useState('');

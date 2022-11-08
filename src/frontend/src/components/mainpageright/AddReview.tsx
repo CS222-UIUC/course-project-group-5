@@ -7,6 +7,7 @@ export default function AddReview() {
    const [text, setText] = useState<string>('');
    const [vote, setVote] = useState<number>(0);
    const addReviewHandler = async (text: string, vote: number) => {
+      // post review on submit
       const result = await axios.post(`${baseURL}`, {
          apt_id: 2,
          username: 'Zongxian',
@@ -17,6 +18,7 @@ export default function AddReview() {
    };
    const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       console.log(typeof event.target.value);
+      // set the vote
       if (event.target.value === 'upvote') {
          setVote(1);
       } else if (event.target.value === 'downvote') {
@@ -24,7 +26,7 @@ export default function AddReview() {
       }
    };
    const add = () => {
-      if (text === '' || vote === 0) {
+      if (text === '' || vote === 0) { // alert on error
          alert('All fields are mandatory!');
          return;
       }

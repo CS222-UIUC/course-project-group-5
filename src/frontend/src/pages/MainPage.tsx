@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import getApartments from '../components/getApts';
-import Populate from '../components/PopulateLeftSection';
+import getApartments from '../components/mainpageleft/getApts';
+import Populate from '../components/mainpageleft/PopulateLeftSection';
 import SearchBar from '../components/SearchBar';
 import { AptType } from '../components/Types';
 import RightSection from '../sections/MainPageRightSection';
