@@ -30,7 +30,7 @@ export default function SearchBar() {
 
    return (
       <>
-         <h1>Apartment Search</h1>
+         <h1 className="Title">Apartment Search</h1>
          <div className="search">
             <Stack spacing={2} sx={{ width: 500 }}>
                <Autocomplete

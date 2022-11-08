@@ -7,9 +7,11 @@ import MainPage from './pages/MainPage';
 
 function App() {
    return (
-      <div className="App">
+      <>
          <BrowserRouter>
-            <Header />
+            <div style={{ height: '80px', textAlign: 'center' }}>
+               <Header />
+            </div>
             <Routes>
                <Route path="/login">
                   <Route index element={<Login />} />
@@ -19,7 +21,7 @@ function App() {
                </Route>
             </Routes>
          </BrowserRouter>
-      </div>
+      </>
    );
 }
 export default App;
