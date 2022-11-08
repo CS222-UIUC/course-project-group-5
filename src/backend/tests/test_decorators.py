@@ -14,6 +14,7 @@ def insert_review():
     )
 
 
+@decorators.use_test
 def test_use_database_raise_exception():
     """use_database correctly raises an exception"""
     connection = sqlite3.connect("database/database_test.db")
