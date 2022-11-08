@@ -4,7 +4,7 @@ from typing import Union
 
 
 @dataclass
-class ActionType:
+class GetRequestType:
     """Specific action of the request"""
 
     is_search: bool

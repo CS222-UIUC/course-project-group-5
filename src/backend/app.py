@@ -6,7 +6,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
-from dataholders.mainpage_get import ActionType, Params
+from dataholders.mainpage_get import GetRequestType, Params
 
 # from logging import FileHandler, WARNING
 app = Flask(__name__)
@@ -67,7 +67,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     - Getting reviews of an apartment
     - Getting pictures of an apartment
     """
-    action = ActionType(
+    action = GetRequestType(
         args.get("search", default=False, type=bool),
         args.get("populate", default=False, type=bool),
         args.get("review", default=False, type=bool),
@@ -85,7 +85,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     return mainpage_process_get(mainpage_obj, action, param)
 
 
-def mainpage_process_get(mainpage_obj: MainPage, action: ActionType, param: Params):
+def mainpage_process_get(mainpage_obj: MainPage, action: GetRequestType, param: Params):
     """Process the get requests"""
     query_result = ""
     if action.is_search is True and param.search_query is not None:
