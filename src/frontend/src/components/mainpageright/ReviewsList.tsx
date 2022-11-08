@@ -1,6 +1,6 @@
 import React from 'react';
 import ReviewCard from './ReviewCard';
-import { ReviewType } from './Types';
+import { ReviewType } from '../Types';
 
 interface Props {
    reviews: ReviewType[];

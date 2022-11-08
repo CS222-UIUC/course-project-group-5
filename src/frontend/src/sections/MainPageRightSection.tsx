@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import ReviewsList from '../components/ReviewsList';
-import AddReview from '../components/AddReview';
-import ImagesGallery from '../components/ImagesGallery';
+import ReviewsList from '../components/mainpageright/ReviewsList';
+import AddReview from '../components/mainpageright/AddReview';
+import ImagesGallery from '../components/mainpageright/ImagesGallery';
 import { ReviewType, AptType } from '../components/Types';
-import { AptInfo } from '../components/AptInfo';
+import { AptInfo } from '../components/mainpageright/AptInfo';
 import axios from 'axios';
 
 const baseURL = 'http://127.0.0.1:5000/main';

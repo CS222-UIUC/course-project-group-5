@@ -11,7 +11,7 @@ const ImagesGallery = ({ pics }: IImagesGalleryProps) => {
    return (
       <Carousel>
          {pics.map((pic) => (
-            <Carousel.Item key={pic}>
+            <Carousel.Item key={pic} style={{ height: '500px' }}>
                <img className="d-block w-100" src={pic} alt="" />
             </Carousel.Item>
          ))}
