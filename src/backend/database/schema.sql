@@ -129,6 +129,54 @@ VALUES (1, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3Oo
 INSERT INTO AptPics (apt_id, link)
 VALUES (2, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
 
+INSERT INTO AptPics (apt_id, link)
+VALUES (3, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (4, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (5, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (6, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (7, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (8, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (9, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (10, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (11, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (12, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (13, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (14, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (15, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (16, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (17, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+
+INSERT INTO AptPics (apt_id, link)
+VALUES (18, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
+
 INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote)
 VALUES (1, 1, '2021-09-23', 'Great Apartment, I love it!', 1);
 
