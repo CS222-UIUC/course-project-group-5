@@ -26,7 +26,8 @@ export default function AddReview() {
       }
    };
    const add = () => {
-      if (text === '' || vote === 0) { // alert on error
+      if (text === '' || vote === 0) {
+         // alert on error
          alert('All fields are mandatory!');
          return;
       }
