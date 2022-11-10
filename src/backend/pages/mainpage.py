@@ -36,24 +36,7 @@ class MainPage:
         return apts
 
     @use_database
-    def apartments_default(self, num_apts: int) -> List[Apt]:
-        """Returns num_apts apartments to populate the mainpage"""
-        apt_query = self.apartments_default.cursor.execute(
-            "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
-            Apartments.price_min, Apartments.price_max \
-            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
-            GROUP BY Apartments.apt_id \
-            ORDER BY total_vote DESC, Apartments.apt_name LIMIT ?",
-            (num_apts,),
-        ).fetchall()
-        apts = []
-        for entry in apt_query:
-            apts.append(Apt(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]))
-        return apts
-
-    @use_database
-    def apartments_sorted(
+    def populate_apartments(
         self, num_apts: int, price_sort: int, rating_sort: int
     ) -> List[Apt]:
         """Returns num_apts apartments with sorting criterias"""
@@ -63,15 +46,15 @@ class MainPage:
 
         if price_sort == 0:
             apt_query = self.rating_sort_helper(
-                num_apts, rating_sort, self.apartments_sorted.cursor
+                num_apts, rating_sort, self.populate_apartments.cursor
             )
         elif rating_sort == 0 and price_sort != 0:
             apt_query = self.price_sort_helper(
-                num_apts, price_sort, self.apartments_sorted.cursor
+                num_apts, price_sort, self.populate_apartments.cursor
             )
         else:
             apt_query = self.both_sort_helper(
-                num_apts, price_sort, rating_sort, self.apartments_sorted.cursor
+                num_apts, price_sort, rating_sort, self.populate_apartments.cursor
             )
 
         for entry in apt_query:

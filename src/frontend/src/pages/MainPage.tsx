@@ -1,38 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import getApartments from '../components/getApts';
 import Populate from '../components/PopulateLeftSection';
 import SearchBar from '../components/SearchBar';
-// import { AptType } from '../components/Types';
+import { AptType } from '../components/Types';
 import RightSection from '../sections/MainPageRightSection';
 
 function MainPage() {
-   //const [to, setTo] = useState(data[0]);
-   // uncommented when left and right connected
-   // const [apt, setApt] = useState<AptType>({
-   //    id: 2,
-   //    name: 'sample apartment',
-   //    address: 'sample address',
-   //    price_min: 0,
-   //    price_max: 0,
-   //    votes: 0,
-   // });
-   const apt = {
-      id: 2,
-      name: 'sample apartment',
-      address: 'sample address',
-      price_min: 0,
-      price_max: 0,
-      votes: 0,
-   };
-
+   const { apartments } = getApartments('', 0, '0', '0');
+   const [to, setTo] = useState<AptType>(apartments[0]);
    return (
       <div>
          <SearchBar />
          <div className="d-flex flex-row">
             <div className="w-50">
+<<<<<<< HEAD
                <Populate />
+=======
+               <SearchBar />
+               <Populate onSelect={(apt) => setTo(apt)} />
+>>>>>>> f1bfa98339d10778892fa18c6638d635a0bf4f96
             </div>
             <div className="w-50">
-               <RightSection apt={apt} />
+               <RightSection apt={to || apartments[0]} />
             </div>
          </div>
       </div>

@@ -33,37 +33,7 @@ class TestMainPage:
         self.main_page_stage.clean_all()
         assert sample_search_apts == res
 
-    def test_apartments_default(self):
-        """Test apartments_default() returns correct list"""
-        self.main_page_stage.initialize_all()
-
-        connection = sqlite3.connect("database/database.db")
-        cursor = connection.cursor()
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
-        ).fetchone()[0]
-        isr_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'ISR')"
-        ).fetchone()[0]
-        far_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
-        ).fetchone()[0]
-        connection.close()
-        sample_apts_default = []
-        sample_apts_default.append(
-            Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000)
-        )
-        sample_apts_default.append(
-            Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
-        )
-        sample_apts_default.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
-
-        res = self.main_page.apartments_default(3)
-
-        self.main_page_stage.clean_all()
-        assert sample_apts_default == res
-
-    def test_apartments_sorted_default(self):
+    def test_populate_apartments_default(self):
         """Test apartments_sorted() returns correct list"""
         self.main_page_stage.initialize_all()
 
@@ -86,12 +56,12 @@ class TestMainPage:
         )
         sample_apts_sorted.append(Apt(isr_id, "ISR", "918 W Illinois", 0, 6000, 7000))
 
-        res = self.main_page.apartments_sorted(3, 0, 0)
+        res = self.main_page.populate_apartments(3, 0, 0)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
-    def test_apartments_sorted_rating_reversed(self):
+    def test_populate_apartments_rating_reversed(self):
         """Test returns list rating from low to high"""
         self.main_page_stage.initialize_all()
 
@@ -116,12 +86,12 @@ class TestMainPage:
             Apt(lincoln_id, "Lincoln", "1005 S Lincoln Ave", 0, 5000, 6000)
         )
 
-        res = self.main_page.apartments_sorted(3, 0, -1)
+        res = self.main_page.populate_apartments(3, 0, -1)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
-    def test_apartments_sorted_price_reversed(self):
+    def test_populate_apartments_price_reversed(self):
         """Test returns price from low to high"""
         self.main_page_stage.initialize_all()
 
@@ -148,12 +118,12 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.apartments_sorted(3, -1, 0)
+        res = self.main_page.populate_apartments(3, -1, 0)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
-    def test_apartments_sorted_price(self):
+    def test_populate_apartments_price(self):
         """Test returns price from high to low"""
         self.main_page_stage.initialize_all()
 
@@ -176,12 +146,12 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.apartments_sorted(3, 1, 0)
+        res = self.main_page.populate_apartments(3, 1, 0)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
-    def test_apartments_sorted_price_rating_reversed(self):
+    def test_populate_apartments_price_rating_reversed(self):
         """
         Test price from high to low
         and rating from low to high
@@ -207,12 +177,12 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.apartments_sorted(3, 1, -1)
+        res = self.main_page.populate_apartments(3, 1, -1)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res
 
-    def test_apartments_sorted_price_reversed_rating(self):
+    def test_populate_apartments_price_reversed_rating(self):
         """
         Test price from low to high
         and rating from high to low
@@ -242,7 +212,7 @@ class TestMainPage:
             Apt(sherman_id, "Sherman", "909 S 5th St", 1, 5500, 6500)
         )
 
-        res = self.main_page.apartments_sorted(3, -1, 1)
+        res = self.main_page.populate_apartments(3, -1, 1)
 
         self.main_page_stage.clean_all()
         assert sample_apts_sorted == res

@@ -51,8 +51,13 @@ VALUES ('The Dean Campustown', '708 S 6th St, Champaign, IL 61820', 860, 1900, '
 INSERT INTO Apartments (apt_name, apt_address, price_min, price_max, link)
 VALUES ('Seven07 Apartments', '707 S 4th St, Champaign, IL 61820', 856, 1750, 'https://www.apartmentfinder.com/Illinois/Champaign-Apartments/Seven07-Apartments-75ckgzx');
 
+<<<<<<< HEAD
 INSERT INTO AptPics (apt_id, link)
 VALUES (2, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+=======
+-- INSERT INTO AptPics (apt_id, link)
+-- VALUES (1, 'https://image1.apartmentfinder.com/i2/yI_vOGHFLSjSR7fuXTtN6vEcPux3OoeLbY-pKtkIda8/116/seven07-champaign-il-4-br-4-ba---living-room.jpg');
+>>>>>>> f1bfa98339d10778892fa18c6638d635a0bf4f96
 
 INSERT INTO AptPics (apt_id, link)
 VALUES (2, 'https://image1.apartmentfinder.com/i2/fU58gLkELEv-9Yoe6T4cecz5HcARTNYp-eA3RtF1wY0/116/seven07-champaign-il-building-photo.jpg');
