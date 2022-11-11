@@ -1,7 +1,7 @@
 import { Autocomplete, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import './SearchBarStyles.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import getSuggestions from './mainpageleft/getSearchBarSuggestions';
 
 export default function SearchBar() {
@@ -29,13 +29,9 @@ export default function SearchBar() {
    };
 
    return (
-      <>
-<<<<<<< HEAD
-         <h3>Apartment Search</h3>
-=======
-         <h1 className="Title">Apartment Search</h1>
->>>>>>> 32bff1c1a3108ad1be6ee951585ca73c9bd24963
-         <div className="search">
+      <nav className="navbar fixed-top navbar-light bg-light">
+         <a className="navbar-brand">Apartment Search</a>
+         <div className="text-center">
             <Stack spacing={2} sx={{ width: 500 }}>
                <Autocomplete
                   id="free-solo-demo"
@@ -48,7 +44,7 @@ export default function SearchBar() {
                />
             </Stack>
          </div>
-         <br />
-      </>
+         <p>Hello, Zongxian</p>
+      </nav>
    );
 }

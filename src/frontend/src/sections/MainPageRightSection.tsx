@@ -56,7 +56,7 @@ function RightSection({ apt }: apt) {
             <ImagesGallery pics={pics} />
          </div>
          <AptInfo apt={apt} />
-         <AddReview />
+         <AddReview apt_id={apt?.id} />
          <ReviewsList reviews={reviews} />
       </div>
    );

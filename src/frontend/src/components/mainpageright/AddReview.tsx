@@ -3,14 +3,17 @@ import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 const baseURL = 'http://127.0.0.1:5000/main';
-export default function AddReview() {
+interface Props {
+   apt_id: number | undefined;
+}
+export default function AddReview({ apt_id }: Props) {
    const [text, setText] = useState<string>('');
    const [vote, setVote] = useState<number>(0);
    const addReviewHandler = async (text: string, vote: number) => {
       // post review on submit
       const result = await axios.post(`${baseURL}`, {
-         apt_id: 2,
-         username: 'Zongxian',
+         apt_id: apt_id,
+         username: 'Brotherlouie', // TODO, set to current username
          comment: text,
          vote: vote,
       });

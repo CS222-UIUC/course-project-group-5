@@ -1,8 +1,7 @@
-import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React, { useState, useRef, useCallback } from 'react';
 import SingleCard from '../SingleCard';
 import { useSearchParams } from 'react-router-dom';
-import '../SearchBarStyles.css';
 import getApartments from './getApts';
 import { AptType } from '../Types';
 
@@ -92,38 +91,38 @@ export default function Populate({ onSelect }: Props) {
    return (
       <>
          <div>
-            <div style={{ textAlign: 'center' }}>
-               <br />
-               <ToggleButtonGroup
-                  color="primary"
-                  value={priceSort}
-                  onChange={handlePriceToggle}
-                  aria-label="Platform"
-                  exclusive
-               >
-                  <ToggleButton value="low-high">Low-High</ToggleButton>
-                  <ToggleButton value="high-low">High-Low</ToggleButton>
-               </ToggleButtonGroup>
-               <ToggleButtonGroup
-                  color="primary"
-                  value={ratingSort}
-                  onChange={handlePopularToggle}
-                  aria-label="Platform"
-                  exclusive
-               >
-                  <ToggleButton value="least popular">
-                     Least Popular
-                  </ToggleButton>
-                  <ToggleButton value="most popular">Most Popular</ToggleButton>
-               </ToggleButtonGroup>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div style={{ textAlign: 'center' }}>
-               {apartments.length === 0 && !loading && 'None found'}
-            </div>
-            <Grid style={{ maxHeight: '100vh', overflow: 'auto' }}>
+            <span>
+               <div>
+                  <ToggleButtonGroup
+                     color="primary"
+                     value={priceSort}
+                     onChange={handlePriceToggle}
+                     aria-label="Platform"
+                     exclusive
+                  >
+                     <ToggleButton value="low-high">Low-High</ToggleButton>
+                     <ToggleButton value="high-low">High-Low</ToggleButton>
+                  </ToggleButtonGroup>
+               </div>
+               <div>
+                  <ToggleButtonGroup
+                     color="primary"
+                     value={ratingSort}
+                     onChange={handlePopularToggle}
+                     aria-label="Platform"
+                     exclusive
+                  >
+                     <ToggleButton value="least popular">
+                        Least Popular
+                     </ToggleButton>
+                     <ToggleButton value="most popular">
+                        Most Popular
+                     </ToggleButton>
+                  </ToggleButtonGroup>
+               </div>
+            </span>
+            <div>{apartments.length === 0 && !loading && 'None found'}</div>
+            <div className="overflow-auto">
                {apartments.map((apartment, i) => {
                   if (apartments.length === i + 1) {
                      return (
@@ -148,7 +147,7 @@ export default function Populate({ onSelect }: Props) {
                      );
                   }
                })}
-            </Grid>
+            </div>
             <div style={{ textAlign: 'center' }}>{loading && 'Loading...'}</div>
             <div style={{ textAlign: 'center' }}>{error && 'Error...'}</div>
          </div>
