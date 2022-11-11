@@ -1,7 +1,9 @@
 """Initialize database"""
 import sqlite3
+import sys
 
-connection = sqlite3.connect("database.db")
+ARG = sys.argv[1]
+connection = sqlite3.connect(ARG)
 with open("schema.sql", "r", encoding="utf-8") as f:
     connection.executescript(f.read())
 cur = connection.cursor()

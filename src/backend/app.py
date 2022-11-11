@@ -1,13 +1,13 @@
 """ This is a module docstring """
 import json
 import dataclasses
-from collections import namedtuple
 from werkzeug.datastructures import MultiDict
 from flask_cors import CORS
 from flask import Flask, request
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
+from dataholders.mainpage_get import GetRequestType, Params
 
 # from logging import FileHandler, WARNING
 app = Flask(__name__)
@@ -68,20 +68,14 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     - Getting reviews of an apartment
     - Getting pictures of an apartment
     """
-    action_type = namedtuple(
-        "action_type", ["is_search", "is_populate", "is_review", "is_pictures"]
-    )
-    action = action_type(
+    action = GetRequestType(
         args.get("search", default=False, type=bool),
         args.get("populate", default=False, type=bool),
         args.get("review", default=False, type=bool),
         args.get("pictures", default=False, type=bool),
     )
 
-    params = namedtuple(
-        "params", ["num_apts", "apt_id", "search_query", "price_sort", "rating_sort"]
-    )
-    param = params(
+    param = Params(
         args.get("numApts", type=int),
         args.get("aptId", type=int),
         args.get("searchQuery", type=str),
@@ -89,6 +83,11 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         args.get("ratingSort", type=int),
     )
 
+    return mainpage_process_get(mainpage_obj, action, param)
+
+
+def mainpage_process_get(mainpage_obj: MainPage, action: GetRequestType, param: Params):
+    """Process the get requests"""
     query_result = ""
     if action.is_search is True and param.search_query is not None:
         apts = mainpage_obj.search_apartments(param.search_query)
@@ -99,12 +98,18 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         apts = []
         price_sort = 0
         rating_sort = 0
+        apt_id = -1
         if param.price_sort is not None:
             price_sort = param.price_sort
 
         if param.rating_sort is not None:
             rating_sort = param.rating_sort
-        apts = mainpage_obj.populate_apartments(param.num_apts, price_sort, rating_sort)
+
+        if param.apt_id is not None:
+            apt_id = param.apt_id
+        apts = mainpage_obj.populate_apartments(
+            param.num_apts, price_sort, rating_sort, apt_id
+        )
         apts_dict = [dataclasses.asdict(apt) for apt in apts]
         query_result = json.dumps(apts_dict)
 

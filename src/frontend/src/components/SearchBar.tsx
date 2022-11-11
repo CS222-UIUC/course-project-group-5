@@ -2,7 +2,7 @@ import { Autocomplete, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
-import getSuggestions from './getSearchBarSuggestions';
+import getSuggestions from './mainpageleft/getSearchBarSuggestions';
 
 export default function SearchBar() {
    const [query, setQuery] = useState('');
@@ -30,7 +30,11 @@ export default function SearchBar() {
 
    return (
       <>
+<<<<<<< HEAD
          <h3>Apartment Search</h3>
+=======
+         <h1 className="Title">Apartment Search</h1>
+>>>>>>> 32bff1c1a3108ad1be6ee951585ca73c9bd24963
          <div className="search">
             <Stack spacing={2} sx={{ width: 500 }}>
                <Autocomplete

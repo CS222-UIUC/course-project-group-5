@@ -1,6 +1,7 @@
 """Test login.py"""
 import sqlite3
 from pages.login import Login
+from decorators import use_test
 
 
 class TestLogin:
@@ -19,13 +20,14 @@ class TestLogin:
 
     def delete_register(self) -> str:
         """Remove fake data from database"""
-        connection = sqlite3.connect("database/database.db")
+        connection = sqlite3.connect("database/database_test.db")
         cursor = connection.cursor()
         cursor.execute("DELETE FROM Users WHERE username = ?", (self.username,))
         connection.commit()
         connection.close()
         return self.username
 
+    @use_test
     def test_register(self):
         """Tests register function"""
         self.register_helper()
@@ -41,6 +43,7 @@ class TestLogin:
         delete = self.delete_register()
         assert delete == self.username  # correct data deleted
 
+    @use_test
     def test_register_invalid_email(self):
         """Invalid email string"""
         register = self.first_login.register(
@@ -52,6 +55,7 @@ class TestLogin:
         assert register.status is False
         assert register_2.status is False
 
+    @use_test
     def test_register_missing_field(self):
         """Missing certain fields"""
         register = self.first_login.register(
@@ -59,6 +63,7 @@ class TestLogin:
         )
         assert register.status is False
 
+    @use_test
     def test_register_short_password(self):
         """Password is too short"""
         register = self.first_login.register(
@@ -66,6 +71,7 @@ class TestLogin:
         )
         assert register.status is False
 
+    @use_test
     def test_register_invalid_phone_length(self):
         """Invalid phone number length"""
         register = self.first_login.register(
@@ -73,6 +79,7 @@ class TestLogin:
         )
         assert register.status is False
 
+    @use_test
     def test_login(self):
         """Tests login function"""
         self.register_setup()
@@ -80,6 +87,7 @@ class TestLogin:
         self.delete_register()
         assert user is True
 
+    @use_test
     def test_login_invalid(self):
         """Test invalid login attempt"""
         user = self.first_login.login(self.username, "123456789")

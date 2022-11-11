@@ -17,7 +17,6 @@ interface SingleCardProps {
    id: number;
    name: string;
    address: string;
-   rating: number;
    price_min: number;
    price_max: number;
    votes: number;
@@ -28,7 +27,6 @@ const SingleCard = ({
    id,
    name,
    address,
-   rating,
    price_min,
    price_max,
    votes,
@@ -95,7 +93,7 @@ const SingleCard = ({
                      component="div"
                      style={{ float: 'left' }}
                   >
-                     {rating}
+                     {/* {rating} */}
                   </Typography>
                </div>
             </CardContent>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container } from 'react-bootstrap';
-import { AptType } from './Types';
+import { AptType } from '../Types';
 
 export interface IAptInfoProps {
    apt: AptType | undefined;
