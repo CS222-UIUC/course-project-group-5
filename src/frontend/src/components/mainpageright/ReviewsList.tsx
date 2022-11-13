@@ -17,9 +17,9 @@ const ReviewsList = ({ reviews }: Props) => {
          <div className="container-fluid">
             <h3 className="text-center">Comments</h3>
             <hr></hr>
-            {reviews.map((review) => (
+            {reviews.map((review, i) => (
                <ReviewCard
-                  key={review.id}
+                  key={i}
                   username={review.username}
                   date={review.date}
                   comment={review.comment}

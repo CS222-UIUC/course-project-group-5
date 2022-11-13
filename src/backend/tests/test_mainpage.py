@@ -378,3 +378,27 @@ class TestMainPage:
         res = self.main_page.get_apartments_reviews(sherman_id)
         self.main_page_stage.clean_all()
         assert sample_apts_review == res
+
+    @use_test
+    def test_delete_apartment_review(self):
+        """Test delete an apartment review"""
+
+        sample_apts_review = []
+        sample_apts_review.append(Review("Big_finger", "2022-10-09", "Decent", True))
+        sample_apts_review.append(
+            Review("Minh", "2022-10-08", "Bruh this sucks", False)
+        )
+
+        self.main_page_stage.initialize_all()
+        connection = sqlite3.connect("database/database_test.db")
+        cursor = connection.cursor()
+        sherman_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        ).fetchone()[0]
+        modified_review = self.main_page.delete_apartment_review(
+            sherman_id, "Minh Phan"
+        )
+
+        connection.close()
+        self.main_page_stage.clean_all()
+        assert modified_review == sample_apts_review
