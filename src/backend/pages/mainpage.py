@@ -266,3 +266,14 @@ class MainPage:
                     vote = True
                 reviews.append(Review(entry[0], entry[1], entry[2], vote))
         return reviews
+
+    @use_database
+    def delete_apartment_review(self, apt_id: int, username: str) -> List[Review]:
+        """Delete an apartment reviews"""
+        self.delete_apartment_review.cursor.execute(
+            "DELETE FROM Reviews WHERE (apt_id = ? AND user_id = \
+            (SELECT user_id FROM Users WHERE username = ?))",
+            (apt_id, username),
+        )
+        self.delete_apartment_review.connection.commit()
+        return self.get_apartments_reviews(apt_id)

@@ -14,7 +14,7 @@ class GetRequestType:
 
 
 @dataclass
-class Params:
+class GetRequestParams:
     """Other request parameters"""
 
     num_apts: Union[int, None]

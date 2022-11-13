@@ -216,8 +216,11 @@ def test_mainpage_get_invalid_query(client):
 
 
 @use_test
-def test_mainpage_post_valid(client):
-    """Test mainpage handles valid post request"""
+def test_mainpage_post_insert_review_valid(client):
+    """
+    Test mainpage handles valid post request
+    for inserting reviews
+    """
     mainpage = MainPageStaging()
     mainpage.initialize_all()
     connection = sqlite3.connect("database/database_test.db")
@@ -236,6 +239,32 @@ def test_mainpage_post_valid(client):
 
     cursor.execute("DELETE FROM Reviews WHERE apt_id = ?", (isr_id,))
     connection.commit()
+    connection.close()
+    mainpage.clean_all()
+    assert res.status_code == 201
+
+
+@use_test
+def test_mainpage_post_delete_review_valid(client):
+    """
+    Test mainpage handles valid post request
+    for deleting reviews
+    """
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+
+    sherman_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+    ).fetchone()[0]
+    sample_delete = {
+        "apt_id": sherman_id,
+        "username": "Minh Phan",
+    }
+    query = {"delete": "True"}
+    res = client.post("/main", query_string=query, json=sample_delete)
+
     connection.close()
     mainpage.clean_all()
     assert res.status_code == 201
