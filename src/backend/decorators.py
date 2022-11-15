@@ -1,13 +1,13 @@
 """Stores decorators for common functionalities"""
 import sqlite3
-import functools
+from functools import wraps
 import config
-
+from app import session
 
 def use_database(func):
     """Decorator to utilize DB connections"""
 
-    @functools.wraps(func)
+    @wraps(func)
     def wrapped(*args):
         """Wrapper around the actual function"""
         connection = sqlite3.connect(f"database/{config.DB_NAME}")
@@ -31,7 +31,7 @@ def use_database(func):
 def use_test(func):
     """Decorator to switch database for testing"""
 
-    @functools.wraps(func)
+    @wraps(func)
     def wrapped(*args, **kwargs):
         """Wrapper around the actual function"""
         config.DB_NAME = "database_test.db"
@@ -40,3 +40,16 @@ def use_test(func):
         return func_instance
 
     return wrapped
+'''
+def login_required(func):
+    """Decorator to prevent logged out user entering user page"""
+
+    @wraps(func)
+    def wrapped(*args, **kwargs):
+        """Wrapper"""
+        if session.get("USERNAME", None) is None:
+            return {"url": "/register"}, 404
+        return func(*args, **kwargs)
+
+    return wrapped
+    '''

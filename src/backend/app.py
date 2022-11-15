@@ -2,33 +2,35 @@
 import json
 import dataclasses
 from werkzeug.datastructures import MultiDict
-from flask import Flask, request
+from flask import Flask, request, session
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
+from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
+#from decorators import login_required
 
-# from logging import FileHandler, WARNING
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+app.config["SECRET_KEY"] = "VlpJb4lFReaMsVvPZgzMJA"
 
-
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     """Handles login routing"""
     user_login = Login()
     json_form = request.get_json(force=True)
 
     if isinstance(json_form, dict):
-        user = json_form.get("user", "")
+        username = json_form.get("user", "")
         password = json_form.get("password", "")
-        if user_login.login(user, password):
-            return f"welcome {user}", 200
+        if user_login.login(username, password):
+            session["USERNAME"] = username  # session variable makes User accessible in the backend
+            return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
 
 
-@app.route("/register", methods=["POST", "GET"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     """Handles register routing"""
     user_login = Login()
@@ -45,9 +47,45 @@ def register():
         return result.message, 201
     return "", 400
 
+@app.route("/<username>", methods=["GET", "POST"])
+#@login_required
+def userpage():
+    """Handles userpage requests"""
+    userpage = UserPage()
+    if request.method == "POST":
+        json_form = request.get_json(force=True) # serialize data
+        # see which field was True and therefore should be changed
+        is_password = request.args.get("password", default=False, type=bool)
+        is_email = request.args.get("email", default=False, type=bool)
+        is_phone = request.args.get("phone", default=False, type=bool)
+        is_get_liked = request.args.get("get_liked", default=False, type=bool)
+        if is_password:
+            result = userpage.update_password(json_form.get("password"))
+        elif is_email:
+            result = userpage.update_email(json_form.get("email"))
+        elif is_phone:
+            result = userpage.update_phone(json_form.get("phone"))
+        elif is_get_liked:
+            liked_apts = userpage.get_liked(json_form.get("user_id"))
+            return dataclasses_into_json(liked_apts), 201
+        if not result.status:
+            return result.message, 400
+        return result.message, 201
+    try:
+        username = session.get("USERNAME") # decorator checks it exists, but just in case
+    except:
+        return "", 400
+    user = userpage.get_user(username)
+    return json.dumps(user), username, 201
 
-@app.route("/", methods=["POST", "GET"])
-@app.route("/main", methods=["POST", "GET"])
+@app.route("/logout")
+def logout():
+    login = Login()
+    login.logout()
+    return "redirect", 201
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/main", methods=["GET", "POST"])
 def mainpage():
     """Handle mainpage requests"""
     mainpage_obj = MainPage()

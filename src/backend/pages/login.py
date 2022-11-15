@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 import re
 from decorators import use_database
+#from app import session
 
 
 @dataclass(frozen=True)
@@ -31,12 +32,7 @@ class Login:
         if not regex_email.fullmatch(email):
             return RegisterResult("Invalid email, please try again", False)
 
-        regex_phone = re.compile(
-            r"^\s*(?:\+?(\d{1,3}))?[-. (]"
-            r"*(\d{3})[-. )]*(\d{3})[-. ]"
-            r"*(\d{4})(?: *x(\d+))?\s*$"
-        )
-        if not regex_phone.fullmatch(phone):
+        if not self.validate_phone(phone):
             return RegisterResult("Invalid phone number, please try again", False)
 
         if len(password) < 8:
@@ -65,4 +61,16 @@ class Login:
         return len(user) > 0
 
     def logout(self) -> None:
-        """Logout function"""
+        """Logout function removes session object"""
+        #session.pop("USERNAME", None) # session object is None if pop fails
+
+def validate_phone(phone: str) -> bool:
+    """Used in Login class and in User class"""
+    regex_phone = re.compile(
+        r"^\s*(?:\+?(\d{1,3}))?[-. (]"
+        r"*(\d{3})[-. )]*(\d{3})[-. ]"
+        r"*(\d{4})(?: *x(\d+))?\s*$"
+    )
+    if not regex_phone.fullmatch(phone):
+        return False
+    return True
