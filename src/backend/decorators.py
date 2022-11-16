@@ -2,7 +2,6 @@
 import sqlite3
 from functools import wraps
 import config
-from app import session
 
 def use_database(func):
     """Decorator to utilize DB connections"""
@@ -40,16 +39,4 @@ def use_test(func):
         return func_instance
 
     return wrapped
-'''
-def login_required(func):
-    """Decorator to prevent logged out user entering user page"""
-
-    @wraps(func)
-    def wrapped(*args, **kwargs):
-        """Wrapper"""
-        if session.get("USERNAME", None) is None:
-            return {"url": "/register"}, 404
-        return func(*args, **kwargs)
-
-    return wrapped
-    '''
+    

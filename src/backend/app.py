@@ -1,4 +1,4 @@
-""" This is a module docstring """
+""" Handles routing and HTTP Requests """
 import json
 import dataclasses
 from werkzeug.datastructures import MultiDict
@@ -8,7 +8,6 @@ from pages.login import Login
 from pages.mainpage import MainPage
 from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
-#from decorators import login_required
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -24,7 +23,7 @@ def login():
         username = json_form.get("user", "")
         password = json_form.get("password", "")
         if user_login.login(username, password):
-            session["USERNAME"] = username  # session variable makes User accessible in the backend
+            session["USERNAME"] = username  # session object makes User accessible in the backend
             return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
@@ -47,11 +46,14 @@ def register():
         return result.message, 201
     return "", 400
 
-@app.route("/<username>", methods=["GET", "POST"])
-#@login_required
+@app.route("/user/<username>", methods=["GET", "POST"])
 def userpage():
     """Handles userpage requests"""
-    userpage = UserPage()
+    print(request.get_json(force=True))
+    if session.get("username", None) is None:
+        return "user does not exist", 404
+    username = session.get("username")
+    userpage = UserPage(username)
     if request.method == "POST":
         json_form = request.get_json(force=True) # serialize data
         # see which field was True and therefore should be changed
@@ -71,17 +73,12 @@ def userpage():
         if not result.status:
             return result.message, 400
         return result.message, 201
-    try:
-        username = session.get("USERNAME") # decorator checks it exists, but just in case
-    except:
-        return "", 400
-    user = userpage.get_user(username)
+    user = userpage.get_user(username) # get request
     return json.dumps(user), username, 201
 
 @app.route("/logout")
 def logout():
-    login = Login()
-    login.logout()
+    session.pop("USERNAME", None) # session object is None if pop fails
     return "redirect", 201
 
 @app.route("/", methods=["GET", "POST"])

@@ -275,3 +275,19 @@ def test_mainpage_post_invalid(client):
     sample_review = {"username": "User McUserFace", "comment": "Ho ho ho ho"}
     res = client.post("/main", json=sample_review)
     assert res.status_code == 400
+
+
+def test_userpage_not_logged_in(client):
+    """Tests userpage is inaccessible to logged out user"""
+    res = client.get("/user/")
+    assert res.status_code == 404
+
+def test_userpage_logged_in(client):
+    """Tests post request with username"""
+    with client:
+        client.post("/user/musk", json={"username": "musk"})
+        res = client.get("/user/")
+        assert res.status_code == 201
+
+def test_userpage_status_code(client):
+    """Tests all json """

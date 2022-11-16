@@ -2,7 +2,6 @@
 from dataclasses import dataclass
 import re
 from decorators import use_database
-#from app import session
 
 
 @dataclass(frozen=True)
@@ -16,7 +15,6 @@ class RegisterResult:
 class Login:
     """Login class"""
 
-    # stored_user = User()
     def __init__(self) -> None:
         """Constructor"""
 
@@ -61,8 +59,7 @@ class Login:
         return len(user) > 0
 
     def logout(self) -> None:
-        """Logout function removes session object"""
-        #session.pop("USERNAME", None) # session object is None if pop fails
+        """Logout"""
 
 def validate_phone(phone: str) -> bool:
     """Used in Login class and in User class"""
