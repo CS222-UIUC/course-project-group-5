@@ -3,7 +3,7 @@ from pages.login import Login
 from dataholders.user import User
 from typing import List
 from dataholders.apt import Apt
-from decorators import use_database
+from decorators import use_database, use_test
 from pages.login import validate_phone
 
 class UserPage:
@@ -39,4 +39,5 @@ class UserPage:
         self.update_phone.cursor.execute(
             "UPDATE Users SET phone = ? WHERE (username = ?)", (phone, self.username),
         )
+        self.update_phone.connection.commit()
         return True
