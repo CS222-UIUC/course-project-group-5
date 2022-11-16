@@ -3,6 +3,7 @@ import json
 import dataclasses
 from werkzeug.datastructures import MultiDict
 from flask import Flask, request, session
+from flask_session import Session
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
@@ -10,8 +11,13 @@ from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
 
 app = Flask(__name__)
+SECRET_KEY = "VlpJb4lFReaMsVvPZgzMJA"
+session.permanent = True
+SESSION_TYPE = "filesystem"
+app.config.from_object(__name__)
+Session(app)
 CORS(app, resources={r"/*": {"origins": "*"}})
-app.config["SECRET_KEY"] = "VlpJb4lFReaMsVvPZgzMJA"
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -23,7 +29,8 @@ def login():
         username = json_form.get("user", "")
         password = json_form.get("password", "")
         if user_login.login(username, password):
-            session["USERNAME"] = username  # session object makes User accessible in the backend
+            # session object makes User accessible in the backend
+            session["username"] = username
             return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
@@ -46,16 +53,16 @@ def register():
         return result.message, 201
     return "", 400
 
+
 @app.route("/user/<username>", methods=["GET", "POST"])
 def userpage():
     """Handles userpage requests"""
-    print(request.get_json(force=True))
     if session.get("username", None) is None:
         return "user does not exist", 404
     username = session.get("username")
     userpage = UserPage(username)
     if request.method == "POST":
-        json_form = request.get_json(force=True) # serialize data
+        json_form = request.get_json(force=True)  # serialize data
         # see which field was True and therefore should be changed
         is_password = request.args.get("password", default=False, type=bool)
         is_email = request.args.get("email", default=False, type=bool)
@@ -73,13 +80,16 @@ def userpage():
         if not result.status:
             return result.message, 400
         return result.message, 201
-    user = userpage.get_user(username) # get request
-    return json.dumps(user), username, 201
+    # user = userpage.get_user()  # get request
+    # return json.dumps(user), username, 201
+    return username, 201
+
 
 @app.route("/logout")
 def logout():
-    session.pop("USERNAME", None) # session object is None if pop fails
+    session.pop("username", None)  # session object is None if pop fails
     return "redirect", 201
+
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/main", methods=["GET", "POST"])

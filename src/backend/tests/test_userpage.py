@@ -4,6 +4,7 @@ from pages.userpage import UserPage
 from decorators import use_test
 from pages.login import validate_phone
 
+
 class TestUserPage:
     """Test user page class"""
 
@@ -23,19 +24,25 @@ class TestUserPage:
         connection = sqlite3.connect("database/database_test.db")
         cursor = connection.cursor()
         cursor.execute(
-                "INSERT INTO Users (username, email, password, phone) \
+            "INSERT INTO Users (username, email, password, phone) \
                 VALUES (?, ?, ?, ?)",
-                (self.alt_username, "hello@gmail.com", "password", "011-899-9013"),
+            (self.alt_username, "hello@gmail.com", "password", "011-899-9013"),
         )
         connection.commit()
         cursor.execute(
-               "UPDATE Users SET phone = ? WHERE (username = ?)", (self.phone, self.alt_username,),
+            "UPDATE Users SET phone = ? WHERE (username = ?)",
+            (
+                self.phone,
+                self.alt_username,
+            ),
         )
         connection.commit()
-        test_result = cursor.execute("SELECT phone FROM Users WHERE (username = ?)", (self.alt_username,)).fetchone()[0]
+        test_result = cursor.execute(
+            "SELECT phone FROM Users WHERE (username = ?)", (self.alt_username,)
+        ).fetchone()[0]
         self.cleanup_db()
         assert test_result == self.phone
-    
+
     @use_test
     def test_invalid_phone(self) -> bool:
         """Test update_phone returns False"""
