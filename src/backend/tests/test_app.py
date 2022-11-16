@@ -277,17 +277,25 @@ def test_mainpage_post_invalid(client):
     assert res.status_code == 400
 
 
+@use_test
 def test_userpage_not_logged_in(client):
     """Tests userpage is inaccessible to logged out user"""
     res = client.get("/user/")
     assert res.status_code == 404
 
+
+@use_test
 def test_userpage_logged_in(client):
     """Tests post request with username"""
-    with client:
-        client.post("/user/musk", json={"username": "musk"})
+    with client.session_transaction() as session:
+        app.config["SECRET_KEY"] = "VlpJb4lFReaMsVvPZgzMJA"
+        session["username"] = "Mike"
+        user_info = {"username": "Mike"}
+
         res = client.get("/user/")
         assert res.status_code == 201
 
+
+@use_test
 def test_userpage_status_code(client):
-    """Tests all json """
+    """Tests all json"""

@@ -3,6 +3,7 @@ import sqlite3
 from functools import wraps
 import config
 
+
 def use_database(func):
     """Decorator to utilize DB connections"""
 
@@ -39,4 +40,3 @@ def use_test(func):
         return func_instance
 
     return wrapped
-    
