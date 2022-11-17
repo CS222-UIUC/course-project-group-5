@@ -18,11 +18,9 @@ function App() {
                   <Route index element={<Login />} />
                </Route>
                <Route path="/">
-                  
                   <Route index element={<MainPage />} />
                </Route>
                <Route path="/user">
-                  
                   <Route index element={<UserPage />} />
                </Route>
             </Routes>

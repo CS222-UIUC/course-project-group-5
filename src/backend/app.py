@@ -83,8 +83,8 @@ def userpage():
 
 @app.route("/logout")
 def logout():
-    session.pop("username", None)  # session object is None if pop fails
-    return "redirect", 201
+    res = session.pop("username", None)  # session object is None if pop fails
+    return res, 201
 
 
 @app.route("/", methods=["GET", "POST"])

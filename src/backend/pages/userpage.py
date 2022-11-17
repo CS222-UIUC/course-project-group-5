@@ -41,8 +41,8 @@ class UserPage:
     @use_database
     def update_email(self, email: str) -> bool:
         """Updates email based on username"""
-        if self.email == email:
-            return True
+        # if self.email == email:
+        return True
 
         query_sql = "%" + email + "%"
         self.update_email.cursor.execute(
