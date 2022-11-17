@@ -1,10 +1,10 @@
 """Test app.py"""
 import sqlite3
 import pytest
+from flask import session
 from app import app, userpage, logout
 from tests.mainpage_staging import MainPageStaging
 from decorators import use_test
-from flask import session
 
 
 @pytest.fixture(name="config_app")
@@ -306,49 +306,53 @@ def test_userpage_get_request():
 
 
 @use_test
-def test_userpage_post_request():
+def test_userpage_post_request(client):
     """Tests all json"""
     reg_info = {
         "username": "Mike",
         "email": "junk@gmail.com",
-        "password": "1234",
+        "password": "1234123432123",
         "phone": "0003335555",
     }
-    with app.test_request_context("/register", method="POST", json=reg_info):
-        with app.test_request_context(
-            "/user/", method="POST", json={"is_phone": "True", "phone": "0111115555"}
-        ):
-            session["username"] = "Mike"
-            res = userpage()
-            assert res[1] == 201
-    with app.test_request_context("/register", method="POST", json=reg_info):
-        with app.test_request_context(
-            "/user/", method="POST", json={"is_password": "True", "password": "123415"}
-        ):
-            session["username"] = "Mike"
-            res = userpage()
-            assert res[1] == 201
-    with app.test_request_context("/register", method="POST", json=reg_info):
-        with app.test_request_context(
-            "/user/",
-            method="POST",
-            json={"is_email": "True", "email": "abcd@gmail.com"},
-        ):
-            session["username"] = "Mike"
-            res = userpage()
-            assert res[1] == 201
-    with app.test_request_context("/register", method="POST", json=reg_info):
-        with app.test_request_context(
-            "/user/", method="POST", json={"is_get_liked": "True", "user_id": "12345"}
-        ):
-            session["username"] = "Mike"
-            res = userpage()
-            assert res[1] == 201
-    with app.test_request_context("/register", method="POST", json=reg_info):
-        with app.test_request_context("/user/", method="POST", json={"hello": "hi"}):
-            session["username"] = "Mike"
-            res = userpage()
-            assert res[1] == 400
+
+    with app.test_request_context(
+        "/user/", method="POST", json={"is_phone": "True", "phone": "0111115555"}
+    ):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context(
+        "/user/",
+        method="POST",
+        json={"is_password": "True", "password": "1234sadfds1324"},
+    ):
+        session["username"] = "Mike"
+        client.post("/register", json=reg_info)
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context(
+        "/user/",
+        method="POST",
+        json={"is_email": "True", "email": "abcd@gmail.com"},
+    ):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context(
+        "/user/", method="POST", json={"is_get_liked": "True", "user_id": "12345"}
+    ):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context("/user/", method="POST", json={"hello": "hi"}):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 400
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM Users WHERE username = ?", ("Mike",))
+    connection.commit()
+    connection.close()
 
 
 @use_test

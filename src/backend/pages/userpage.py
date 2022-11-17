@@ -17,7 +17,7 @@ class UserPage:
     @use_database
     def get_user(self, username: str):
         """Return User object based on username"""
-        query_sql = "%" + username + "%"
+        query_sql = username
         user_query = self.get_user.cursor.execute(
             "SELECT u.user_id, u.password, u.email, u.phone \
             FROM USERS u\
@@ -35,7 +35,7 @@ class UserPage:
         # can use Flask-Hashing if we want
         if self.user.password == password:
             return True
-        query_sql = "%" + self.user.user_id + "%"
+        query_sql = "%" + str(self.user.user_id) + "%"
         self.update_password.cursor.execute(
             "UPDATE Users \
             SET password = ? \
@@ -50,7 +50,7 @@ class UserPage:
         if self.user.email == email:
             return True
 
-        query_sql = "%" + email + "%"
+        query_sql = email
         self.update_email.cursor.execute(
             "UPDATE Users \
             SET email = ? \
@@ -59,9 +59,9 @@ class UserPage:
         )
         new_email = self.update_email.cursor.execute(
             "SELECT email \
-            From User \
-            WHERE username = ?",
-            (self.username),
+            FROM Users \
+            WHERE (username = ?)",
+            (self.username,),
         ).fetchone()[0]
 
         return new_email == email

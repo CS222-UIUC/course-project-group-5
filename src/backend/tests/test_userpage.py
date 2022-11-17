@@ -1,7 +1,7 @@
 """Test userpage.py"""
 import sqlite3
-from pages.userpage import UserPage
 from decorators import use_test
+from pages.userpage import UserPage
 from pages.login import validate_phone
 
 

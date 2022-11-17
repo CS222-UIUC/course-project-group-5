@@ -37,7 +37,6 @@ def register():
     """Handles register routing"""
     user_login = Login()
     json_form = request.get_json(force=True)
-
     if isinstance(json_form, dict):
         username = json_form.get("username", "")
         email = json_form.get("email", "")
@@ -56,7 +55,7 @@ def userpage():
     if session.get("username", None) is None:
         return "user does not exist", 404
     username = session.get("username")
-    userpage = UserPage(username)
+    page = UserPage(username)
     if request.method == "POST":
         json_form = request.get_json(force=True)  # deserialize data
         # see which field was True and therefore should be changed
@@ -66,23 +65,24 @@ def userpage():
         is_get_liked = json_form.get("is_get_liked", False)
         result = False
         if is_password:
-            result = userpage.update_password(json_form.get("password"))
+            result = page.update_password(json_form.get("password"))
         elif is_email:
-            result = userpage.update_email(json_form.get("email"))
+            result = page.update_email(json_form.get("email"))
         elif is_phone:
-            result = userpage.update_phone(json_form.get("phone"))
+            result = page.update_phone(json_form.get("phone"))
         elif is_get_liked:
-            liked_apts = userpage.get_liked(json_form.get("user_id"))
+            liked_apts = page.get_liked(json_form.get("user_id"))
             return dataclasses_into_json(liked_apts), 201
         if not result:
-            return "update failed", 400
+            return result, 400
         return result, 201
-    user = userpage.get_user(username)  # request.method == "GET"
-    return json.dumps(user), username, 201
+    user = page.get_user(username)  # request.method == "GET"
+    return user, username, 201
 
 
 @app.route("/logout")
 def logout():
+    """Removes session object"""
     res = session.pop("username", None)  # session object is None if pop fails
     return res, 201
 
