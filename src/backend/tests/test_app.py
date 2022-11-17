@@ -286,16 +286,24 @@ def test_userpage_not_logged_in(client):
 
 
 @use_test
-def test_userpage_logged_in():
-    """Tests session object works and user is logged in"""
-    with app.test_request_context("/user/", method="GET"):
-        session["username"] = "Mike"
-        res = userpage()
-        assert res[0] is "Mike" and res[1] is 201
+def test_userpage_get_request():
+    """Tests session object works, user is logged in, and user is correct"""
+    reg_info = {
+        "username": "Mike",
+        "email": "junk@gmail.com",
+        "password": "1234",
+        "phone": "0003335555",
+    }
+    with app.test_request_context("/register", method="POST", json=reg_info):
+        with app.test_request_context("/user/", method="GET"):
+            session["username"] = "Mike"
+            res = userpage()
+            print(res)
+        ### Will test json.dumps(user), username, 201 ###
 
 
 @use_test
-def test_userpage_status_code():
+def test_userpage_post_request():
     """Tests all json"""
     reg_info = {
         "username": "Mike",

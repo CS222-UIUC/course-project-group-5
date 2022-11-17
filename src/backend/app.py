@@ -77,9 +77,8 @@ def userpage():
         if not result:
             return "update failed", 400
         return result, 201
-    # user = userpage.get_user()  # get request
-    # return json.dumps(user), username, 201
-    return username, 201
+    user = userpage.get_user(username)  # request.method == "GET"
+    return json.dumps(user), username, 201
 
 
 @app.route("/logout")
