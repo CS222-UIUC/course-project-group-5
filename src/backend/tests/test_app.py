@@ -1,9 +1,10 @@
 """Test app.py"""
 import sqlite3
 import pytest
-from app import app
+from app import app, userpage
 from tests.mainpage_staging import MainPageStaging
 from decorators import use_test
+from flask import session
 
 
 @pytest.fixture(name="config_app")
@@ -285,17 +286,36 @@ def test_userpage_not_logged_in(client):
 
 
 @use_test
-def test_userpage_logged_in(client):
-    """Tests post request with username"""
-    with client.session_transaction() as session:
-        app.config["SECRET_KEY"] = "VlpJb4lFReaMsVvPZgzMJA"
+def test_userpage_logged_in():
+    """Tests session object works and user is logged in"""
+    with app.test_request_context("/user/", method="GET"):
         session["username"] = "Mike"
-        user_info = {"username": "Mike"}
-
-        res = client.get("/user/")
-        assert res.status_code == 201
+        res = userpage()
+        assert res[0] is "Mike" and res[1] is 201
 
 
 @use_test
-def test_userpage_status_code(client):
+def test_userpage_status_code():
     """Tests all json"""
+    reg_info = {
+        "username": "Mike",
+        "email": "junk@gmail.com",
+        "password": "1234",
+        "phone": "0003335555",
+    }
+    post_json = {"is_phone": "True", "phone": "0111115555"}
+    with app.test_request_context("/register", method="POST", json=reg_info):
+        with app.test_request_context("/user/", method="POST", json=post_json):
+            session["username"] = "Mike"
+            res = userpage()
+            assert res[1] == 201
+    post_json = {
+        "is_password": "True",
+        "password": "123415",
+        "is_phone": "False",
+    }
+    with app.test_request_context("/register", method="POST", json=reg_info):
+        with app.test_request_context("/user/", method="POST", json=post_json):
+            session["username"] = "Mike"
+            res = userpage()
+            assert res[1] == 201

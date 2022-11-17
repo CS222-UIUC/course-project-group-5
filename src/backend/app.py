@@ -1,9 +1,9 @@
 """ Handles routing and HTTP Requests """
 import json
+import os
 import dataclasses
 from werkzeug.datastructures import MultiDict
 from flask import Flask, request, session
-from flask_session import Session
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
@@ -11,11 +11,7 @@ from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
 
 app = Flask(__name__)
-SECRET_KEY = "VlpJb4lFReaMsVvPZgzMJA"
-session.permanent = True
-SESSION_TYPE = "filesystem"
-app.config.from_object(__name__)
-Session(app)
+app.config["SECRET_KEY"] = os.urandom(24)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
@@ -62,12 +58,13 @@ def userpage():
     username = session.get("username")
     userpage = UserPage(username)
     if request.method == "POST":
-        json_form = request.get_json(force=True)  # serialize data
+        json_form = request.get_json(force=True)  # deserialize data
         # see which field was True and therefore should be changed
-        is_password = request.args.get("password", default=False, type=bool)
-        is_email = request.args.get("email", default=False, type=bool)
-        is_phone = request.args.get("phone", default=False, type=bool)
-        is_get_liked = request.args.get("get_liked", default=False, type=bool)
+        is_password = json_form.get("is_password", False)
+        is_email = json_form.get("is_email", False)
+        is_phone = json_form.get("is_phone", False)
+        is_get_liked = json_form.get("is_get_liked", False)
+        result = False
         if is_password:
             result = userpage.update_password(json_form.get("password"))
         elif is_email:
@@ -77,9 +74,9 @@ def userpage():
         elif is_get_liked:
             liked_apts = userpage.get_liked(json_form.get("user_id"))
             return dataclasses_into_json(liked_apts), 201
-        if not result.status:
-            return result.message, 400
-        return result.message, 201
+        if not result:
+            return "update failed", 400
+        return result, 201
     # user = userpage.get_user()  # get request
     # return json.dumps(user), username, 201
     return username, 201
