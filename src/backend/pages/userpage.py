@@ -1,21 +1,20 @@
 """Contains the UserPage backend"""
-from pages.login import Login
-from dataholders.user import User
 from typing import List
+from pages.login import validate_phone
+from dataholders.user import User
 from dataholders.apt import Apt
 from decorators import use_database
-from pages.login import validate_phone
 
 
 class UserPage:
     """UserPage class"""
 
-    def __init__(self, username: str) -> None:
+    def __init__(self, username: str, user:User) -> None:
         """Constructor"""
         self.username = username
-        self.user = self.get_user(username)
+        self.user = self.get_user(self, username)
+        
 
-    @use_database
     def get_user(self, username: str):
         """Return User object based on username"""
         query_sql = "%" + username + "%"
@@ -25,33 +24,41 @@ class UserPage:
             WHERE u.username = ?",
             (query_sql,),
         ).fetchone()
-
-        if user_query is None:
-            return None
+        
+        if user_query is None:  return None
         else:
             user_id, password, email, phone = user_query
             return User(user_id, username, password, email, phone)
-
     @use_database
     def update_password(self, password: str) -> bool:
-        """Updates password based on self.username"""
+        """Updates password based on username"""
         # can use Flask-Hashing if we want
-        return True
+        if self.user.password == password:
+            return True
+        query_sql = "%" + self.user.user_id + "%"
+        self.update_password.cursor.execute(
+            "UPDATE Users \
+            SET password = ? \
+            WHERE user_id = ?",
+            (password, query_sql),
+        )
 
+        return True
+        
     @use_database
     def update_email(self, email: str) -> bool:
         """Updates email based on username"""
-        # if self.email == email:
-        return True
+        if self.user.email == email:
+            return True
 
         query_sql = "%" + email + "%"
         self.update_email.cursor.execute(
             "UPDATE Users \
             SET email = ? \
             WHERE username = ?",
-            (query_sql, self.username),
+            (query_sql,self.username),
         )
-
+        
         new_email = self.update_email.cursor.execute(
             "SELECT email \
             From User \
@@ -59,20 +66,17 @@ class UserPage:
             (self.username),
         ).fetchone()[0]
 
-        if new_email == email:
-            return True
-        else:
-            return False
+        return new_email == email
 
     @use_database
     def get_liked(self, user_id: int) -> List[Apt]:
-        """Gets liked apartments based on self.username"""
+        """Gets liked apartments based on username"""
         apts = []
         query_sql = "%" + user_id + "%"
         liked = self.get_liked.cursor.execute(
-            "SELECT a.apt_id, a.apt_name, a.apt_address, a.price_min, a.price_max\
+            "SELECT a.apt_id, a.apt_name, a.apt_address, a.price_min, a.price_max \
             From Reviews r INNER JOIN Apartments a \
-            ON r.apt_id = a.apt_id\
+            ON r.apt_id = a.apt_id \
             WHERE r.user_id = ? AND r.vote = ?",
             (query_sql, 1),
         )
@@ -80,7 +84,7 @@ class UserPage:
         for apt in liked:
             apt_id, apt_name, apt_address, price_min, price_max = apt
             apts.append(Apt(apt_id, apt_name, apt_address, price_min, price_max))
-
+    
         return apts
 
     @use_database
