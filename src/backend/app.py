@@ -1,39 +1,42 @@
-""" This is a module docstring """
+""" Handles routing and HTTP Requests """
 import json
+import os
 import dataclasses
 from werkzeug.datastructures import MultiDict
-from flask import Flask, request
+from flask import Flask, request, session
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
+from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
 
-# from logging import FileHandler, WARNING
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.urandom(24)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     """Handles login routing"""
     user_login = Login()
     json_form = request.get_json(force=True)
 
     if isinstance(json_form, dict):
-        user = json_form.get("user", "")
+        username = json_form.get("user", "")
         password = json_form.get("password", "")
-        if user_login.login(user, password):
-            return f"welcome {user}", 200
+        if user_login.login(username, password):
+            # session object makes User accessible in the backend
+            session["username"] = username
+            return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
 
 
-@app.route("/register", methods=["POST", "GET"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     """Handles register routing"""
     user_login = Login()
     json_form = request.get_json(force=True)
-
     if isinstance(json_form, dict):
         username = json_form.get("username", "")
         email = json_form.get("email", "")
@@ -46,8 +49,46 @@ def register():
     return "", 400
 
 
-@app.route("/", methods=["POST", "GET"])
-@app.route("/main", methods=["POST", "GET"])
+@app.route("/user/<username>", methods=["GET", "POST"])
+def userpage():
+    """Handles userpage requests"""
+    if session.get("username", None) is None:
+        return "user does not exist", 404
+    username = session.get("username")
+    page = UserPage(username)
+    if request.method == "POST":
+        json_form = request.get_json(force=True)  # deserialize data
+        # see which field was True and therefore should be changed
+        is_password = json_form.get("is_password", False)
+        is_email = json_form.get("is_email", False)
+        is_phone = json_form.get("is_phone", False)
+        is_get_liked = json_form.get("is_get_liked", False)
+        result = False
+        if is_password:
+            result = page.update_password(json_form.get("password"))
+        elif is_email:
+            result = page.update_email(json_form.get("email"))
+        elif is_phone:
+            result = page.update_phone(json_form.get("phone"))
+        elif is_get_liked:
+            liked_apts = page.get_liked(json_form.get("user_id"))
+            return dataclasses_into_json(liked_apts), 201
+        if not result:
+            return result, 400
+        return result, 201
+    user = page.get_user(username)  # request.method == "GET"
+    return user, username, 201
+
+
+@app.route("/logout")
+def logout():
+    """Removes session object"""
+    res = session.pop("username", None)  # session object is None if pop fails
+    return res, 201
+
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/main", methods=["GET", "POST"])
 def mainpage():
     """Handle mainpage requests"""
     mainpage_obj = MainPage()

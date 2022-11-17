@@ -15,7 +15,6 @@ class RegisterResult:
 class Login:
     """Login class"""
 
-    # stored_user = User()
     def __init__(self) -> None:
         """Constructor"""
 
@@ -31,12 +30,7 @@ class Login:
         if not regex_email.fullmatch(email):
             return RegisterResult("Invalid email, please try again", False)
 
-        regex_phone = re.compile(
-            r"^\s*(?:\+?(\d{1,3}))?[-. (]"
-            r"*(\d{3})[-. )]*(\d{3})[-. ]"
-            r"*(\d{4})(?: *x(\d+))?\s*$"
-        )
-        if not regex_phone.fullmatch(phone):
+        if not validate_phone(phone):
             return RegisterResult("Invalid phone number, please try again", False)
 
         if len(password) < 8:
@@ -65,4 +59,16 @@ class Login:
         return len(user) > 0
 
     def logout(self) -> None:
-        """Logout function"""
+        """Logout"""
+
+
+def validate_phone(phone: str) -> bool:
+    """Used in Login class and in User class"""
+    regex_phone = re.compile(
+        r"^\s*(?:\+?(\d{1,3}))?[-. (]"
+        r"*(\d{3})[-. )]*(\d{3})[-. ]"
+        r"*(\d{4})(?: *x(\d+))?\s*$"
+    )
+    if not regex_phone.fullmatch(phone):
+        return False
+    return True

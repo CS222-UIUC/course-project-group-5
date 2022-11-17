@@ -4,6 +4,7 @@ import './App.css';
 import Header from './components/Header';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
+import UserPage from './pages/UserPage';
 
 function App() {
    return (
@@ -18,6 +19,9 @@ function App() {
                </Route>
                <Route path="/">
                   <Route index element={<MainPage />} />
+               </Route>
+               <Route path="/user">
+                  <Route index element={<UserPage />} />
                </Route>
             </Routes>
          </BrowserRouter>

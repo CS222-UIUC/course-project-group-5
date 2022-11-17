@@ -1,7 +1,8 @@
 """Test app.py"""
 import sqlite3
 import pytest
-from app import app
+from flask import session
+from app import app, userpage, logout
 from tests.mainpage_staging import MainPageStaging
 from decorators import use_test
 
@@ -275,3 +276,89 @@ def test_mainpage_post_invalid(client):
     sample_review = {"username": "User McUserFace", "comment": "Ho ho ho ho"}
     res = client.post("/main", json=sample_review)
     assert res.status_code == 400
+
+
+@use_test
+def test_userpage_not_logged_in(client):
+    """Tests userpage is inaccessible to a logged out user"""
+    res = client.get("/user/")
+    assert res.status_code == 404
+    with app.test_request_context("/user/"):
+        res = userpage()
+        assert res[1] == 404
+
+
+@use_test
+def test_userpage_get_request():
+    """Tests session object works, user is logged in, and user is correct"""
+    reg_info = {
+        "username": "Mike",
+        "email": "junk@gmail.com",
+        "password": "1234",
+        "phone": "0003335555",
+    }
+    with app.test_request_context("/register", method="POST", json=reg_info):
+        with app.test_request_context("/user/", method="GET"):
+            session["username"] = "Mike"
+            res = userpage()
+            print(res)
+        ### Will test json.dumps(user), username, 201 ###
+
+
+@use_test
+def test_userpage_post_request(client):
+    """Tests all json"""
+    reg_info = {
+        "username": "Mike",
+        "email": "junk@gmail.com",
+        "password": "1234123432123",
+        "phone": "0003335555",
+    }
+
+    with app.test_request_context(
+        "/user/", method="POST", json={"is_phone": "True", "phone": "0111115555"}
+    ):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context(
+        "/user/",
+        method="POST",
+        json={"is_password": "True", "password": "1234sadfds1324"},
+    ):
+        session["username"] = "Mike"
+        client.post("/register", json=reg_info)
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context(
+        "/user/",
+        method="POST",
+        json={"is_email": "True", "email": "abcd@gmail.com"},
+    ):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context(
+        "/user/", method="POST", json={"is_get_liked": "True", "user_id": "12345"}
+    ):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 201
+    with app.test_request_context("/user/", method="POST", json={"hello": "hi"}):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == 400
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM Users WHERE username = ?", ("Mike",))
+    connection.commit()
+    connection.close()
+
+
+@use_test
+def test_logout():
+    """Test session object is removed"""
+    with app.test_request_context("/logout"):
+        session["username"] = "Mike"
+        res = logout()
+        assert res is not None
