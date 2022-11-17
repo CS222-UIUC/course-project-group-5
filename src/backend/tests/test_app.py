@@ -289,20 +289,19 @@ def test_userpage_not_logged_in(client):
 
 
 @use_test
-def test_userpage_get_request():
+def test_userpage_get_request(client):
     """Tests session object works, user is logged in, and user is correct"""
     reg_info = {
         "username": "Mike",
         "email": "junk@gmail.com",
-        "password": "1234",
+        "password": "123456991",
         "phone": "0003335555",
     }
-    with app.test_request_context("/register", method="POST", json=reg_info):
-        with app.test_request_context("/user/", method="GET"):
-            session["username"] = "Mike"
-            res = userpage()
-            print(res)
-        ### Will test json.dumps(user), username, 201 ###
+    client.post("/register", json=reg_info)
+    with app.test_request_context("/user/", method="GET"):
+        session["username"] = "Mike"
+        res = userpage()
+        assert res[1] == "Mike" and res[2] == 201
 
 
 @use_test
@@ -314,7 +313,7 @@ def test_userpage_post_request(client):
         "password": "1234123432123",
         "phone": "0003335555",
     }
-
+    client.post("/register", json=reg_info)
     with app.test_request_context(
         "/user/", method="POST", json={"is_phone": "True", "phone": "0111115555"}
     ):
@@ -327,7 +326,6 @@ def test_userpage_post_request(client):
         json={"is_password": "True", "password": "1234sadfds1324"},
     ):
         session["username"] = "Mike"
-        client.post("/register", json=reg_info)
         res = userpage()
         assert res[1] == 201
     with app.test_request_context(
