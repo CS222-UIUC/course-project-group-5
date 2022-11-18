@@ -25,10 +25,10 @@ class MainPageStaging:
     def insert_users(self, cursor: sqlite3.Cursor, connection: sqlite3.Connection):
         """Initialize users for use by test methods"""
         args = [
-            ("Minh Phan", "", "", ""),
-            ("Minh", "", "", ""),
-            ("Big_finger", "", "", ""),
-            ("Fig_binger", "", "", ""),
+            ("Minh Phan", "phan_password1", "phan@gmail.com", "111-111-1111"),
+            ("Minh", "minh_password1", "minh@gmail.com", "222-222-2222"),
+            ("Big_finger", "big_password1", "big@gmail.com", "333-333-3333"),
+            ("Fig_binger", "fig_password1", "fig@gmail.com", "444-444-4444"),
         ]
         cursor.executemany(
             "INSERT INTO Users (username, password, email, phone) \

@@ -26,14 +26,13 @@ class Login:
         if (not username) or (not email) or (not password) or (not phone):
             return RegisterResult("Missing information, please try again", False)
 
-        regex_email = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b")
-        if not regex_email.fullmatch(email):
+        if not validate_email(email):
             return RegisterResult("Invalid email, please try again", False)
 
         if not validate_phone(phone):
             return RegisterResult("Invalid phone number, please try again", False)
 
-        if len(password) < 8:
+        if not validate_password(password):
             return RegisterResult("Password is too short, please try again", False)
 
         check = self.register.cursor.execute(
@@ -62,13 +61,22 @@ class Login:
         """Logout"""
 
 
+def validate_password(password: str) -> bool:
+    """Used in Login and User class"""
+    return len(password) >= 8
+
+
+def validate_email(email: str) -> bool:
+    """Used in Login and User class"""
+    regex_email = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b")
+    return regex_email.fullmatch(email)
+
+
 def validate_phone(phone: str) -> bool:
-    """Used in Login class and in User class"""
+    """Used in Login and User class"""
     regex_phone = re.compile(
         r"^\s*(?:\+?(\d{1,3}))?[-. (]"
         r"*(\d{3})[-. )]*(\d{3})[-. ]"
         r"*(\d{4})(?: *x(\d+))?\s*$"
     )
-    if not regex_phone.fullmatch(phone):
-        return False
-    return True
+    return regex_phone.fullmatch(phone)
