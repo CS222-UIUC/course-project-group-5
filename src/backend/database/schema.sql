@@ -36,6 +36,7 @@ CREATE TABLE Reviews (
 );
 
 -- TEST
+/*
 INSERT INTO Users (user_id, username, password, email, phone, apt_id)
 VALUES (1, 'Zongxian', '12345abcde', 'Zongxian@Feng.com', '1234567890', 1);
 
@@ -218,5 +219,4 @@ VALUES (11, 2, '2021-09-14', 'Hello there lizard', 1);
 
 INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote)
 VALUES (12, 3, '2021-09-15', 'Windows are broken, rent is expensive, door doesnt work. Roof falling in. Bank foreclosing it. ABORT', -1);
-
-
+*/
