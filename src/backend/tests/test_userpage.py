@@ -11,11 +11,8 @@ class TestUserPage:
 
     username = "test_username"
     phone = "012-345-6789"
-    invalid_phone = "123-3421-322"
     password = "newpassword1234"
-    invalid_password = "inv2341"
     email = "newemail@gmail.com"
-    invalid_email = "testemail@"
     userpage = None
     main_page_staging = MainPageStaging()
 
@@ -40,6 +37,14 @@ class TestUserPage:
             ),
         )
         connection.commit()
+
+    @use_test
+    def test_invalid_input(self):
+        """invalid input returns False"""
+        self.initialize()
+        assert self.userpage.update_password("inv2341") is False
+        assert self.userpage.update_email("testemail@") is False
+        assert self.userpage.update_phone("123-3421-322") is False
 
     @use_test
     def test_get_user(self):
@@ -85,14 +90,6 @@ class TestUserPage:
         assert same_email is True
         self.cleanup_db()
         assert test_result == self.email
-
-    @use_test
-    def test_invalid_input(self):
-        """invalid input returns False"""
-        self.initialize()
-        assert self.userpage.update_password(self.invalid_password) is False
-        assert self.userpage.update_email(self.invalid_email) is False
-        assert self.userpage.update_phone(self.invalid_phone) is False
 
     @use_test
     def test_valid_phone(self):
