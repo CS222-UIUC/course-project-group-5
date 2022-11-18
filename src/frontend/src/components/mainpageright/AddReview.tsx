@@ -13,7 +13,7 @@ export default function AddReview({ apt_id }: Props) {
       // post review on submit
       const result = await axios.post(`${baseURL}`, {
          apt_id: apt_id,
-         username: 'Brotherlouie', // TODO, set to current username
+         username: 'Zongxian', // TODO, set to current username
          comment: text,
          vote: vote,
       });

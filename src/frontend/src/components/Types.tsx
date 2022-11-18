@@ -1,5 +1,5 @@
 export type ReviewType = {
-   id: number;
+   apt_id: number;
    username: string;
    date: string;
    comment: string;

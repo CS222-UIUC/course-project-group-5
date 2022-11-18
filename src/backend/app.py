@@ -7,7 +7,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
-from dataholders.mainpage_get import GetRequestType, Params
+from dataholders.mainpage_get import GetRequestType, GetRequestParams
 
 # from logging import FileHandler, WARNING
 app = Flask(__name__)
@@ -75,7 +75,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         args.get("pictures", default=False, type=bool),
     )
 
-    param = Params(
+    param = GetRequestParams(
         args.get("numApts", type=int),
         args.get("aptId", type=int),
         args.get("searchQuery", type=str),
@@ -86,13 +86,14 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
     return mainpage_process_get(mainpage_obj, action, param)
 
 
-def mainpage_process_get(mainpage_obj: MainPage, action: GetRequestType, param: Params):
+def mainpage_process_get(
+    mainpage_obj: MainPage, action: GetRequestType, param: GetRequestParams
+):
     """Process the get requests"""
     query_result = ""
     if action.is_search is True and param.search_query is not None:
         apts = mainpage_obj.search_apartments(param.search_query)
-        apts_dict = [dataclasses.asdict(apt) for apt in apts]
-        query_result = json.dumps(apts_dict)
+        query_result = dataclasses_into_json(apts)
 
     elif action.is_populate is True and param.num_apts is not None:
         apts = []
@@ -110,13 +111,11 @@ def mainpage_process_get(mainpage_obj: MainPage, action: GetRequestType, param: 
         apts = mainpage_obj.populate_apartments(
             param.num_apts, price_sort, rating_sort, apt_id
         )
-        apts_dict = [dataclasses.asdict(apt) for apt in apts]
-        query_result = json.dumps(apts_dict)
+        query_result = dataclasses_into_json(apts)
 
     elif action.is_review is True and param.apt_id is not None:
         reviews = mainpage_obj.get_apartments_reviews(param.apt_id)
-        reviews_dict = [dataclasses.asdict(review) for review in reviews]
-        query_result = json.dumps(reviews_dict)
+        query_result = dataclasses_into_json(reviews)
 
     elif action.is_pictures is True and param.apt_id is not None:
         query_result = json.dumps(mainpage_obj.get_apartments_pictures(param.apt_id))
@@ -134,25 +133,38 @@ def mainpage_post(mainpage_obj: MainPage):
     """
     json_form = request.get_json(force=True)
 
+    is_delete = request.args.get("delete", default=False, type=bool)
+
     if isinstance(json_form, dict):
-        apt_id = json_form.get("apt_id")
-        username = json_form.get("username")
-        comment = json_form.get("comment")
-        vote = json_form.get("vote")
-        if (
-            apt_id is not None
-            and username is not None
-            and comment is not None
-            and vote is not None
-        ):
-            query_result = ""
-            reviews = mainpage_obj.write_apartment_review(
-                apt_id, username, comment, vote
-            )
-            reviews_dict = [dataclasses.asdict(review) for review in reviews]
-            query_result = json.dumps(reviews_dict)
-            return query_result, 201
+        if not is_delete:
+            apt_id = json_form.get("apt_id")
+            username = json_form.get("username")
+            comment = json_form.get("comment")
+            vote = json_form.get("vote")
+            if (
+                apt_id is not None
+                and username is not None
+                and comment is not None
+                and vote is not None
+            ):
+                reviews = mainpage_obj.write_apartment_review(
+                    apt_id, username, comment, vote
+                )
+                return dataclasses_into_json(reviews), 201
+        else:
+            apt_id = json_form.get("apt_id")
+            username = json_form.get("username")
+            if apt_id is not None and username is not None:
+                reviews = mainpage_obj.delete_apartment_review(apt_id, username)
+                return dataclasses_into_json(reviews), 201
     return "", 400
+
+
+def dataclasses_into_json(data_sequence: list):
+    """Process dataclasses into json strings"""
+    data_dict = [dataclasses.asdict(data) for data in data_sequence]
+    query_result = json.dumps(data_dict)
+    return query_result
 
 
 if __name__ == "__main__":
