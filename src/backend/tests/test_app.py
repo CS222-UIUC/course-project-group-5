@@ -302,6 +302,11 @@ def test_userpage_get_request(client):
         session["username"] = "Mike"
         res = userpage()
         assert res[1] == "Mike" and res[2] == 201
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM Users WHERE username = ?", ("Mike",))
+    connection.commit()
+    connection.close()
 
 
 @use_test

@@ -19,8 +19,8 @@ class TestUserPage:
     @use_database
     def initialize(self):
         """Set up tests by inserting a user into the db"""
-        connection = self.initialize.connection
-        cursor = self.initialize.cursor
+        connection = sqlite3.connect("database/database_test.db")
+        cursor = connection.cursor()
         self.insert_users(cursor, connection)
         self.userpage = UserPage(self.username)
 
@@ -56,6 +56,7 @@ class TestUserPage:
         assert res.email == "beginemail@gmail.com"
         assert res.phone == "111-555-0022"
         assert self.userpage.get_user("sd") is None
+        self.test_cleanup_db()
 
     @use_test
     def test_valid_password(self):
@@ -71,7 +72,7 @@ class TestUserPage:
         connection.close()
         same_password = self.userpage.update_password(self.password)
         assert same_password is True
-        self.cleanup_db()
+        self.test_cleanup_db()
         assert test_result == self.password
 
     @use_test
@@ -88,7 +89,7 @@ class TestUserPage:
         connection.close()
         same_email = self.userpage.update_email(self.email)
         assert same_email is True
-        self.cleanup_db()
+        self.test_cleanup_db()
         assert test_result == self.email
 
     @use_test
@@ -105,17 +106,8 @@ class TestUserPage:
         connection.close()
         same_phone = self.userpage.update_phone(self.phone)
         assert same_phone is True
-        self.cleanup_db()
+        self.test_cleanup_db()
         assert test_result == self.phone
-
-    @use_test
-    def cleanup_db(self):
-        """Remove fake data from database"""
-        connection = sqlite3.connect("database/database_test.db")
-        cursor = connection.cursor()
-        cursor.execute("DELETE FROM Users WHERE (username = ?)", (self.username,))
-        connection.commit()
-        connection.close()
 
     @use_test
     def test_get_liked(self):
@@ -134,4 +126,14 @@ class TestUserPage:
         liked = []
         liked.append(Apt(sherman_id, "Sherman", "909 S 5th St", 0.333, 5500, 6500))
         self.main_page_staging.clean_all()
+        self.test_cleanup_db()
         assert res == liked
+
+    @use_test
+    def test_cleanup_db(self):
+        """Remove fake data from database"""
+        connection = sqlite3.connect("database/database_test.db")
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM Users WHERE (username = ?)", (self.username,))
+        connection.commit()
+        connection.close()
