@@ -77,7 +77,8 @@ def userpage():
             return result, 400
         return result, 201
     user = page.get_user(username)  # request.method == "GET"
-    return user, username, 201
+    data_dict = dataclasses.asdict(user)
+    return json.dumps(data_dict), username, 201
 
 
 @app.route("/logout")
