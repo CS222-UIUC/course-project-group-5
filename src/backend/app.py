@@ -3,7 +3,7 @@ import json
 import os
 import dataclasses
 from werkzeug.datastructures import MultiDict
-from flask import Flask, request, session
+from flask import Flask, request, session, url_for
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
@@ -54,8 +54,8 @@ def userpage():
     """Handles userpage requests"""
     if session.get("username", None) is None:
         return "user does not exist", 404
-    username = session.get("username") or ""
-    page = UserPage(username)
+    diff = session.get("username") or ""
+    page = UserPage(diff)
     if request.method == "POST":
         json_form = request.get_json(force=True) or {}  # deserialize data
         # see which field was True and therefore should be changed
@@ -76,7 +76,7 @@ def userpage():
         if not result:
             return "invalid request", 400
         return "success", 201
-    user = page.get_user(username)  # request.method == "GET"
+    user = page.get_user(diff)  # request.method == "GET"
     data_dict = dataclasses.asdict(user)
     return json.dumps(data_dict), 201
 

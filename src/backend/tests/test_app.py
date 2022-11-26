@@ -301,7 +301,7 @@ def test_userpage_get_request(client):
     with app.test_request_context("/user/", method="GET"):
         session["username"] = "Mike"
         res = userpage()
-        assert res[1] == "Mike" and res[2] == 201
+        assert res[1] == 201
     connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
     cursor.execute("DELETE FROM Users WHERE username = ?", ("Mike",))
@@ -364,4 +364,4 @@ def test_logout():
     with app.test_request_context("/logout"):
         session["username"] = "Mike"
         res = logout()
-        assert res is not None
+        assert res[1] == 201
