@@ -1,8 +1,9 @@
 """This is a scraper to scrape uiucApts.htm file"""
 import re
 import sqlite3
-from bs4 import BeautifulSoup
 from dataclasses import dataclass
+from bs4 import BeautifulSoup
+
 
 con = sqlite3.connect("database_prod.db")
 
