@@ -25,7 +25,7 @@ def scraper():
             apt_price_min, apt_price_max = format_price(price_range)
 
             write_to_apt_db(
-                i, apt_name, apt_addr, apt_price_min, apt_price_max, apt_url
+                i, [apt_name, apt_addr, apt_price_min, apt_price_max, apt_url]
             )
             if image_section:
                 imgs = image_section.findAll("img")
@@ -54,12 +54,12 @@ def format_price(price_range):
 """A helper function to execute INSERT into Apartments"""
 
 
-def write_to_apt_db(id, name, addr, pmin, pmax, url):
+def write_to_apt_db(apt_id, info):
     cur = con.cursor()
     cur.execute(
         "INSERT INTO Apartments (apt_id, apt_name, apt_address, price_min, price_max, link) \
         VALUES (?, ?, ?, ?, ?, ?)",
-        (id, name, addr, pmin, pmax, url),
+        (apt_id, info[0], info[1], info[2], info[3], info[4]),
     )
 
 
