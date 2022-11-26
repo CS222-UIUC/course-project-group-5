@@ -41,7 +41,7 @@ export default function getInfo(username: string) {
             clearTimeout(timer);
             source.cancel();
         };
-    });
+    }, [username]);
     return {loading, error, user};
 }
 

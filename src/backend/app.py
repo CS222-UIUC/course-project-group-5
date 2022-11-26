@@ -50,8 +50,9 @@ def register():
 
 
 @app.route("/user/<username>", methods=["GET", "POST"])
-def userpage():
+def userpage(username):
     """Handles userpage requests"""
+    session["username"] = "Zongxian"
     if session.get("username", None) is None:
         return "user does not exist", 404
     username = session.get("username")
@@ -78,7 +79,7 @@ def userpage():
         return result, 201
     user = page.get_user(username)  # request.method == "GET"
     data_dict = dataclasses.asdict(user)
-    return json.dumps(data_dict), username, 201
+    return json.dumps(data_dict), 201
 
 
 @app.route("/logout")

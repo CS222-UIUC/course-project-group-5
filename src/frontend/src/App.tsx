@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Login from './pages/Login';
 import MainPage from './pages/MainPage';
 import Register from './pages/Register';
-// import UserPage from './pages/UserPage';
+import User from './pages/User';
 
 function App() {
    return (
@@ -25,7 +25,7 @@ function App() {
                   <Route index element={<MainPage />} />
                </Route>
                <Route path="/user">
-                  {/* <Route index element={<UserPage />} /> */}
+                  <Route index element={<User />} />
                </Route>
             </Routes>
          </BrowserRouter>

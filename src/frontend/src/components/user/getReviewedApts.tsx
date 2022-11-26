@@ -11,11 +11,14 @@ export default function getReviewedApts(username: string) {
     const [apartments, setApartments] = useState(emptyarray);
 
     useEffect(() => {
+        setLoading(true);
+        setError(false);
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
         const timer = setTimeout(() => {
             const req = {
                 is_get_liked: true,
+                user_id: 1,
             };
             const json = JSON.stringify(req);
             axios({
@@ -38,7 +41,7 @@ export default function getReviewedApts(username: string) {
                                     price_max: res.data[i].price_max,
                                     votes: res.data[i].votes,
                                 });
-                            };
+                            }
                         }
                         return newApartments;
                     })
@@ -52,6 +55,6 @@ export default function getReviewedApts(username: string) {
             clearTimeout(timer);
             source.cancel();
         };
-    });
+    }, [username]);
     return {loading, error, apartments};
 }

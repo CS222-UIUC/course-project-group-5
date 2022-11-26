@@ -11,6 +11,11 @@ import {
    Divider,
    Stack,
    Button,
+   Link,
+   ListItemAvatar,
+   Avatar,
+   ListItem,
+   AvatarGroup
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -23,11 +28,17 @@ import getUser from '../components/user/getUser';
 
 
 export default function User() {
+   const btnstyle = { marginLeft: '10px' };
    return (
       <>
          <Grid container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
                <FormUser/>
+               <Button variant="outlined" style={btnstyle}>
+                  <Typography variant="subtitle2">
+                     Change Password
+                  </Typography>
+               </Button>
             </Grid>
 
             <Grid item xs={7}>
@@ -39,56 +50,68 @@ export default function User() {
 }
 
 function FormUser() {
-   const user_info = getUser("");
+   const user_info = getUser("Zongxian");
    return (
       <React.Fragment>
          <List>
-            <ListItemButton>
-               <ListItemIcon>
-                  <PersonIcon/>
-               </ListItemIcon>
-               <ListItemText primary={ user_info.user.username }/>
-            </ListItemButton>
+            <ListItem>
+               <ListItemAvatar>
+                  <Avatar>
+                     <PersonIcon/>
+                  </Avatar>
+               </ListItemAvatar>
+               <ListItemText primary="Username" secondary={ user_info.user.username }/>
+            </ListItem>
 
             <Divider />
 
-            <ListItemButton>
-               <ListItemText inset primary="Change password"/>
-            </ListItemButton>
+            <ListItem>
+               <ListItemAvatar>
+                  <Avatar>
+                     <EmailIcon/>
+                  </Avatar>
+               </ListItemAvatar>
+               <ListItemText primary="Email" secondary={ user_info.user.email }/>
+               <Button color="primary" variant="outlined">
+                  <Typography variant="subtitle2">
+                     Change email
+                  </Typography>
+               </Button>
+            </ListItem>
 
             <Divider />
 
-            <ListItemButton>
-               <ListItemIcon>
-                  <EmailIcon/>
-               </ListItemIcon>
-               <ListItemText primary={ user_info.user.email } secondary=""/>
-            </ListItemButton>
-
-            <Divider />
-
-            <ListItemButton>
-               <ListItemIcon>
-                  <PhoneIcon/>
-               </ListItemIcon>
-               <ListItemText primary={ user_info.user.phone }/>
-            </ListItemButton>
+            <ListItem>
+               <ListItemAvatar>
+                  <Avatar>
+                     <EmailIcon/>
+                  </Avatar>
+               </ListItemAvatar>
+               <ListItemText primary="Phone number" secondary={ user_info.user.phone }/>
+               <Button color="primary" variant="outlined">
+                  <Typography variant="subtitle2">
+                     Change phone
+                  </Typography>
+               </Button>
+            </ListItem>
          </List>
       </React.Fragment>
    );
 }
 
 function FormLikedApts() {
-   const reviewed_apts = getReviewedApts("");
+   console.log("Getting apt info")
+   const reviewed_apts = getReviewedApts("Zongxian");
    return (
       <React.Fragment>
          <Box>
             <Stack spacing={2}>
                {reviewed_apts.apartments.map((apt, i) => {
                   return (
-                     <Button variant="outlined">
+                     <Button variant="outlined" key={i} onClick={() => {
+                        console.log("Getting apt info")
+                     }}>
                         {apt.name + " " + apt.address}
-                        onClick = {}
                      </Button>
                   );
                })}
