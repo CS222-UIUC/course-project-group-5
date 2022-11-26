@@ -45,7 +45,7 @@ def scraper():
 
 
 def read_apt(header, detail):
-    """ A helper function to read apt in to apt dataclass"""
+    """A helper function to read apt in to apt dataclass"""
     apt_name = header.find("a").text
     apt_url = header.find("a")["href"]
     apt_addr = header.find("span", class_="ellipsis").text
