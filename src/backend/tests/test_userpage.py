@@ -13,7 +13,7 @@ class TestUserPage:
     phone = "012-345-6789"
     password = "newpassword1234"
     email = "newemail@gmail.com"
-    userpage = None
+    userpage = UserPage(username)
     main_page_staging = MainPageStaging()
 
     @use_database
@@ -48,14 +48,18 @@ class TestUserPage:
 
     @use_test
     def test_get_user(self):
-        """get_user returns correct Use"""
+        """get_user returns correct User"""
         self.initialize()
         res = self.userpage.get_user(self.username)
+        print(res)
         assert res.username == self.username
         assert res.password == "beginpassword"
         assert res.email == "beginemail@gmail.com"
         assert res.phone == "111-555-0022"
-        assert self.userpage.get_user("sd") is None
+        assert (
+            self.userpage.get_user("sd").email == ""
+            and self.userpage.get_user("sd").user_id == ""
+        )
         self.test_cleanup_db()
 
     @use_test
@@ -116,18 +120,18 @@ class TestUserPage:
         self.main_page_staging.initialize_all()
         connection = sqlite3.connect("database/database_test.db")
         cursor = connection.cursor()
-        minh_phan_id = cursor.execute(
-            "SELECT user_id FROM Users WHERE (username = 'Minh Phan')"
+        big_finger_id = cursor.execute(
+            "SELECT user_id FROM Users WHERE (username = 'Big_finger')"
         ).fetchone()[0]
-        sherman_id = cursor.execute(
-            "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
+        far_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
         ).fetchone()[0]
-        res = self.userpage.get_liked(minh_phan_id)
+        res = self.userpage.get_liked(big_finger_id)
         liked = []
-        liked.append(Apt(sherman_id, "Sherman", "909 S 5th St", 0.333, 5500, 6500))
+        liked.append(Apt(far_id, "FAR", "901 W College Ct", 1, 6000, 7000))
         self.main_page_staging.clean_all()
         self.test_cleanup_db()
-        assert res == liked
+        assert res[1] == liked[0]
 
     @use_test
     def test_cleanup_db(self):
