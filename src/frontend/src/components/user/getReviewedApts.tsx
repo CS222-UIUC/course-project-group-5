@@ -4,7 +4,7 @@ import { AptType } from '../Types';
 
 const baseURL = 'http://127.0.0.1:5000/user';
 
-function getReviewedApts(username: string) {
+export default function getReviewedApts(username: string) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const emptyarray: AptType[] = [];
