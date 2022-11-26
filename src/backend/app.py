@@ -3,7 +3,7 @@ import json
 import os
 import dataclasses
 from werkzeug.datastructures import MultiDict
-from flask import Flask, request, session, url_for
+from flask import Flask, request, session
 from flask_cors import CORS
 from pages.login import Login
 from pages.mainpage import MainPage
