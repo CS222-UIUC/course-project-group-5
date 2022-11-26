@@ -1,30 +1,25 @@
 import React from 'react';
 import {
    Grid,
-   TextField,
    Typography,
    List,
-   ListItemButton,
    ListItemText,
-   ListItemIcon,
    Box,
    Divider,
    Stack,
    Button,
-   Link,
    ListItemAvatar,
    Avatar,
    ListItem,
-   AvatarGroup
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
-import axios from 'axios';
-import { useState } from 'react';
 import getReviewedApts from '../components/user/getReviewedApts';
 import getUser from '../components/user/getUser';
+import {changeEmail, changePhone} from '../components/user/changeInfo';
+import { useState } from 'react';
 
 
 export default function User() {
@@ -51,6 +46,8 @@ export default function User() {
 
 function FormUser() {
    const user_info = getUser("Zongxian");
+   const [changeEmail, setChangeEmail] = useState(false)
+   const [changePhone, setChangePhone] = useState(false)
    return (
       <React.Fragment>
          <List>
@@ -84,7 +81,7 @@ function FormUser() {
             <ListItem>
                <ListItemAvatar>
                   <Avatar>
-                     <EmailIcon/>
+                     <PhoneIcon/>
                   </Avatar>
                </ListItemAvatar>
                <ListItemText primary="Phone number" secondary={ user_info.user.phone }/>
