@@ -36,6 +36,7 @@ export default function User() {
       <>
          <Stack spacing={1}>
             <AppBar component="nav">
+               {/*Renders top bar*/}
                <Toolbar>
                   <Grid container spacing={0}>
                      <Grid item>
@@ -81,6 +82,7 @@ export default function User() {
                </Toolbar>
             </AppBar>
             <Grid container spacing={2}>
+               {/*Headers*/}
                <Grid item xs={4}>
                   <Box display="flex" justifyContent="center">
                      <Typography variant="h4">User</Typography>
@@ -93,6 +95,7 @@ export default function User() {
                </Grid>
             </Grid>
             <Grid container spacing={2}>
+               {/* User info and list of reviewed apts */}
                <Grid item xs={4}>
                   <FormUser />
                   <Button variant="outlined" style={btnstyle}>
@@ -115,6 +118,7 @@ function FormUser() {
    const user_info = getUser('Zongxian');
    return (
       <React.Fragment>
+         {/* Form UI for user info */}
          <List>
             <ListItem>
                <ListItemAvatar>
@@ -145,6 +149,7 @@ function FormEmail({ email }: EmailComponentProps) {
    const [newEmail, setNewEmail] = useState('');
    return (
       <React.Fragment>
+         {/* Email box changes based on click */}
          {editEmail == false && (
             <ListItem>
                <ListItemAvatar>
@@ -217,6 +222,7 @@ function FormPhone({ phone }: PhoneComponentProps) {
    const [newPhone, setNewPhone] = useState('');
    return (
       <React.Fragment>
+         {/* Phone box changes based on click */}
          {editPhone == false && (
             <ListItem>
                <ListItemAvatar>
@@ -287,6 +293,7 @@ function FormLikedApts() {
    const reviewed_apts = getReviewedApts('Zongxian');
    return (
       <React.Fragment>
+         {/* UI for liked apartments */}
          <Box>
             <Stack spacing={2}>
                {reviewed_apts.apartments.map((apt, i) => {

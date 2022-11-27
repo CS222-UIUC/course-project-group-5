@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, CardContent } from '@material-ui/core';
+import { Typography, Card, CardContent, Stack } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import { AptType } from './Types';
 
@@ -30,43 +30,45 @@ const SingleCard = ({
             }
          >
             <CardContent style={{ height: '175px' }}>
+               <Stack>
                {/*<Button size="small">Learn More</Button>*/}
-               <Typography
-                  gutterBottom
-                  variant="h5"
-                  style={{ float: 'left', marginLeft: '30px' }}
-                  component="div"
-               >
-                  {name}
-               </Typography>
-               <Typography
-                  gutterBottom
-                  variant="body1"
-                  style={{ float: 'right', marginTop: '5px' }}
-               >
-                  {address}
-               </Typography>
-               <Typography
-                  gutterBottom
-                  variant="body2"
-                  style={{ float: 'left' }}
-               >
-                  {/*review*/}
-               </Typography>
-               <Typography
-                  gutterBottom
-                  variant="body2"
-                  style={{ float: 'right' }}
-               >
-                  ${price_min}-${price_max}
-               </Typography>
-               <Typography
-                  gutterBottom
-                  variant="body2"
-                  style={{ float: 'left' }}
-               >
-                  {/* {rating} */}
-               </Typography>
+                  <Typography
+                     gutterBottom
+                     variant="h5"
+                     style={{ float: 'left', marginLeft: '30px' }}
+                     component="div"
+                  >
+                     {name}
+                  </Typography>
+                  <Typography
+                     gutterBottom
+                     variant="body1"
+                     style={{ float: 'right', marginTop: '5px' }}
+                  >
+                     {address}
+                  </Typography>
+                  <Typography
+                     gutterBottom
+                     variant="body2"
+                     style={{ float: 'left' }}
+                  >
+                     {/*review*/}
+                  </Typography>
+                  <Typography
+                     gutterBottom
+                     variant="body2"
+                     style={{ float: 'right' }}
+                  >
+                     ${price_min}-${price_max}
+                  </Typography>
+                  <Typography
+                     gutterBottom
+                     variant="body2"
+                     style={{ float: 'left' }}
+                  >
+                     {/* {rating} */}
+                  </Typography>
+               </Stack>
             </CardContent>
          </CardActionArea>
       </Card>

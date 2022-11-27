@@ -25,6 +25,7 @@ function MainPage() {
    return (
       <>
          <Stack spacing={2}>
+            {/* Top bar */}
             <AppBar component="nav">
                <Toolbar>
                   <Grid container spacing={0}>
@@ -71,6 +72,7 @@ function MainPage() {
                </Toolbar>
             </AppBar>
             <Grid container spacing={3}>
+               {/* Search bar and rest of the components */}
                <Grid item xs={12}>
                   <Box
                      display="flex"
