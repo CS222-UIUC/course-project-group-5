@@ -1,6 +1,11 @@
 import React from 'react';
-import { Typography, Card, CardContent, Stack } from '@mui/material';
-import { CardActionArea } from '@mui/material';
+import {
+   Typography,
+   Card,
+   CardContent,
+   Stack,
+   CardActionArea,
+} from '@mui/material';
 import { AptType } from './Types';
 
 interface SingleCardProps {
@@ -31,7 +36,7 @@ const SingleCard = ({
          >
             <CardContent style={{ height: '175px' }}>
                <Stack>
-               {/*<Button size="small">Learn More</Button>*/}
+                  {/*<Button size="small">Learn More</Button>*/}
                   <Typography
                      gutterBottom
                      variant="h5"
