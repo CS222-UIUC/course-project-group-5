@@ -143,27 +143,23 @@ export default function Populate({ onSelect }: Props) {
                   if (apartments.length === i + 1) {
                      return (
                         // handles last element
-                        <React.Fragment key={i}>
-                           <div key={i} ref={lastAptElementRef}>
-                              <SingleCard
-                                 {...apartment}
-                                 key={i}
-                                 onSelect={onSelect}
-                              />
-                           </div>
-                        </React.Fragment>
+                        <div key={i} ref={lastAptElementRef}>
+                           <SingleCard
+                              {...apartment}
+                              key={i}
+                              onSelect={onSelect}
+                           />
+                        </div>
                      );
                   } else {
                      return (
-                        <React.Fragment key={i}>
-                           <div key={i}>
-                              <SingleCard
-                                 {...apartment}
-                                 key={i}
-                                 onSelect={onSelect}
-                              />
-                           </div>
-                        </React.Fragment>
+                        <div key={i}>
+                           <SingleCard
+                              {...apartment}
+                              key={i}
+                              onSelect={onSelect}
+                           />
+                        </div>
                      );
                   }
                })}
