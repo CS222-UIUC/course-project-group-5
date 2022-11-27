@@ -12,6 +12,8 @@ import {
    Avatar,
    ListItem,
    TextField,
+   AppBar,
+   Toolbar,
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -21,36 +23,86 @@ import getReviewedApts from '../components/user/getReviewedApts';
 import getUser from '../components/user/getUser';
 import {changeEmail, changePhone} from '../components/user/changeInfo';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 export default function User() {
+   const navigate = useNavigate();
    const btnstyle = { marginLeft: '10px' };
    return (
       <>
-         <Grid container spacing={2}>
-            <Grid item xs={4}>
-               <FormUser/>
-               <Button variant="outlined" style={btnstyle}>
-                  <Typography variant="subtitle2">
-                     Change Password
-                  </Typography>
-               </Button>
+         <Stack spacing={1}>
+            <AppBar component="nav">
+               <Toolbar>
+                  <Grid container spacing={0}>
+                     <Grid item>
+                        <Box>
+                           <Avatar>
+                              <AccountCircleIcon/>
+                           </Avatar>
+                        </Box>
+                     </Grid>
+                     <Grid item>
+                        <Box>
+                           <Button sx={{ color: '#fff' }} onClick={() => navigate("/")}>
+                              Main
+                           </Button>
+                        </Box>
+                     </Grid>
+                     <Grid item xs={10}>
+                        <Box>
+                           <Button sx={{ color: '#fff' }}>
+                              About
+                           </Button>
+                        </Box>
+                     </Grid>
+                     <Grid item>
+                        <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
+                           <Button sx={{ color: '#fff' }}>
+                              Logout
+                           </Button>
+                        </Box>
+                     </Grid>
+                  </Grid>
+               </Toolbar>
+            </AppBar>
+            <Grid container spacing={2}>
+               <Grid item xs={4}>
+                  <Box display="flex" justifyContent="center">
+                     <Typography variant="h4">
+                        User
+                     </Typography>
+                  </Box>
+               </Grid>
+               <Grid item xs={7}>
+                  <Box display="flex" justifyContent="center">
+                     <Typography variant="h4">
+                        Reviewed Apartments
+                     </Typography>
+                  </Box>
+               </Grid>
             </Grid>
+            <Grid container spacing={2}>
+               <Grid item xs={4}>
+                  <FormUser/>
+                  <Button variant="outlined" style={btnstyle}>
+                     <Typography variant="subtitle2">
+                        Change Password
+                     </Typography>
+                  </Button>
+               </Grid>
 
-            <Grid item xs={7}>
-               <FormLikedApts/>
+               <Grid item xs={7}>
+                  <FormLikedApts/>
+               </Grid>
             </Grid>
-         </Grid>
+         </Stack>
       </>
    );
 }
 
 function FormUser() {
    const user_info = getUser("Zongxian");
-   const [editEmail, setChangeEmail] = useState(false);
-   const [editPhone, setChangePhone] = useState(false);
-   const [newEmail, setNewEmail] = useState("");
-   const [newPhone, setNewPhone] = useState("");
    return (
       <React.Fragment>
          <List>
@@ -62,98 +114,127 @@ function FormUser() {
                </ListItemAvatar>
                <ListItemText primary="Username" secondary={ user_info.user.username }/>
             </ListItem>
-
             <Divider />
+            <FormEmail email={user_info.user.email}/>
+            <Divider />
+            <FormPhone phone={user_info.user.phone}/>
+         </List>
+      </React.Fragment>
+   );
+}
 
-            {editEmail == false && (
-            <ListItem>
-               <ListItemAvatar>
-                  <Avatar>
-                     <EmailIcon/>
-                  </Avatar>
-               </ListItemAvatar>
-               <ListItemText primary="Email" secondary={ user_info.user.email }/>
-               <Button color="primary" variant="outlined" onClick={() => 
-                  setChangeEmail(true)
-               }>
-                  <Typography variant="subtitle2">
-                     Change email
-                  </Typography>
-               </Button>
-            </ListItem>)}
+interface EmailComponentProps {
+   email: string
+}
 
-            {editEmail == true && (
-            <ListItem>
-               <Grid container spacing={1}>
-                  <Grid item xs={12}>
+function FormEmail({email}: EmailComponentProps) {
+   const [editEmail, setChangeEmail] = useState(false);
+   const [newEmail, setNewEmail] = useState("");
+   return (
+      <React.Fragment>
+         {editEmail == false && (
+         <ListItem>
+            <ListItemAvatar>
+               <Avatar>
+                  <EmailIcon/>
+               </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Email" secondary={ email }/>
+            <Button color="primary" variant="outlined" onClick={() => 
+               setChangeEmail(true)
+            }>
+               <Typography variant="subtitle2">
+                  Change email
+               </Typography>
+            </Button>
+         </ListItem>)}
+         {editEmail == true && (
+         <ListItem>
+            <Grid container spacing={1}>
+               <Grid item xs={12}>
                   <TextField label="Email" variant="outlined" fullWidth onChange={(event) => {
-                        setNewEmail(event.target.value)
-                     }}/>
-                  </Grid>
-                  <Grid item xs={4}>
+                     setNewEmail(event.target.value)
+                  }}/>
+               </Grid>
+               <Grid item xs>
+                  <Box display="flex" justifyContent="flex-end">
                      <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
                         setChangeEmail(false)
                      }>
                         Cancel
                      </Button>
-                  </Grid>
-                  <Grid item xs={7}>
+                  </Box>
+               </Grid>
+               <Grid item xs={2}>
+                  <Box display="flex" justifyContent="flex-end">
                      <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
                         changeEmail(newEmail, "Zongxian")
                      }>
                         Submit
                      </Button>
-                  </Grid>
+                  </Box>
                </Grid>
-            </ListItem>
-            )}
+            </Grid>
+         </ListItem>
+         )}
+      </React.Fragment>
+   );
+}
 
-            <Divider />
+interface PhoneComponentProps {
+   phone: string
+}
 
-            {editPhone == false && (
-            <ListItem>
-               <ListItemAvatar>
-                  <Avatar>
-                     <PhoneIcon/>
-                  </Avatar>
-               </ListItemAvatar>
-               <ListItemText primary="Phone number" secondary={ user_info.user.phone }/>
-               <Button color="primary" variant="outlined" onClick={() => {
-                  setChangePhone(true)
-               }}>
-                  <Typography variant="subtitle2">
-                     Change phone
-                  </Typography>
-               </Button>
-            </ListItem>)}
-
-            {editPhone == true && (
-            <ListItem>
-               <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                  <TextField label="Phone" variant="outlined" fullWidth onChange={(event) => {
-                        setNewPhone(event.target.value)
-                     }}/>
-                  </Grid>
-                  <Grid item xs={4}>
+function FormPhone({phone}: PhoneComponentProps) {
+   const [editPhone, setChangePhone] = useState(false);
+   const [newPhone, setNewPhone] = useState("");
+   return (
+      <React.Fragment>
+         {editPhone == false && (
+         <ListItem>
+            <ListItemAvatar>
+               <Avatar>
+                  <PhoneIcon/>
+               </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Phone number" secondary={ phone }/>
+            <Button color="primary" variant="outlined" onClick={() => {
+               setChangePhone(true)
+            }}>
+               <Typography variant="subtitle2">
+                  Change phone
+               </Typography>
+            </Button>
+         </ListItem>)}
+         {editPhone == true && (
+         <ListItem>
+            <Grid container spacing={1}>
+               <Grid item xs={12}>
+               <TextField label="Phone" variant="outlined" fullWidth onChange={(event) => {
+                     setNewPhone(event.target.value)
+                  }}/>
+               </Grid>
+               <Grid item xs>
+                  <Box display="flex" justifyContent="flex-end">
                      <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
                         setChangePhone(false)
                      }>
                         Cancel
                      </Button>
-                  </Grid>
-                  <Grid item xs={7}>
+                  </Box>
+               </Grid>
+               <Grid item xs={2}>
+                  <Box display="flex" justifyContent="flex-end">
                      <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
                         changePhone(newPhone, "Zongxian")
                      }>
                         Submit
                      </Button>
-                  </Grid>
+                  </Box>
                </Grid>
-            </ListItem>
-            )}
-
-         </List>
+            </Grid>
+         </ListItem>
+         )}
       </React.Fragment>
    );
 }
