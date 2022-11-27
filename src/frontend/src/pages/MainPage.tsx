@@ -4,28 +4,80 @@ import Populate from '../components/mainpageleft/PopulateLeftSection';
 import SearchBar from '../components/SearchBar';
 import { AptType } from '../components/Types';
 import RightSection from '../sections/MainPageRightSection';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {logout} from '../components/user/changeInfo';
+import { useNavigate } from "react-router-dom";
+
+import {
+   Stack,
+   AppBar,
+   Toolbar,
+   Grid,
+   Box,
+   Avatar,
+   Button,
+} from '@mui/material';
 
 function MainPage() {
+   const navigate = useNavigate();
    const { apartments } = getApartments('0', '0', -1);
    const [to, setTo] = useState<AptType>(apartments[0]);
    return (
       <>
-         <div className="Header" style={{ height: '200px' }}>
-            <SearchBar />
-         </div>
-         <div className="Content">
-            <div className="Wrapper">
-               <div
-                  className="Right"
-                  style={{ width: '1000px', float: 'right', height: '500px' }}
-               >
-                  <RightSection apt={to || apartments[0]} />
-               </div>
-               <div className="Left">
+         <Stack spacing={2}>
+            <AppBar component="nav">
+               <Toolbar>
+                  <Grid container spacing={0}>
+                     <Grid item>
+                        <Box>
+                           <Avatar>
+                              <AccountCircleIcon/>
+                           </Avatar>
+                        </Box>
+                     </Grid>
+                     <Grid item>
+                        <Box>
+                           <Button sx={{ color: '#fff' }} onClick={() => navigate("/user")}>
+                              User
+                           </Button>
+                        </Box>
+                     </Grid>
+                     <Grid item xs={10}>
+                        <Box>
+                           <Button sx={{ color: '#fff' }}>
+                              About
+                           </Button>
+                        </Box>
+                     </Grid>
+                     <Grid item>
+                        <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
+                           <Button sx={{ color: '#fff' }} onClick={() => {
+                              logout()
+                              navigate("/login")
+                           }}>
+                              Log out
+                           </Button>
+                        </Box>
+                     </Grid>
+                  </Grid>
+               </Toolbar>
+            </AppBar>
+            <Grid container spacing={3}>
+               <Grid item xs={12}>
+                  <Box display="flex" justifyContent="center" alignItems="center">
+                     <Stack spacing={2} sx={{ width: 300 }}>
+                        <SearchBar />
+                     </Stack>
+                  </Box>
+               </Grid>
+               <Grid item xs={3}>
                   <Populate onSelect={(apt) => setTo(apt)} />
-               </div>
-            </div>
-         </div>
+               </Grid>
+               <Grid item xs>
+                  <RightSection apt={to || apartments[0]} />
+               </Grid>
+            </Grid>
+         </Stack>
       </>
    );
 }

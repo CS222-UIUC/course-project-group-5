@@ -1,7 +1,10 @@
 import * as React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-// import { PicType } from './Types';
-import Carousel from 'react-bootstrap/Carousel';
+import {
+   Card,
+   CardMedia,
+} from '@mui/material';
+import Carousel from 'react-material-ui-carousel'
 
 export interface IImagesGalleryProps {
    pics: string[];
@@ -9,13 +12,20 @@ export interface IImagesGalleryProps {
 
 const ImagesGallery = ({ pics }: IImagesGalleryProps) => {
    return (
-      <Carousel>
-         {pics.map((pic) => (
-            <Carousel.Item key={pic} style={{ height: '500px' }}>
-               <img className="d-block w-100" src={pic} alt="" />
-            </Carousel.Item>
-         ))}
-      </Carousel>
+      <React.Fragment>
+         <Carousel sx={{ height: 525 }} >
+            {pics.map((pic) => (
+               <Card key={pic} sx={{ height: 525 }}>
+                  <CardMedia
+                     component="img"
+                     image={pic}
+                     sx={{ height: 525 }}
+                  >
+                  </CardMedia>
+               </Card>
+            ))}
+         </Carousel>
+      </React.Fragment>
    );
 };
 

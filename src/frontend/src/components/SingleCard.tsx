@@ -1,17 +1,7 @@
 import React from 'react';
-import { Typography, Card, CardContent } from '@material-ui/core';
+import { Typography, Card, CardContent} from '@material-ui/core';
 import { CardActionArea } from '@mui/material';
-import styled from 'styled-components';
 import { AptType } from './Types';
-
-const Container = styled.div``;
-
-const MyCard = styled(Card)`
-   margin-left: 20px;
-   margin-bottom: 20px;
-   height: 200px;
-   width: 470px;
-`;
 
 interface SingleCardProps {
    id: number;
@@ -32,64 +22,55 @@ const SingleCard = ({
    votes,
    onSelect,
 }: SingleCardProps) => (
-   <Container>
-      <MyCard>
-         {' '}
+   <React.Fragment>
+      <Card>
          <CardActionArea
             onClick={() =>
                onSelect({ id, name, address, price_min, price_max, votes })
             }
          >
-            <CardContent style={{ height: '300px' }}>
+            <CardContent style={{ height: '175px' }}>
                {/*<Button size="small">Learn More</Button>*/}
-               <div style={{ display: 'inline-block', width: '100%' }}>
-                  <Typography
-                     gutterBottom
-                     variant="h5"
-                     component="div"
-                     style={{ float: 'left', marginLeft: '30px' }}
-                  >
-                     {name}
-                  </Typography>
-                  <Typography
-                     gutterBottom
-                     variant="body1"
-                     component="div"
-                     style={{ float: 'right', marginTop: '5px' }}
-                  >
-                     {address}
-                  </Typography>
-               </div>
-               <div>
-                  <Typography
-                     gutterBottom
-                     variant="body2"
-                     component="div"
-                     style={{ float: 'left' }}
-                  >
-                     {/*review*/}
-                  </Typography>
-                  <Typography
-                     gutterBottom
-                     variant="body2"
-                     component="div"
-                     style={{ float: 'right' }}
-                  >
-                     ${price_min}-${price_max}
-                  </Typography>
-                  <Typography
-                     gutterBottom
-                     variant="body2"
-                     component="div"
-                     style={{ float: 'left' }}
-                  >
-                     {/* {rating} */}
-                  </Typography>
-               </div>
+               <Typography
+                  gutterBottom
+                  variant="h5"
+                  style={{ float: 'left', marginLeft: '30px' }}
+                  component="div"
+               >
+                  {name}
+               </Typography>
+               <Typography
+                  gutterBottom
+                  variant="body1"
+                  style={{ float: 'right', marginTop: '5px' }}
+               >
+                  {address}
+               </Typography>
+               <Typography
+                  gutterBottom
+                  variant="body2"
+                  style={{ float: 'left' }}
+               >
+                  {/*review*/}
+               </Typography>
+               <Typography
+                  gutterBottom
+                  variant="body2"
+                  style={{ float: 'right' }}
+               >
+                  ${price_min}-${price_max}
+               </Typography>
+               <Typography
+                  gutterBottom
+                  variant="body2"
+                  style={{ float: 'left' }}
+               >
+                  {/* {rating} */}
+               </Typography>
             </CardContent>
          </CardActionArea>
-      </MyCard>
-   </Container>
+      </Card>
+   </React.Fragment>
 );
 
 export default SingleCard;

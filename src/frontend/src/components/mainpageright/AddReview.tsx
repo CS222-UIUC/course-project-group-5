@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
+import {
+   TextField,
+   FormControl,
+   FormControlLabel,
+   FormLabel,
+   RadioGroup,
+   Button,
+   Radio,
+   Stack,
+} from '@mui/material';
 
 const baseURL = 'http://127.0.0.1:5000/main';
 export default function AddReview() {
@@ -34,59 +43,27 @@ export default function AddReview() {
       addReviewHandler(text, vote);
    };
    return (
-      <div>
+      <React.Fragment>
          {/* {error && <Alert variant="danger">{error}</Alert>} */}
-         <hr></hr>
-         <Form className="mt-3 mb-3" onSubmit={add}>
-            <Form.Group className="mb-3 text-center" controlId="formBasicText">
-               <Form.Label>Create a Review</Form.Label>
-               <Form.Control
-                  placeholder="Enter your reviews here"
-                  as="textarea"
-                  rows={5}
-                  onChange={(e) => setText(e.target.value)}
-               />
-            </Form.Group>
-            <div className="mb-3">
-               <div className="form-check form-check-inline ">
-                  <input
-                     name="group1"
-                     type="radio"
-                     value="upvote"
-                     id="inline-radio-1"
-                     className="form-check-input"
-                     onChange={radioHandler}
-                  />
-                  <label
-                     title=""
-                     htmlFor="inline-radio-1"
-                     className="form-check-label"
-                  >
-                     upvote
-                  </label>
-               </div>
-               <div className="form-check form-check-inline">
-                  <input
-                     name="group1"
-                     type="radio"
-                     value="downvote"
-                     id="inline-radio-2"
-                     className="form-check-input"
-                     onChange={radioHandler}
-                  />
-                  <label
-                     title=""
-                     htmlFor="inline-radio-2"
-                     className="form-check-label"
-                  >
-                     downvote
-                  </label>
-               </div>
-            </div>
-            <Button type="submit" variant="primary">
+         <FormControl className="mt-3 mb-3" onSubmit={add}>
+            <Stack spacing={2}>
+            <FormLabel>Create a review</FormLabel>
+            <TextField
+               label="Enter your reviews here"
+               onChange={(e) => setText(e.target.value)}
+            >
+            </TextField>
+            <RadioGroup>
+               <FormControlLabel value="upvote" control={<Radio onChange={radioHandler}/>} label="Upvote"/>
+               <FormControlLabel value="downvote" control={<Radio onChange={radioHandler}/>} label="Downvote"/>
+            </RadioGroup>
+            <Button type="submit" variant="contained" onClick={() => {
+               add()
+            }}>
                Submit
             </Button>
-         </Form>
-      </div>
+            </Stack>
+         </FormControl>
+      </React.Fragment>
    );
 }

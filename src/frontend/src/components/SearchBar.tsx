@@ -1,4 +1,4 @@
-import { Autocomplete, Stack, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './SearchBarStyles.css';
@@ -29,22 +29,16 @@ export default function SearchBar() {
    };
 
    return (
-      <>
-         <h1 className="Title">Apartment Search</h1>
-         <div className="search">
-            <Stack spacing={2} sx={{ width: 500 }}>
-               <Autocomplete
-                  id="free-solo-demo"
-                  freeSolo
-                  onInputChange={handleChange}
-                  options={names.map((option) => option.name)}
-                  renderInput={(params) => (
-                     <TextField {...params} label="Search" />
-                  )}
-               />
-            </Stack>
-         </div>
-         <br />
-      </>
+      <React.Fragment>
+         <Autocomplete
+            id="free-solo-demo"
+            freeSolo
+            onInputChange={handleChange}
+            options={names.map((option) => option.name)}
+            renderInput={(params) => (
+               <TextField {...params} label="Search" />
+            )}
+         />
+      </React.Fragment>
    );
 }
