@@ -11,6 +11,7 @@ import {
    ListItemAvatar,
    Avatar,
    ListItem,
+   TextField,
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -46,8 +47,10 @@ export default function User() {
 
 function FormUser() {
    const user_info = getUser("Zongxian");
-   const [changeEmail, setChangeEmail] = useState(false)
-   const [changePhone, setChangePhone] = useState(false)
+   const [editEmail, setChangeEmail] = useState(false);
+   const [editPhone, setChangePhone] = useState(false);
+   const [newEmail, setNewEmail] = useState("");
+   const [newPhone, setNewPhone] = useState("");
    return (
       <React.Fragment>
          <List>
@@ -62,6 +65,7 @@ function FormUser() {
 
             <Divider />
 
+            {editEmail == false && (
             <ListItem>
                <ListItemAvatar>
                   <Avatar>
@@ -69,15 +73,44 @@ function FormUser() {
                   </Avatar>
                </ListItemAvatar>
                <ListItemText primary="Email" secondary={ user_info.user.email }/>
-               <Button color="primary" variant="outlined">
+               <Button color="primary" variant="outlined" onClick={() => 
+                  setChangeEmail(true)
+               }>
                   <Typography variant="subtitle2">
                      Change email
                   </Typography>
                </Button>
+            </ListItem>)}
+
+            {editEmail == true && (
+            <ListItem>
+               <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                  <TextField label="Email" variant="outlined" fullWidth onChange={(event) => {
+                        setNewEmail(event.target.value)
+                     }}/>
+                  </Grid>
+                  <Grid item xs={4}>
+                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
+                        setChangeEmail(false)
+                     }>
+                        Cancel
+                     </Button>
+                  </Grid>
+                  <Grid item xs={7}>
+                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
+                        changeEmail(newEmail, "Zongxian")
+                     }>
+                        Submit
+                     </Button>
+                  </Grid>
+               </Grid>
             </ListItem>
+            )}
 
             <Divider />
 
+            {editPhone == false && (
             <ListItem>
                <ListItemAvatar>
                   <Avatar>
@@ -85,12 +118,41 @@ function FormUser() {
                   </Avatar>
                </ListItemAvatar>
                <ListItemText primary="Phone number" secondary={ user_info.user.phone }/>
-               <Button color="primary" variant="outlined">
+               <Button color="primary" variant="outlined" onClick={() => {
+                  setChangePhone(true)
+               }}>
                   <Typography variant="subtitle2">
                      Change phone
                   </Typography>
                </Button>
+            </ListItem>)}
+
+            {editPhone == true && (
+            <ListItem>
+               <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                  <TextField label="Phone" variant="outlined" fullWidth onChange={(event) => {
+                        setNewPhone(event.target.value)
+                     }}/>
+                  </Grid>
+                  <Grid item xs={4}>
+                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
+                        setChangePhone(false)
+                     }>
+                        Cancel
+                     </Button>
+                  </Grid>
+                  <Grid item xs={7}>
+                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
+                        changePhone(newPhone, "Zongxian")
+                     }>
+                        Submit
+                     </Button>
+                  </Grid>
+               </Grid>
             </ListItem>
+            )}
+
          </List>
       </React.Fragment>
    );
