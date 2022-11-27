@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function sendData(
    username: string,
@@ -18,6 +19,7 @@ function sendData(
    password: string,
    phone: string
 ) {
+   const navigate = useNavigate();
    axios({
       method: 'post',
       url: '/register',
@@ -30,6 +32,7 @@ function sendData(
    })
       .then((response) => {
          console.log(response);
+         navigate('/login');
       })
       .catch((error) => {
          if (error.response) {
