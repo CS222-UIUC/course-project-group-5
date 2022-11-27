@@ -21,7 +21,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import getReviewedApts from '../components/user/getReviewedApts';
 import getUser from '../components/user/getUser';
-import {changeEmail, changePhone} from '../components/user/changeInfo';
+import {changeEmail, changePhone, logout} from '../components/user/changeInfo';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
@@ -58,7 +58,7 @@ export default function User() {
                      </Grid>
                      <Grid item>
                         <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-                           <Button sx={{ color: '#fff' }}>
+                           <Button sx={{ color: '#fff' }} onClick={() => logout()}>
                               Logout
                            </Button>
                         </Box>
