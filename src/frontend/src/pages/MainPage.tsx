@@ -5,8 +5,8 @@ import SearchBar from '../components/SearchBar';
 import { AptType } from '../components/Types';
 import RightSection from '../sections/MainPageRightSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {logout} from '../components/user/changeInfo';
-import { useNavigate } from "react-router-dom";
+import { logout } from '../components/user/changeInfo';
+import { useNavigate } from 'react-router-dom';
 
 import {
    Stack,
@@ -31,30 +31,38 @@ function MainPage() {
                      <Grid item>
                         <Box>
                            <Avatar>
-                              <AccountCircleIcon/>
+                              <AccountCircleIcon />
                            </Avatar>
                         </Box>
                      </Grid>
                      <Grid item>
                         <Box>
-                           <Button sx={{ color: '#fff' }} onClick={() => navigate("/user")}>
+                           <Button
+                              sx={{ color: '#fff' }}
+                              onClick={() => navigate('/user')}
+                           >
                               User
                            </Button>
                         </Box>
                      </Grid>
                      <Grid item xs={10}>
                         <Box>
-                           <Button sx={{ color: '#fff' }}>
-                              About
-                           </Button>
+                           <Button sx={{ color: '#fff' }}>About</Button>
                         </Box>
                      </Grid>
                      <Grid item>
-                        <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-                           <Button sx={{ color: '#fff' }} onClick={() => {
-                              logout()
-                              navigate("/login")
-                           }}>
+                        <Box
+                           display="flex"
+                           justifyContent="flex-end"
+                           alignItems="flex-end"
+                        >
+                           <Button
+                              sx={{ color: '#fff' }}
+                              onClick={() => {
+                                 logout();
+                                 navigate('/login');
+                              }}
+                           >
                               Log out
                            </Button>
                         </Box>
@@ -64,7 +72,11 @@ function MainPage() {
             </AppBar>
             <Grid container spacing={3}>
                <Grid item xs={12}>
-                  <Box display="flex" justifyContent="center" alignItems="center">
+                  <Box
+                     display="flex"
+                     justifyContent="center"
+                     alignItems="center"
+                  >
                      <Stack spacing={2} sx={{ width: 300 }}>
                         <SearchBar />
                      </Stack>

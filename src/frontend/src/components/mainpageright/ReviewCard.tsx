@@ -25,7 +25,7 @@ const ReviewCard = ({ username, date, comment, vote }: ReviewCardProps) => {
             <CardHeader
                avatar={
                   <Avatar>
-                     <PersonIcon/>
+                     <PersonIcon />
                   </Avatar>
                }
                title={username}
@@ -33,17 +33,17 @@ const ReviewCard = ({ username, date, comment, vote }: ReviewCardProps) => {
             />
             <CardContent>
                <Stack spacing={1}>
-                  <Typography variant="body1">
-                     {comment}
-                  </Typography>
-                  {vote === true &&
-                  <Avatar sx={{ width: 29, height: 29 }}>
-                     <ThumbUpIcon/>
-                  </Avatar>}
-                  {vote !== true &&
-                  <Avatar>
-                     <ThumbDownIcon/>
-                  </Avatar>}
+                  <Typography variant="body1">{comment}</Typography>
+                  {vote === true && (
+                     <Avatar sx={{ width: 29, height: 29 }}>
+                        <ThumbUpIcon />
+                     </Avatar>
+                  )}
+                  {vote !== true && (
+                     <Avatar>
+                        <ThumbDownIcon />
+                     </Avatar>
+                  )}
                </Stack>
             </CardContent>
          </Card>

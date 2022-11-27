@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { AptType } from '../Types';
-import {
-  Stack,
-  Box,
-  Typography,
-  Paper,
-} from '@mui/material';
+import { Stack, Box, Typography, Paper } from '@mui/material';
 
 export interface IAptInfoProps {
    apt: AptType | undefined;
@@ -14,29 +9,25 @@ export interface IAptInfoProps {
 export function AptInfo({ apt }: IAptInfoProps) {
    return (
       <React.Fragment>
-        <Paper elevation={3}>
-          <Stack>
-          <Box display="flex" justifyContent="center">
-              <Typography variant="h4">
-                {apt?.name}
-              </Typography>
-          </Box>
-          <Box display="flex" justifyContent="center">
-              <Typography variant="h6">
-                {apt?.address}
-              </Typography>
-          </Box>
-          <Box display="flex" justifyContent="center">
-              <Typography variant="h6">
-                Price Range: ${apt?.price_min}~${apt?.price_max}
-              </Typography>
-          </Box>
-          <Box display="flex" justifyContent="center">
-              <Typography variant="h6">
-                Rating: ${apt?.votes || 0}
-              </Typography>
-          </Box>
-          {/* <div className="d-flex align-items-center justify-content-evenly">
+         <Paper elevation={3}>
+            <Stack>
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h4">{apt?.name}</Typography>
+               </Box>
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h6">{apt?.address}</Typography>
+               </Box>
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h6">
+                     Price Range: ${apt?.price_min}~${apt?.price_max}
+                  </Typography>
+               </Box>
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h6">
+                     Rating: ${apt?.votes || 0}
+                  </Typography>
+               </Box>
+               {/* <div className="d-flex align-items-center justify-content-evenly">
           <span className="fs-2 text-success">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +55,8 @@ export function AptInfo({ apt }: IAptInfoProps) {
             {apt[0].downvotes}
           </span>
         </div> */}
-          </Stack>
-        </Paper>
+            </Stack>
+         </Paper>
       </React.Fragment>
    );
 }

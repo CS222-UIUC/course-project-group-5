@@ -12,7 +12,7 @@ import {
 import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 function sendData(user: string, password: string) {
    const navigate = useNavigate();
@@ -78,7 +78,7 @@ export default function Login() {
                variant="contained"
                style={btnstyle}
                onClick={() => {
-                  sendData(user, password)
+                  sendData(user, password);
                }}
                fullWidth
             >

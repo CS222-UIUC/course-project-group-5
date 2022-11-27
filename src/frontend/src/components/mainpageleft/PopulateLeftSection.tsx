@@ -1,6 +1,6 @@
-import { 
+import {
    Grid,
-   Paper, 
+   Paper,
    FormControl,
    Select,
    MenuItem,
@@ -9,7 +9,7 @@ import {
    Stack,
    Typography,
    Box,
- } from '@mui/material';
+} from '@mui/material';
 import React, { useState, useRef, useCallback } from 'react';
 import SingleCard from '../SingleCard';
 import { useSearchParams } from 'react-router-dom';
@@ -55,9 +55,7 @@ export default function Populate({ onSelect }: Props) {
       [loading, hasMore]
    );
 
-   const handlePriceToggle = (
-      event: SelectChangeEvent<string>,
-   ) => {
+   const handlePriceToggle = (event: SelectChangeEvent<string>) => {
       setPriceSort(event.target.value);
       setId(-1); // start at the beginning
       // sets URL
@@ -75,9 +73,7 @@ export default function Populate({ onSelect }: Props) {
       setSearchParams(searchParams);
    };
 
-   const handlePopularToggle = (
-      event: SelectChangeEvent<string>,
-   ) => {
+   const handlePopularToggle = (event: SelectChangeEvent<string>) => {
       setRatingSort(event.target.value);
       setId(-1); // start at the beginning
       // sets URL
@@ -107,7 +103,7 @@ export default function Populate({ onSelect }: Props) {
                      <FormControl fullWidth>
                         <InputLabel>Price</InputLabel>
                         <Select
-                           size='medium'
+                           size="medium"
                            color="primary"
                            onChange={handlePriceToggle}
                            label="Price"
@@ -121,24 +117,27 @@ export default function Populate({ onSelect }: Props) {
                      <FormControl fullWidth>
                         <InputLabel>Popularity</InputLabel>
                         <Select
-                           size='medium'
+                           size="medium"
                            color="primary"
                            onChange={handlePopularToggle}
                            label="Popularity"
                         >
-                           <MenuItem value="least popular">Least Popular</MenuItem>
-                           <MenuItem value="most popular">Most Popular</MenuItem>
+                           <MenuItem value="least popular">
+                              Least Popular
+                           </MenuItem>
+                           <MenuItem value="most popular">
+                              Most Popular
+                           </MenuItem>
                         </Select>
                      </FormControl>
                   </Grid>
                </Grid>
             </Paper>
-            {apartments.length === 0 && !loading && 
-            <Box display="flex" justifyContent="center">
-               <Typography variant="h5">
-                  None found
-               </Typography>
-            </Box>}
+            {apartments.length === 0 && !loading && (
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h5">None found</Typography>
+               </Box>
+            )}
             <Stack style={{ maxHeight: '175vh', overflow: 'auto' }} spacing={2}>
                {apartments.map((apartment, i) => {
                   if (apartments.length === i + 1) {
@@ -169,18 +168,16 @@ export default function Populate({ onSelect }: Props) {
                   }
                })}
             </Stack>
-            {loading && 
-            <Box display="flex" justifyContent="center">
-               <Typography variant="h5">
-                  Loading...
-               </Typography>
-            </Box>}
-            {error && 
-            <Box display="flex" justifyContent="center">
-               <Typography variant="h5">
-                 Error...
-               </Typography>
-            </Box>}
+            {loading && (
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h5">Loading...</Typography>
+               </Box>
+            )}
+            {error && (
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h5">Error...</Typography>
+               </Box>
+            )}
          </Stack>
       </React.Fragment>
    );

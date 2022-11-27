@@ -47,21 +47,32 @@ export default function AddReview() {
          {/* {error && <Alert variant="danger">{error}</Alert>} */}
          <FormControl className="mt-3 mb-3" onSubmit={add}>
             <Stack spacing={2}>
-            <FormLabel>Create a review</FormLabel>
-            <TextField
-               label="Enter your reviews here"
-               onChange={(e) => setText(e.target.value)}
-            >
-            </TextField>
-            <RadioGroup>
-               <FormControlLabel value="upvote" control={<Radio onChange={radioHandler}/>} label="Upvote"/>
-               <FormControlLabel value="downvote" control={<Radio onChange={radioHandler}/>} label="Downvote"/>
-            </RadioGroup>
-            <Button type="submit" variant="contained" onClick={() => {
-               add()
-            }}>
-               Submit
-            </Button>
+               <FormLabel>Create a review</FormLabel>
+               <TextField
+                  label="Enter your reviews here"
+                  onChange={(e) => setText(e.target.value)}
+               ></TextField>
+               <RadioGroup>
+                  <FormControlLabel
+                     value="upvote"
+                     control={<Radio onChange={radioHandler} />}
+                     label="Upvote"
+                  />
+                  <FormControlLabel
+                     value="downvote"
+                     control={<Radio onChange={radioHandler} />}
+                     label="Downvote"
+                  />
+               </RadioGroup>
+               <Button
+                  type="submit"
+                  variant="contained"
+                  onClick={() => {
+                     add();
+                  }}
+               >
+                  Submit
+               </Button>
             </Stack>
          </FormControl>
       </React.Fragment>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, CardContent} from '@material-ui/core';
+import { Typography, Card, CardContent } from '@material-ui/core';
 import { CardActionArea } from '@mui/material';
 import { AptType } from './Types';
 

@@ -5,10 +5,7 @@ import ImagesGallery from '../components/mainpageright/ImagesGallery';
 import { ReviewType, AptType } from '../components/Types';
 import { AptInfo } from '../components/mainpageright/AptInfo';
 import axios from 'axios';
-import {
-   Stack,
-   Divider,
-} from '@mui/material';
+import { Stack, Divider } from '@mui/material';
 
 const baseURL = 'http://127.0.0.1:5000/main';
 interface apt {
@@ -59,9 +56,9 @@ function RightSection({ apt }: apt) {
          <Stack style={{ maxHeight: '175vh', overflow: 'auto' }} spacing={3}>
             <ImagesGallery pics={pics} />
             <AptInfo apt={apt} />
-            <Divider sx={{ borderBottomWidth: 3, bgcolor: "secondary.dark" }}/>
+            <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <AddReview />
-            <Divider sx={{ borderBottomWidth: 3, bgcolor: "secondary.dark" }}/>
+            <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <ReviewsList reviews={reviews} />
          </Stack>
       </React.Fragment>

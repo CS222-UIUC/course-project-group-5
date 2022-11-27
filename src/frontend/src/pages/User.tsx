@@ -21,10 +21,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import getReviewedApts from '../components/user/getReviewedApts';
 import getUser from '../components/user/getUser';
-import {changeEmail, changePhone, logout} from '../components/user/changeInfo';
+import {
+   changeEmail,
+   changePhone,
+   logout,
+} from '../components/user/changeInfo';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 export default function User() {
    const navigate = useNavigate();
@@ -38,30 +41,38 @@ export default function User() {
                      <Grid item>
                         <Box>
                            <Avatar>
-                              <AccountCircleIcon/>
+                              <AccountCircleIcon />
                            </Avatar>
                         </Box>
                      </Grid>
                      <Grid item>
                         <Box>
-                           <Button sx={{ color: '#fff' }} onClick={() => navigate("/")}>
+                           <Button
+                              sx={{ color: '#fff' }}
+                              onClick={() => navigate('/')}
+                           >
                               Main
                            </Button>
                         </Box>
                      </Grid>
                      <Grid item xs={10}>
                         <Box>
-                           <Button sx={{ color: '#fff' }}>
-                              About
-                           </Button>
+                           <Button sx={{ color: '#fff' }}>About</Button>
                         </Box>
                      </Grid>
                      <Grid item>
-                        <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-                           <Button sx={{ color: '#fff' }} onClick={() => {
-                              logout()
-                              navigate("/login")
-                           }}>
+                        <Box
+                           display="flex"
+                           justifyContent="flex-end"
+                           alignItems="flex-end"
+                        >
+                           <Button
+                              sx={{ color: '#fff' }}
+                              onClick={() => {
+                                 logout();
+                                 navigate('/login');
+                              }}
+                           >
                               Log out
                            </Button>
                         </Box>
@@ -72,22 +83,18 @@ export default function User() {
             <Grid container spacing={2}>
                <Grid item xs={4}>
                   <Box display="flex" justifyContent="center">
-                     <Typography variant="h4">
-                        User
-                     </Typography>
+                     <Typography variant="h4">User</Typography>
                   </Box>
                </Grid>
                <Grid item xs={7}>
                   <Box display="flex" justifyContent="center">
-                     <Typography variant="h4">
-                        Reviewed Apartments
-                     </Typography>
+                     <Typography variant="h4">Reviewed Apartments</Typography>
                   </Box>
                </Grid>
             </Grid>
             <Grid container spacing={2}>
                <Grid item xs={4}>
-                  <FormUser/>
+                  <FormUser />
                   <Button variant="outlined" style={btnstyle}>
                      <Typography variant="subtitle2">
                         Change Password
@@ -96,7 +103,7 @@ export default function User() {
                </Grid>
 
                <Grid item xs={7}>
-                  <FormLikedApts/>
+                  <FormLikedApts />
                </Grid>
             </Grid>
          </Stack>
@@ -105,156 +112,193 @@ export default function User() {
 }
 
 function FormUser() {
-   const user_info = getUser("Zongxian");
+   const user_info = getUser('Zongxian');
    return (
       <React.Fragment>
          <List>
             <ListItem>
                <ListItemAvatar>
                   <Avatar>
-                     <PersonIcon/>
+                     <PersonIcon />
                   </Avatar>
                </ListItemAvatar>
-               <ListItemText primary="Username" secondary={ user_info.user.username }/>
+               <ListItemText
+                  primary="Username"
+                  secondary={user_info.user.username}
+               />
             </ListItem>
             <Divider />
-            <FormEmail email={user_info.user.email}/>
+            <FormEmail email={user_info.user.email} />
             <Divider />
-            <FormPhone phone={user_info.user.phone}/>
+            <FormPhone phone={user_info.user.phone} />
          </List>
       </React.Fragment>
    );
 }
 
 interface EmailComponentProps {
-   email: string
+   email: string;
 }
 
-function FormEmail({email}: EmailComponentProps) {
+function FormEmail({ email }: EmailComponentProps) {
    const [editEmail, setChangeEmail] = useState(false);
-   const [newEmail, setNewEmail] = useState("");
+   const [newEmail, setNewEmail] = useState('');
    return (
       <React.Fragment>
          {editEmail == false && (
-         <ListItem>
-            <ListItemAvatar>
-               <Avatar>
-                  <EmailIcon/>
-               </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Email" secondary={ email }/>
-            <Button color="primary" variant="outlined" onClick={() => 
-               setChangeEmail(true)
-            }>
-               <Typography variant="subtitle2">
-                  Change email
-               </Typography>
-            </Button>
-         </ListItem>)}
+            <ListItem>
+               <ListItemAvatar>
+                  <Avatar>
+                     <EmailIcon />
+                  </Avatar>
+               </ListItemAvatar>
+               <ListItemText primary="Email" secondary={email} />
+               <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => setChangeEmail(true)}
+               >
+                  <Typography variant="subtitle2">Change email</Typography>
+               </Button>
+            </ListItem>
+         )}
          {editEmail == true && (
-         <ListItem>
-            <Grid container spacing={1}>
-               <Grid item xs={12}>
-                  <TextField label="Email" variant="outlined" fullWidth onChange={(event) => {
-                     setNewEmail(event.target.value)
-                  }}/>
+            <ListItem>
+               <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                     <TextField
+                        label="Email"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(event) => {
+                           setNewEmail(event.target.value);
+                        }}
+                     />
+                  </Grid>
+                  <Grid item xs>
+                     <Box display="flex" justifyContent="flex-end">
+                        <Button
+                           type="submit"
+                           color="primary"
+                           variant="contained"
+                           size="small"
+                           onClick={() => setChangeEmail(false)}
+                        >
+                           Cancel
+                        </Button>
+                     </Box>
+                  </Grid>
+                  <Grid item xs={2}>
+                     <Box display="flex" justifyContent="flex-end">
+                        <Button
+                           type="submit"
+                           color="primary"
+                           variant="contained"
+                           size="small"
+                           onClick={() => changeEmail(newEmail, 'Zongxian')}
+                        >
+                           Submit
+                        </Button>
+                     </Box>
+                  </Grid>
                </Grid>
-               <Grid item xs>
-                  <Box display="flex" justifyContent="flex-end">
-                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
-                        setChangeEmail(false)
-                     }>
-                        Cancel
-                     </Button>
-                  </Box>
-               </Grid>
-               <Grid item xs={2}>
-                  <Box display="flex" justifyContent="flex-end">
-                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
-                        changeEmail(newEmail, "Zongxian")
-                     }>
-                        Submit
-                     </Button>
-                  </Box>
-               </Grid>
-            </Grid>
-         </ListItem>
+            </ListItem>
          )}
       </React.Fragment>
    );
 }
 
 interface PhoneComponentProps {
-   phone: string
+   phone: string;
 }
 
-function FormPhone({phone}: PhoneComponentProps) {
+function FormPhone({ phone }: PhoneComponentProps) {
    const [editPhone, setChangePhone] = useState(false);
-   const [newPhone, setNewPhone] = useState("");
+   const [newPhone, setNewPhone] = useState('');
    return (
       <React.Fragment>
          {editPhone == false && (
-         <ListItem>
-            <ListItemAvatar>
-               <Avatar>
-                  <PhoneIcon/>
-               </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Phone number" secondary={ phone }/>
-            <Button color="primary" variant="outlined" onClick={() => {
-               setChangePhone(true)
-            }}>
-               <Typography variant="subtitle2">
-                  Change phone
-               </Typography>
-            </Button>
-         </ListItem>)}
+            <ListItem>
+               <ListItemAvatar>
+                  <Avatar>
+                     <PhoneIcon />
+                  </Avatar>
+               </ListItemAvatar>
+               <ListItemText primary="Phone number" secondary={phone} />
+               <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                     setChangePhone(true);
+                  }}
+               >
+                  <Typography variant="subtitle2">Change phone</Typography>
+               </Button>
+            </ListItem>
+         )}
          {editPhone == true && (
-         <ListItem>
-            <Grid container spacing={1}>
-               <Grid item xs={12}>
-               <TextField label="Phone" variant="outlined" fullWidth onChange={(event) => {
-                     setNewPhone(event.target.value)
-                  }}/>
+            <ListItem>
+               <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                     <TextField
+                        label="Phone"
+                        variant="outlined"
+                        fullWidth
+                        onChange={(event) => {
+                           setNewPhone(event.target.value);
+                        }}
+                     />
+                  </Grid>
+                  <Grid item xs>
+                     <Box display="flex" justifyContent="flex-end">
+                        <Button
+                           type="submit"
+                           color="primary"
+                           variant="contained"
+                           size="small"
+                           onClick={() => setChangePhone(false)}
+                        >
+                           Cancel
+                        </Button>
+                     </Box>
+                  </Grid>
+                  <Grid item xs={2}>
+                     <Box display="flex" justifyContent="flex-end">
+                        <Button
+                           type="submit"
+                           color="primary"
+                           variant="contained"
+                           size="small"
+                           onClick={() => changePhone(newPhone, 'Zongxian')}
+                        >
+                           Submit
+                        </Button>
+                     </Box>
+                  </Grid>
                </Grid>
-               <Grid item xs>
-                  <Box display="flex" justifyContent="flex-end">
-                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
-                        setChangePhone(false)
-                     }>
-                        Cancel
-                     </Button>
-                  </Box>
-               </Grid>
-               <Grid item xs={2}>
-                  <Box display="flex" justifyContent="flex-end">
-                     <Button type="submit" color="primary" variant="contained" size="small" onClick={() => 
-                        changePhone(newPhone, "Zongxian")
-                     }>
-                        Submit
-                     </Button>
-                  </Box>
-               </Grid>
-            </Grid>
-         </ListItem>
+            </ListItem>
          )}
       </React.Fragment>
    );
 }
 
 function FormLikedApts() {
-   console.log("Getting apt info")
-   const reviewed_apts = getReviewedApts("Zongxian");
+   console.log('Getting apt info');
+   const reviewed_apts = getReviewedApts('Zongxian');
    return (
       <React.Fragment>
          <Box>
             <Stack spacing={2}>
                {reviewed_apts.apartments.map((apt, i) => {
                   return (
-                     <Button variant="outlined" key={i} onClick={() => {
-                        console.log("Getting apt info")
-                     }}>
-                        {apt.name + " " + apt.address}
+                     <Button
+                        variant="outlined"
+                        key={i}
+                        onClick={() => {
+                           console.log('Getting apt info');
+                        }}
+                     >
+                        {apt.name + ' ' + apt.address}
                      </Button>
                   );
                })}
