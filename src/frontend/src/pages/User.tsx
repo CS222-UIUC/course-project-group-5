@@ -58,8 +58,11 @@ export default function User() {
                      </Grid>
                      <Grid item>
                         <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
-                           <Button sx={{ color: '#fff' }} onClick={() => logout()}>
-                              Logout
+                           <Button sx={{ color: '#fff' }} onClick={() => {
+                              logout()
+                              navigate("/login")
+                           }}>
+                              Log out
                            </Button>
                         </Box>
                      </Grid>

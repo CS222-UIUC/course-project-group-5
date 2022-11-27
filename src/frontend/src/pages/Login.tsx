@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 function sendData(user: string, password: string) {
+   const navigate = useNavigate();
    axios({
       method: 'post',
       url: '/login',
@@ -25,6 +26,7 @@ function sendData(user: string, password: string) {
    })
       .then((response) => {
          console.log(response);
+         navigate('/');
       })
       .catch((error) => {
          if (error.response) {
@@ -36,7 +38,6 @@ function sendData(user: string, password: string) {
 }
 
 export default function Login() {
-   const navigate = useNavigate();
    const [user, setUser] = useState('');
    const [password, setPassword] = useState('');
 
@@ -78,7 +79,6 @@ export default function Login() {
                style={btnstyle}
                onClick={() => {
                   sendData(user, password)
-                  navigate('/')
                }}
                fullWidth
             >
