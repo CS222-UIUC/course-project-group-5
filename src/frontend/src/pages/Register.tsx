@@ -13,49 +13,45 @@ import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function sendData(
-   username: string,
-   email: string,
-   password: string,
-   phone: string
-) {
-   const navigate = useNavigate();
-   axios({
-      method: 'post',
-      url: '/register',
-      data: {
-         username: username,
-         email: email,
-         password: password,
-         phone: phone,
-      },
-   })
-      .then((response) => {
-         console.log(response);
-         navigate('/login');
-      })
-      .catch((error) => {
-         if (error.response) {
-            console.log(error.response);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         }
-      });
-}
-
 export default function Register() {
    const [user, setUser] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [number, setNumber] = useState('');
-
+   const [res, setRes] = useState('');
    const paperStyle = {
       padding: 20,
-      height: '55vh',
+      height: '70vh',
       width: 310,
       margin: '20px auto',
    };
    const btnstyle = { margin: '8px 0' };
+
+   function sendData() {
+      axios({
+         method: 'POST',
+         url: 'http://127.0.0.1:5000/register',
+         data: {
+            username: user,
+            email: email,
+            password: password,
+            phone: number,
+         },
+      })
+         .then((response) => {
+            console.log(response);
+            const navigate = useNavigate();
+            navigate('/login');
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+               setRes(error.response.data);
+            }
+         });
+   }
 
    return (
       <Grid>
@@ -100,14 +96,17 @@ export default function Register() {
                color="primary"
                variant="contained"
                style={btnstyle}
-               onClick={() => sendData(user, email, password, number)}
+               onClick={() => sendData()}
                fullWidth
             >
                Sign up
             </Button>
             <Typography>
-               <Link href="#">Already signed up?</Link>
+               <Link href="/login">Already signed up?</Link>
             </Typography>
+            {res !== '' && (
+               <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
+            )}
          </Paper>
       </Grid>
    );

@@ -35,7 +35,9 @@ export default function SearchBar() {
             freeSolo
             onInputChange={handleChange}
             options={names.map((option) => option.name)}
-            renderInput={(params) => <TextField {...params} label="Search" />}
+            renderInput={(params) => (
+               <TextField {...params} label="Search apartments" />
+            )}
          />
       </React.Fragment>
    );

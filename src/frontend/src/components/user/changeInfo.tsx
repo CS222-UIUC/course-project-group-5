@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const baseURL = 'http://127.0.0.1:5000/user';
 
-export function changeEmail(new_email: string, username: string) {
+export function changeEmail(new_email: string) {
    const req = {
       is_email: true,
       email: new_email,
@@ -25,7 +25,7 @@ export function changeEmail(new_email: string, username: string) {
       });
 }
 
-export function changePhone(new_phone: string, username: string) {
+export function changePhone(new_phone: string) {
    const req = {
       is_phone: true,
       phone: new_phone,

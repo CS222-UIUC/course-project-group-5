@@ -7,7 +7,6 @@ import RightSection from '../sections/MainPageRightSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { logout } from '../components/user/changeInfo';
 import { useNavigate } from 'react-router-dom';
-
 import {
    Stack,
    AppBar,
@@ -24,7 +23,7 @@ function MainPage() {
    const [to, setTo] = useState<AptType>(apartments[0]);
    return (
       <>
-         <Stack spacing={2}>
+         <Stack>
             {/* Top bar */}
             <AppBar component="nav">
                <Toolbar>
@@ -79,7 +78,7 @@ function MainPage() {
                      justifyContent="center"
                      alignItems="center"
                   >
-                     <Stack spacing={2} sx={{ width: 300 }}>
+                     <Stack spacing={2} sx={{ width: 500 }}>
                         <SearchBar />
                      </Stack>
                   </Box>
@@ -87,7 +86,7 @@ function MainPage() {
                <Grid item xs={3}>
                   <Populate onSelect={(apt) => setTo(apt)} />
                </Grid>
-               <Grid item xs>
+               <Grid item xs style={{ maxHeight: '100%', overflow: 'auto' }}>
                   <RightSection apt={to || apartments[0]} />
                </Grid>
             </Grid>

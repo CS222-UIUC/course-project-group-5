@@ -53,7 +53,7 @@ function RightSection({ apt }: apt) {
    }, [apt]);
    return (
       <React.Fragment>
-         <Stack style={{ maxHeight: '175vh', overflow: 'auto' }} spacing={3}>
+         <Stack spacing={3}>
             <ImagesGallery pics={pics} />
             <AptInfo apt={apt} />
             <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />

@@ -14,36 +14,38 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function sendData(user: string, password: string) {
-   const navigate = useNavigate();
-   axios({
-      method: 'post',
-      url: '/login',
-      data: {
-         user: user,
-         password: password,
-      },
-   })
-      .then((response) => {
-         console.log(response);
-         navigate('/');
-      })
-      .catch((error) => {
-         if (error.response) {
-            console.log(error.response);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-         }
-      });
-}
-
 export default function Login() {
    const [user, setUser] = useState('');
    const [password, setPassword] = useState('');
+   const [res, setRes] = useState('');
+
+   function sendData() {
+      axios({
+         method: 'post',
+         url: 'http://127.0.0.1:5000/login',
+         data: {
+            user: user,
+            password: password,
+         },
+      })
+         .then((response) => {
+            console.log(response);
+            const navigate = useNavigate();
+            navigate('/');
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+               setRes(error.response.data);
+            }
+         });
+   }
 
    const paperStyle = {
       padding: 20,
-      height: '55vh',
+      height: '60vh',
       width: 310,
       margin: '20px auto',
    };
@@ -78,7 +80,7 @@ export default function Login() {
                variant="contained"
                style={btnstyle}
                onClick={() => {
-                  sendData(user, password);
+                  sendData();
                }}
                fullWidth
             >
@@ -88,8 +90,11 @@ export default function Login() {
                <Link href="#">Forgot Password</Link>
             </Typography>
             <Typography>
-               <Link href="#">Sign Up</Link>
+               <Link href="/register">Sign Up</Link>
             </Typography>
+            {res !== '' && (
+               <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
+            )}
          </Paper>
       </Grid>
    );
