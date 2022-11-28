@@ -49,7 +49,7 @@ def register():
     return "", 400
 
 
-@app.route("/user/<username>", methods=["GET", "POST"])
+@app.route("/user", methods=["GET", "POST"])
 def userpage():
     """Handles userpage requests"""
     if session.get("username", None) is None:
