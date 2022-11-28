@@ -19,7 +19,7 @@ export default function Register() {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [number, setNumber] = useState('');
-   const [res, setRes] = useState('');
+   const [res, setRes] = useState();
    const paperStyle = {
       padding: 20,
       height: '70vh',
@@ -32,6 +32,7 @@ export default function Register() {
       axios({
          method: 'POST',
          url: 'http://127.0.0.1:5000/register',
+         withCredentials: true,
          data: {
             username: user,
             email: email,
@@ -41,6 +42,7 @@ export default function Register() {
       })
          .then((response) => {
             console.log(response);
+            setRes(response.data);
          })
          .catch((error) => {
             if (error.response) {
@@ -50,6 +52,9 @@ export default function Register() {
                setRes(error.response.data);
             }
          });
+   }
+   if (res === `Register successful, welcome ${user}`) {
+      navigate('/');
    }
 
    return (
@@ -97,7 +102,6 @@ export default function Register() {
                style={btnstyle}
                onClick={() => {
                   sendData();
-                  res === '' ? navigate('/login') : null;
                }}
                fullWidth
             >
@@ -106,7 +110,7 @@ export default function Register() {
             <Typography>
                <Link href="/login">Already signed up?</Link>
             </Typography>
-            {res !== '' && (
+            {res !== undefined && res !== `Register successful, welcome ${user}` && (
                <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
             )}
          </Paper>

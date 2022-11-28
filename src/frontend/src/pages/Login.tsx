@@ -18,12 +18,13 @@ export default function Login() {
    const navigate = useNavigate();
    const [user, setUser] = useState('');
    const [password, setPassword] = useState('');
-   const [res, setRes] = useState('');
+   const [res, setRes] = useState();
 
    function sendData() {
       axios({
          method: 'post',
          url: 'http://127.0.0.1:5000/login',
+         withCredentials: true,
          data: {
             user: user,
             password: password,
@@ -31,7 +32,7 @@ export default function Login() {
       })
          .then((response) => {
             console.log(response);
-            navigate('/');
+            setRes(response.data);
          })
          .catch((error) => {
             if (error.response) {
@@ -49,6 +50,9 @@ export default function Login() {
       width: 310,
       margin: '20px auto',
    };
+   if (res === `welcome ${user}`) {
+      navigate('/');
+   }
    const btnstyle = { margin: '8px 0' };
    return (
       <Grid>
@@ -81,7 +85,6 @@ export default function Login() {
                style={btnstyle}
                onClick={() => {
                   sendData();
-                  res === '' ? navigate('/') : null;
                }}
                fullWidth
             >
@@ -93,7 +96,7 @@ export default function Login() {
             <Typography>
                <Link href="/register">Sign Up</Link>
             </Typography>
-            {res !== '' && (
+            {res !== undefined && res !== `welcome ${user}` && (
                <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
             )}
          </Paper>

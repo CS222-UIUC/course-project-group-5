@@ -20,6 +20,7 @@ export default function getInfo(username: string) {
             method: 'GET',
             url: `${baseURL}`,
             cancelToken: source.token,
+            withCredentials: true,
          })
             .then((res) => {
                setUser(() => {

@@ -15,18 +15,20 @@ class UserPage:
         self.user = self.get_user(username)
 
     @use_database
-    def get_user(self, username: str) -> User:
+    def get_user(self, query_sql: str) -> User:
         """Return User object based on username"""
-        query_sql = username
         user_query = self.get_user.cursor.execute(
-            "SELECT u.user_id, u.password, u.email, u.phone \
+            "SELECT u.user_id, u.username, u.password, u.email, u.phone \
             FROM USERS u\
-            WHERE u.username = ?",
-            (query_sql,),
+            WHERE u.username = ? OR u.email = ?",
+            (
+                query_sql,
+                query_sql,
+            ),
         ).fetchone()
         if user_query is None:
             return User("", "", "", "", "")
-        user_id, password, email, phone = user_query
+        user_id, username, password, email, phone = user_query
         return User(user_id, username, password, email, phone)
 
     @use_database

@@ -12,6 +12,7 @@ export function changeEmail(new_email: string) {
       method: 'POST',
       url: `${baseURL}`,
       data: json,
+      withCredentials: true,
    })
       .then((response) => {
          console.log(response);
@@ -35,6 +36,7 @@ export function changePhone(new_phone: string) {
       method: 'POST',
       url: `${baseURL}`,
       data: json,
+      withCredentials: true,
    })
       .then((response) => {
          console.log(response);
@@ -51,6 +53,7 @@ export function changePhone(new_phone: string) {
 export function logout() {
    axios({
       url: 'http://127.0.0.1:5000/logout',
+      withCredentials: true,
    })
       .then((response) => {
          console.log(response);

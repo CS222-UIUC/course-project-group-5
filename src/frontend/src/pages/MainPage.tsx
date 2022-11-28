@@ -26,6 +26,7 @@ function MainPage() {
    function checkLoggedIn() {
       axios({
          url: 'http://127.0.0.1:5000/api/whoami',
+         withCredentials: true,
       })
          .then((response) => {
             console.log(response);

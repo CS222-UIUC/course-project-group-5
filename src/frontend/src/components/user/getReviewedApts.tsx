@@ -27,6 +27,7 @@ export default function getReviewedApts(username: string) {
             url: `${baseURL}`,
             data: json,
             cancelToken: source.token,
+            withCredentials: true,
          })
             .then((res) => {
                setApartments(() => {

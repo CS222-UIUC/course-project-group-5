@@ -1,18 +1,21 @@
 """ Handles routing and HTTP Requests """
 import json
-import os
 import dataclasses
 from werkzeug.datastructures import MultiDict
 from flask import Flask, request, session
 from flask_cors import CORS
+from flask_session import Session
 from pages.login import Login
 from pages.mainpage import MainPage
 from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.urandom(24)
-CORS(app, resources={r"/*": {"origins": "*"}})
+SECRET_KEY = b"xe47Wxcdx86Wxac(mKlxa5xa2,xb3axc6xf1x86Fxc25x94xfc"
+SESSION_TYPE = "filesystem"
+app.config.from_object(__name__)
+Session(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -27,6 +30,7 @@ def login():
         if user_login.login(username, password):
             # session object makes User accessible in the backend
             session["username"] = username
+            print(session.get("username"))
             return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
@@ -45,6 +49,7 @@ def register():
         result = user_login.register(username, email, password, phone)
         if not result.status:
             return result.message, 400
+        session["username"] = username
         return result.message, 201
     return "", 400
 
@@ -52,8 +57,9 @@ def register():
 @app.route("/user", methods=["GET", "POST"])
 def userpage():
     """Handles userpage requests"""
-    if session.get("username", None) is None:
-        return "user does not exist", 404
+    print(session.get("username"))
+    if session.get("username") is None:
+        return "user does not exist", 403
     name = session.get("username") or ""
     page = UserPage(name)
     if request.method == "POST":
@@ -78,7 +84,7 @@ def userpage():
         return "success", 201
     user = page.get_user(name)  # request.method == "GET"
     data_dict = dataclasses.asdict(user)
-    return json.dumps(data_dict), 201
+    return json.dumps(data_dict), 200
 
 
 @app.route("/logout")
@@ -91,8 +97,9 @@ def logout():
 @app.route("/api/whoami")
 def whoami():
     """Shows whether a user is logged in and returns session username"""
-    if session.get("username", None) is None:
-        return "user logged out", 404
+    print(session.get("username"))
+    if session.get("username") is None:
+        return "user logged out", 403
     username = session.get("username", "")
     return str(username), 201
 
