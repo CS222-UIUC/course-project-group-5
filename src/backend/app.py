@@ -87,13 +87,15 @@ def logout():
     session.pop("username", None)  # remove session object
     return "", 201
 
+
 @app.route("/api/whoami")
 def whoami():
-    """Shows whether a user is logged in, returns session username"""
+    """Shows whether a user is logged in and returns session username"""
     if session.get("username", None) is None:
         return "user logged out", 404
-    username = session.get("username")
-    return {"username": username}, 201
+    username = session.get("username", "")
+    return str(username), 201
+
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/main", methods=["GET", "POST"])

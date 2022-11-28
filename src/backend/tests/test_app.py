@@ -2,7 +2,7 @@
 import sqlite3
 import pytest
 from flask import session
-from app import app, userpage, logout
+from app import app, userpage, logout, whoami
 from tests.mainpage_staging import MainPageStaging
 from decorators import use_test
 
@@ -365,3 +365,15 @@ def test_logout():
         session["username"] = "Mike"
         res = logout()
         assert res[1] == 201
+
+
+@use_test
+def test_whoami():
+    """Test whoami returns 404 and 201"""
+    with app.test_request_context("/api/whoami"):
+        res = whoami()
+        assert res[1] == 404
+    with app.test_request_context("/api/whoami"):
+        session["username"] = "Mike"
+        res = whoami()
+        assert res[0] == "Mike" and res[1] == 201
