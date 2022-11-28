@@ -2,7 +2,7 @@
 import sqlite3
 import pytest
 from flask import session
-from app import app, userpage, logout
+from app import app, userpage, logout, whoami
 from tests.mainpage_staging import MainPageStaging
 from decorators import use_test
 
@@ -301,7 +301,7 @@ def test_userpage_get_request(client):
     with app.test_request_context("/user/", method="GET"):
         session["username"] = "Mike"
         res = userpage()
-        assert res[1] == "Mike" and res[2] == 201
+        assert res[1] == 201
     connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
     cursor.execute("DELETE FROM Users WHERE username = ?", ("Mike",))
@@ -364,4 +364,16 @@ def test_logout():
     with app.test_request_context("/logout"):
         session["username"] = "Mike"
         res = logout()
-        assert res is not None
+        assert res[1] == 201
+
+
+@use_test
+def test_whoami():
+    """Test whoami returns 404 and 201"""
+    with app.test_request_context("/api/whoami"):
+        res = whoami()
+        assert res[1] == 404
+    with app.test_request_context("/api/whoami"):
+        session["username"] = "Mike"
+        res = whoami()
+        assert res[0] == "Mike" and res[1] == 201

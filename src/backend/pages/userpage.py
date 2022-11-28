@@ -25,7 +25,7 @@ class UserPage:
             (query_sql,),
         ).fetchone()
         if user_query is None:
-            return None
+            return User("", "", "", "", "")
         user_id, password, email, phone = user_query
         return User(user_id, username, password, email, phone)
 
