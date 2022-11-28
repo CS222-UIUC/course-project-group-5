@@ -110,9 +110,10 @@ export default function Register() {
             <Typography>
                <Link href="/login">Already signed up?</Link>
             </Typography>
-            {res !== undefined && res !== `Register successful, welcome ${user}` && (
-               <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
-            )}
+            {res !== undefined &&
+               res !== `Register successful, welcome ${user}` && (
+                  <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
+               )}
          </Paper>
       </Grid>
    );

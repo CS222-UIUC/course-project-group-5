@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
+import { ReviewType, AptType } from '../Types';
 import axios from 'axios';
 import {
    TextField,
@@ -11,18 +12,24 @@ import {
    Stack,
 } from '@mui/material';
 
+interface Props {
+   apt: AptType | undefined;
+   setReviews: Dispatch<SetStateAction<ReviewType[]>>;
+}
+
 const baseURL = 'http://127.0.0.1:5000/main';
-export default function AddReview() {
+export default function AddReview({ apt, setReviews }: Props) {
    const [text, setText] = useState<string>('');
    const [vote, setVote] = useState<number>(0);
    const addReviewHandler = async (text: string, vote: number) => {
       // post review on submit
       const result = await axios.post(`${baseURL}`, {
-         apt_id: 2,
+         apt_id: apt?.id,
          username: 'Zongxian',
          comment: text,
          vote: vote,
       });
+      setReviews(result.data);
       console.log(result);
    };
    const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +52,7 @@ export default function AddReview() {
    return (
       <React.Fragment>
          {/* {error && <Alert variant="danger">{error}</Alert>} */}
-         <FormControl className="mt-3 mb-3" onSubmit={add}>
+         <FormControl className="mt-3 mb-3" onSubmit={add} key={apt?.id || 1}>
             <Stack spacing={2}>
                <FormLabel>Create a review</FormLabel>
                <TextField

@@ -62,7 +62,7 @@ function RightSection({ apt, logged }: apt) {
                   sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
                />
             )}
-            {logged === true && <AddReview />}
+            {logged === true && <AddReview apt={apt} setReviews={setReviews} />}
             <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <ReviewsList reviews={reviews} />
          </Stack>

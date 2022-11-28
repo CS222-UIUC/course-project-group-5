@@ -40,7 +40,7 @@ const ReviewCard = ({ username, date, comment, vote }: ReviewCardProps) => {
                      </Avatar>
                   )}
                   {vote !== true && (
-                     <Avatar>
+                     <Avatar sx={{ width: 29, height: 29 }}>
                         <ThumbDownIcon />
                      </Avatar>
                   )}
