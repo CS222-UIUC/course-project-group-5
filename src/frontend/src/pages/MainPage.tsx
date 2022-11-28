@@ -16,11 +16,31 @@ import {
    Avatar,
    Button,
 } from '@mui/material';
+import axios from 'axios';
 
 function MainPage() {
    const navigate = useNavigate();
    const { apartments } = getApartments('0', '0', -1);
    const [to, setTo] = useState<AptType>(apartments[0]);
+   const [logged, setLogged] = useState(false);
+   function checkLoggedIn() {
+      axios({
+         url: 'http://127.0.0.1:5000/api/whoami',
+      })
+         .then((response) => {
+            console.log(response);
+            setLogged(true);
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+            }
+         });
+   }
+   checkLoggedIn();
+
    return (
       <>
          <Stack>
@@ -35,38 +55,60 @@ function MainPage() {
                            </Avatar>
                         </Box>
                      </Grid>
-                     <Grid item>
-                        <Box>
-                           <Button
-                              sx={{ color: '#fff' }}
-                              onClick={() => navigate('/user')}
-                           >
-                              User
-                           </Button>
-                        </Box>
-                     </Grid>
-                     <Grid item xs={10}>
+                     {logged === true && (
+                        <Grid item>
+                           <Box>
+                              <Button
+                                 sx={{ color: '#fff' }}
+                                 onClick={() => navigate('/user')}
+                              >
+                                 User
+                              </Button>
+                           </Box>
+                        </Grid>
+                     )}
+                     <Grid item xs={logged === true ? 10 : 11}>
                         <Box>
                            <Button sx={{ color: '#fff' }}>About</Button>
                         </Box>
                      </Grid>
-                     <Grid item>
-                        <Box
-                           display="flex"
-                           justifyContent="flex-end"
-                           alignItems="flex-end"
-                        >
-                           <Button
-                              sx={{ color: '#fff' }}
-                              onClick={() => {
-                                 logout();
-                                 navigate('/login');
-                              }}
+                     {logged === true && (
+                        <Grid item>
+                           <Box
+                              display="flex"
+                              justifyContent="flex-end"
+                              alignItems="flex-end"
                            >
-                              Log out
-                           </Button>
-                        </Box>
-                     </Grid>
+                              <Button
+                                 sx={{ color: '#fff' }}
+                                 onClick={() => {
+                                    logout();
+                                    navigate('/login');
+                                 }}
+                              >
+                                 Log out
+                              </Button>
+                           </Box>
+                        </Grid>
+                     )}
+                     {logged === false && (
+                        <Grid item>
+                           <Box
+                              display="flex"
+                              justifyContent="flex-end"
+                              alignItems="flex-end"
+                           >
+                              <Button
+                                 sx={{ color: '#fff' }}
+                                 onClick={() => {
+                                    navigate('/login');
+                                 }}
+                              >
+                                 Log in
+                              </Button>
+                           </Box>
+                        </Grid>
+                     )}
                   </Grid>
                </Toolbar>
             </AppBar>
@@ -87,7 +129,7 @@ function MainPage() {
                   <Populate onSelect={(apt) => setTo(apt)} />
                </Grid>
                <Grid item xs style={{ maxHeight: '100%', overflow: 'auto' }}>
-                  <RightSection apt={to || apartments[0]} />
+                  <RightSection apt={to || apartments[0]} logged={logged} />
                </Grid>
             </Grid>
          </Stack>

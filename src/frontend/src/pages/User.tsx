@@ -150,7 +150,7 @@ function FormEmail({ email }: EmailComponentProps) {
    return (
       <React.Fragment>
          {/* Email box changes based on click */}
-         {editEmail == false && (
+         {editEmail === false && (
             <ListItem>
                <ListItemAvatar>
                   <Avatar>
@@ -167,7 +167,7 @@ function FormEmail({ email }: EmailComponentProps) {
                </Button>
             </ListItem>
          )}
-         {editEmail == true && (
+         {editEmail === true && (
             <ListItem>
                <Grid container spacing={1}>
                   <Grid item xs={12}>
@@ -200,7 +200,7 @@ function FormEmail({ email }: EmailComponentProps) {
                            color="primary"
                            variant="contained"
                            size="small"
-                           onClick={() => changeEmail(newEmail, 'Zongxian')}
+                           onClick={() => changeEmail(newEmail)}
                         >
                            Submit
                         </Button>
@@ -223,7 +223,7 @@ function FormPhone({ phone }: PhoneComponentProps) {
    return (
       <React.Fragment>
          {/* Phone box changes based on click */}
-         {editPhone == false && (
+         {editPhone === false && (
             <ListItem>
                <ListItemAvatar>
                   <Avatar>
@@ -242,7 +242,7 @@ function FormPhone({ phone }: PhoneComponentProps) {
                </Button>
             </ListItem>
          )}
-         {editPhone == true && (
+         {editPhone === true && (
             <ListItem>
                <Grid container spacing={1}>
                   <Grid item xs={12}>
@@ -275,7 +275,7 @@ function FormPhone({ phone }: PhoneComponentProps) {
                            color="primary"
                            variant="contained"
                            size="small"
-                           onClick={() => changePhone(newPhone, 'Zongxian')}
+                           onClick={() => changePhone(newPhone)}
                         >
                            Submit
                         </Button>

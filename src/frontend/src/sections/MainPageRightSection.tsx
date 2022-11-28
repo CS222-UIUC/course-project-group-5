@@ -10,8 +10,9 @@ import { Stack, Divider } from '@mui/material';
 const baseURL = 'http://127.0.0.1:5000/main';
 interface apt {
    apt: AptType | undefined; // in case of null
+   logged: boolean;
 }
-function RightSection({ apt }: apt) {
+function RightSection({ apt, logged }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
    const [pics, setPics] = useState<string[]>([
       'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png',
@@ -56,8 +57,12 @@ function RightSection({ apt }: apt) {
          <Stack spacing={3}>
             <ImagesGallery pics={pics} />
             <AptInfo apt={apt} />
-            <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
-            <AddReview />
+            {logged === true && (
+               <Divider
+                  sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
+               />
+            )}
+            {logged === true && <AddReview />}
             <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <ReviewsList reviews={reviews} />
          </Stack>

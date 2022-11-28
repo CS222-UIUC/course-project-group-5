@@ -52,7 +52,6 @@ def register():
 @app.route("/user", methods=["GET", "POST"])
 def userpage():
     """Handles userpage requests"""
-    session["username"] = "Zongxian"
     if session.get("username", None) is None:
         return "user does not exist", 404
     username = session.get("username")

@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+   const navigate = useNavigate();
    const [user, setUser] = useState('');
    const [password, setPassword] = useState('');
    const [res, setRes] = useState('');
@@ -30,7 +31,6 @@ export default function Login() {
       })
          .then((response) => {
             console.log(response);
-            const navigate = useNavigate();
             navigate('/');
          })
          .catch((error) => {
@@ -81,6 +81,7 @@ export default function Login() {
                style={btnstyle}
                onClick={() => {
                   sendData();
+                  res === '' ? navigate('/') : null;
                }}
                fullWidth
             >

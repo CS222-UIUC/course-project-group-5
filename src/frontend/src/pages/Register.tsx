@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
+   const navigate = useNavigate();
    const [user, setUser] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
@@ -40,8 +41,6 @@ export default function Register() {
       })
          .then((response) => {
             console.log(response);
-            const navigate = useNavigate();
-            navigate('/login');
          })
          .catch((error) => {
             if (error.response) {
@@ -96,7 +95,10 @@ export default function Register() {
                color="primary"
                variant="contained"
                style={btnstyle}
-               onClick={() => sendData()}
+               onClick={() => {
+                  sendData();
+                  res === '' ? navigate('/login') : null;
+               }}
                fullWidth
             >
                Sign up
