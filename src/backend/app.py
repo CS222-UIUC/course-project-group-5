@@ -53,7 +53,6 @@ def register():
 def userpage():
     """Handles userpage requests"""
     session["username"] = "Zongxian"
-    print(session.get("username"))
     if session.get("username", None) is None:
         return "user does not exist", 404
     username = session.get("username")
