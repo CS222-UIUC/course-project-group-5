@@ -24,7 +24,7 @@ export default function getReviewedApts(username: string) {
          const json = JSON.stringify(req);
          axios({
             method: 'POST',
-            url: `${baseURL}/${username}`,
+            url: `${baseURL}`,
             data: json,
             cancelToken: source.token,
          })

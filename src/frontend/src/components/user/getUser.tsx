@@ -18,7 +18,7 @@ export default function getInfo(username: string) {
       const timer = setTimeout(() => {
          axios({
             method: 'GET',
-            url: `${baseURL}/${username}`,
+            url: `${baseURL}`,
             cancelToken: source.token,
          })
             .then((res) => {

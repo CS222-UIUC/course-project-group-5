@@ -10,7 +10,7 @@ export function changeEmail(new_email: string, username: string) {
    const json = JSON.stringify(req);
    axios({
       method: 'POST',
-      url: `${baseURL}/${username}`,
+      url: `${baseURL}`,
       data: json,
    })
       .then((response) => {
@@ -33,7 +33,7 @@ export function changePhone(new_phone: string, username: string) {
    const json = JSON.stringify(req);
    axios({
       method: 'POST',
-      url: `${baseURL}/${username}`,
+      url: `${baseURL}`,
       data: json,
    })
       .then((response) => {
