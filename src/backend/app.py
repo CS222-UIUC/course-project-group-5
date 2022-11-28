@@ -54,8 +54,8 @@ def userpage():
     """Handles userpage requests"""
     if session.get("username", None) is None:
         return "user does not exist", 404
-    diff = session.get("username") or ""
-    page = UserPage(diff)
+    name = session.get("username") or ""
+    page = UserPage(name)
     if request.method == "POST":
         json_form = request.get_json(force=True) or {}  # deserialize data
         # see which field was True and therefore should be changed
@@ -76,7 +76,7 @@ def userpage():
         if not result:
             return "invalid request", 400
         return "success", 201
-    user = page.get_user(diff)  # request.method == "GET"
+    user = page.get_user(name)  # request.method == "GET"
     data_dict = dataclasses.asdict(user)
     return json.dumps(data_dict), 201
 
@@ -87,6 +87,13 @@ def logout():
     session.pop("username", None)  # remove session object
     return "", 201
 
+@app.route("/api/whoami")
+def whoami():
+    """Shows whether a user is logged in, returns session username"""
+    if session.get("username", None) is None:
+        return "user logged out", 404
+    username = session.get("username")
+    return {"username": username}, 201
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/main", methods=["GET", "POST"])
