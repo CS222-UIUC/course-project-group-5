@@ -54,10 +54,10 @@ def userpage():
     """Handles userpage requests"""
     if session.get("username", None) is None:
         return "user does not exist", 404
-    username = session.get("username")
-    page = UserPage(username)
+    name = session.get("username") or ""
+    page = UserPage(name)
     if request.method == "POST":
-        json_form = request.get_json(force=True)  # deserialize data
+        json_form = request.get_json(force=True) or {}  # deserialize data
         # see which field was True and therefore should be changed
         is_password = json_form.get("is_password", False)
         is_email = json_form.get("is_email", False)
@@ -65,18 +65,18 @@ def userpage():
         is_get_liked = json_form.get("is_get_liked", False)
         result = False
         if is_password:
-            result = page.update_password(json_form.get("password"))
+            result = page.update_password(json_form.get("password") or "")
         elif is_email:
-            result = page.update_email(json_form.get("email"))
+            result = page.update_email(json_form.get("email") or "")
         elif is_phone:
-            result = page.update_phone(json_form.get("phone"))
+            result = page.update_phone(json_form.get("phone") or "")
         elif is_get_liked:
-            liked_apts = page.get_liked(json_form.get("user_id"))
+            liked_apts = page.get_liked(json_form.get("user_id") or 0)
             return dataclasses_into_json(liked_apts), 201
         if not result:
-            return result, 400
-        return result, 201
-    user = page.get_user(username)  # request.method == "GET"
+            return "invalid request", 400
+        return "success", 201
+    user = page.get_user(name)  # request.method == "GET"
     data_dict = dataclasses.asdict(user)
     return json.dumps(data_dict), 201
 
