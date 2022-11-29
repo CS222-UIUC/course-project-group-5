@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
    Grid,
    Paper,
@@ -53,11 +53,14 @@ export default function Register() {
          });
    }
    const navigate = useNavigate();
-   if (res === `Register successful, welcome ${user}`) {
-      setTimeout(() => {
-         navigate('/login');
-      }, 3000);
-   }
+
+   useEffect(() => {
+      if (res === `Register successful, welcome ${user}`) {
+         setTimeout(() => {
+            navigate('/login');
+         }, 3000);
+      }
+   }, [res, user, navigate]);
 
    return (
       <Grid>

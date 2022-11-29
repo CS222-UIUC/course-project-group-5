@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
    Grid,
    Paper,
@@ -50,9 +50,12 @@ export default function Login() {
       width: 310,
       margin: '20px auto',
    };
-   if (res === `welcome ${user}`) {
-      navigate('/');
-   }
+   useEffect(() => {
+      if (res === `welcome ${user}`) {
+         navigate('/');
+      }
+   }, [res, user]);
+
    const btnstyle = { margin: '8px 0' };
    return (
       <Grid>
