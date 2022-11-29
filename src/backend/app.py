@@ -49,7 +49,6 @@ def register():
         result = user_login.register(username, email, password, phone)
         if not result.status:
             return result.message, 400
-        session["username"] = username
         return result.message, 201
     return "", 400
 

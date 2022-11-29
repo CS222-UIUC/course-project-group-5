@@ -14,7 +14,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
-   const navigate = useNavigate();
    const [user, setUser] = useState('');
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
@@ -22,7 +21,7 @@ export default function Register() {
    const [res, setRes] = useState();
    const paperStyle = {
       padding: 20,
-      height: '70vh',
+      height: '75vh',
       width: 310,
       margin: '20px auto',
    };
@@ -53,8 +52,11 @@ export default function Register() {
             }
          });
    }
+   const navigate = useNavigate();
    if (res === `Register successful, welcome ${user}`) {
-      navigate('/');
+      setTimeout(() => {
+         navigate('/login');
+      }, 3000);
    }
 
    return (
@@ -110,6 +112,11 @@ export default function Register() {
             <Typography>
                <Link href="/login">Already signed up?</Link>
             </Typography>
+            {res === `Register successful, welcome ${user}` && (
+               <Typography sx={{ color: '#0000ff' }}>
+                  {res + '. You will be directed to the login page shortly.'}
+               </Typography>
+            )}
             {res !== undefined &&
                res !== `Register successful, welcome ${user}` && (
                   <Typography sx={{ color: '#ff0000' }}>{res}</Typography>

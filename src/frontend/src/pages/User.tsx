@@ -20,7 +20,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import getReviewedApts from '../components/user/getReviewedApts';
-import getUser from '../components/user/getUser';
+import getInfo from '../components/user/getUser';
 import {
    changeEmail,
    changePhone,
@@ -120,7 +120,7 @@ interface UserProps {
 }
 
 function FormUser({ setId }: UserProps) {
-   const user_info = getUser();
+   const user_info = getInfo();
    setId(user_info.user.user_id);
    return (
       <React.Fragment>
