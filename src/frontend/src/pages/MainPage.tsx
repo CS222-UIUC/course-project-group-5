@@ -5,7 +5,7 @@ import SearchBar from '../components/SearchBar';
 import { AptType } from '../components/Types';
 import RightSection from '../sections/MainPageRightSection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { logout } from '../components/user/changeInfo';
+import { logout } from '../components/user/LogOut';
 import { useNavigate } from 'react-router-dom';
 import {
    Stack,
