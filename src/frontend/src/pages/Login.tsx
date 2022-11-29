@@ -57,6 +57,7 @@ export default function Login() {
    return (
       <Grid>
          <Paper elevation={12} style={paperStyle}>
+            {/* A paper like UI with fields for login */}
             <PersonIcon fontSize="large" />
             <h2>Sign In</h2>
             <TextField

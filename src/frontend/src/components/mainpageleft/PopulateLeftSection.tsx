@@ -98,9 +98,11 @@ export default function Populate({ onSelect }: Props) {
       <React.Fragment>
          <Stack spacing={3}>
             <Paper elevation={2}>
+               {/* A paper UI with 2 drop down buttons for sorting */}
                <Grid container justifyContent="space-between">
                   <Grid item xs={5}>
                      <FormControl fullWidth>
+                        {/* Sort by price */}
                         <InputLabel>Price</InputLabel>
                         <Select
                            size="medium"
@@ -115,6 +117,7 @@ export default function Populate({ onSelect }: Props) {
                   </Grid>
                   <Grid item xs={5}>
                      <FormControl fullWidth>
+                        {/* Sort by popularity */}
                         <InputLabel>Popularity</InputLabel>
                         <Select
                            size="medium"
@@ -139,6 +142,7 @@ export default function Populate({ onSelect }: Props) {
                </Box>
             )}
             <Stack style={{ maxHeight: '175vh', overflow: 'auto' }} spacing={2}>
+               {/* A column of apartment info */}
                {apartments.map((apartment, i) => {
                   if (apartments.length === i + 1) {
                      return (

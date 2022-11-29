@@ -114,7 +114,7 @@ function MainPage() {
                </Toolbar>
             </AppBar>
             <Grid container spacing={3}>
-               {/* Search bar and rest of the components */}
+               {/* Search bar*/}
                <Grid item xs={12}>
                   <Box
                      display="flex"
@@ -126,6 +126,7 @@ function MainPage() {
                      </Stack>
                   </Box>
                </Grid>
+               {/* The rest of the components */}
                <Grid item xs={3}>
                   <Populate onSelect={(apt) => setTo(apt)} />
                </Grid>

@@ -62,6 +62,7 @@ export default function Register() {
    return (
       <Grid>
          <Paper elevation={12} style={paperStyle}>
+            {/* A paper like UI with fields for register*/}
             <PersonIcon fontSize="large" />
             <h2>Register</h2>
             <TextField

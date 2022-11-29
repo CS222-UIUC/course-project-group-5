@@ -29,6 +29,7 @@ const SingleCard = ({
 }: SingleCardProps) => (
    <React.Fragment>
       <Card>
+         {/* A clickable card with info about an apartment */}
          <CardActionArea
             onClick={() =>
                onSelect({ id, name, address, price_min, price_max, votes })

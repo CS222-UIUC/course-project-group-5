@@ -30,6 +30,7 @@ export default function SearchBar() {
 
    return (
       <React.Fragment>
+         {/* Search bar with autocomplete from the server */}
          <Autocomplete
             id="free-solo-demo"
             freeSolo

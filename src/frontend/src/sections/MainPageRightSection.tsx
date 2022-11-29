@@ -54,6 +54,7 @@ function RightSection({ apt, logged }: apt) {
    }, [apt]);
    return (
       <React.Fragment>
+         {/* A column of every element on the right half */}
          <Stack spacing={3}>
             <ImagesGallery pics={pics} />
             <AptInfo apt={apt} />
