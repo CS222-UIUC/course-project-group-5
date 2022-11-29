@@ -9,10 +9,10 @@ from decorators import use_database
 class UserPage:
     """UserPage class"""
 
-    def __init__(self, username: str) -> None:
+    def __init__(self, name: str) -> None:
         """Constructor"""
-        self.username = username
-        self.user = self.get_user(username)
+        self.name = name
+        self.user = self.get_user(name)
 
     @use_database
     def get_user(self, query_sql: str) -> User:
@@ -42,8 +42,8 @@ class UserPage:
         self.update_password.cursor.execute(
             "UPDATE Users \
             SET password = ? \
-            WHERE (username = ?)",
-            (password, self.username),
+            WHERE (username = ? OR email = ?)",
+            (password, self.name, self.name),
         )
         self.user.password = password
         return True
@@ -58,8 +58,8 @@ class UserPage:
         self.update_email.cursor.execute(
             "UPDATE Users \
             SET email = ? \
-            WHERE username = ?",
-            (email, self.username),
+            WHERE (username = ? OR email = ?)",
+            (email, self.name, self.name),
         )
         self.user.email = email
         return True
@@ -72,8 +72,9 @@ class UserPage:
         if self.user.phone == phone:
             return True
         self.update_phone.cursor.execute(
-            "UPDATE Users SET phone = ? WHERE (username = ?)",
-            (phone, self.username),
+            "UPDATE Users SET phone = ? \
+            WHERE (username = ? OR email = ?)",
+            (phone, self.name, self.name),
         )
         self.user.phone = phone
         return True
