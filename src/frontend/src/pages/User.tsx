@@ -26,10 +26,11 @@ import {
    changePhone,
    logout,
 } from '../components/user/changeInfo';
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function User() {
+   const [id, setId] = useState(-1);
    const navigate = useNavigate();
    const btnstyle = { marginLeft: '10px' };
    return (
@@ -97,7 +98,7 @@ export default function User() {
             <Grid container spacing={2}>
                {/* User info and list of reviewed apts */}
                <Grid item xs={4}>
-                  <FormUser />
+                  <FormUser setId={setId} />
                   <Button variant="outlined" style={btnstyle}>
                      <Typography variant="subtitle2">
                         Change Password
@@ -106,7 +107,7 @@ export default function User() {
                </Grid>
 
                <Grid item xs={7}>
-                  <FormLikedApts />
+                  <FormLikedApts id={id} />
                </Grid>
             </Grid>
          </Stack>
@@ -114,8 +115,13 @@ export default function User() {
    );
 }
 
-function FormUser() {
-   const user_info = getUser('Zongxian');
+interface UserProps {
+   setId: Dispatch<SetStateAction<number>>;
+}
+
+function FormUser({ setId }: UserProps) {
+   const user_info = getUser();
+   setId(user_info.user.user_id);
    return (
       <React.Fragment>
          {/* Form UI for user info */}
@@ -288,9 +294,13 @@ function FormPhone({ phone }: PhoneComponentProps) {
    );
 }
 
-function FormLikedApts() {
+interface LikedAptsProps {
+   id: number;
+}
+
+function FormLikedApts({ id }: LikedAptsProps) {
    console.log('Getting apt info');
-   const reviewed_apts = getReviewedApts('Zongxian');
+   const reviewed_apts = getReviewedApts(id);
    return (
       <React.Fragment>
          {/* UI for liked apartments */}

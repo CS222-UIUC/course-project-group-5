@@ -4,7 +4,7 @@ import { UserType } from '../Types';
 
 const baseURL = 'http://127.0.0.1:5000/user';
 
-export default function getInfo(username: string) {
+export default function getInfo() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(false);
    const [user, setUser] = useState(defaultUser);
@@ -42,7 +42,7 @@ export default function getInfo(username: string) {
          clearTimeout(timer);
          source.cancel();
       };
-   }, [username]);
+   }, []);
    return { loading, error, user };
 }
 

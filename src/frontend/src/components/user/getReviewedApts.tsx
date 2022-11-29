@@ -4,7 +4,7 @@ import { AptType } from '../Types';
 
 const baseURL = 'http://127.0.0.1:5000/user';
 
-export default function getReviewedApts(username: string) {
+export default function getReviewedApts(id: number) {
    // Get apts that username reviewed
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(false);
@@ -19,7 +19,7 @@ export default function getReviewedApts(username: string) {
       const timer = setTimeout(() => {
          const req = {
             is_get_liked: true,
-            user_id: 1,
+            user_id: id,
          };
          const json = JSON.stringify(req);
          axios({
@@ -57,6 +57,6 @@ export default function getReviewedApts(username: string) {
          clearTimeout(timer);
          source.cancel();
       };
-   }, [username]);
+   }, [id]);
    return { loading, error, apartments };
 }
