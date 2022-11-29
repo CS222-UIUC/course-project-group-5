@@ -102,9 +102,7 @@ export default function Register() {
                color="primary"
                variant="contained"
                style={btnstyle}
-               onClick={() => {
-                  sendData();
-               }}
+               onClick={sendData}
                fullWidth
             >
                Sign up

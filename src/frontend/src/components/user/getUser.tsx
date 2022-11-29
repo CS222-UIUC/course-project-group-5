@@ -37,7 +37,7 @@ export default function getInfo() {
                if (axios.isCancel(e)) return;
                setError(true);
             });
-      }, 700);
+      }, 100);
       return () => {
          clearTimeout(timer);
          source.cancel();

@@ -52,7 +52,7 @@ export default function getReviewedApts(id: number) {
                if (axios.isCancel(e)) return;
                setError(true);
             });
-      }, 700);
+      }, 100);
       return () => {
          clearTimeout(timer);
          source.cancel();

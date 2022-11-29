@@ -83,9 +83,7 @@ export default function Login() {
                color="primary"
                variant="contained"
                style={btnstyle}
-               onClick={() => {
-                  sendData();
-               }}
+               onClick={sendData}
                fullWidth
             >
                Sign in
