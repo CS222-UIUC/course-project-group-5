@@ -23,6 +23,7 @@ function MainPage() {
    const { apartments } = getApartments('0', '0', -1);
    const [to, setTo] = useState<AptType>(apartments[0]);
    const [logged, setLogged] = useState(false);
+   const [username, setUsername] = useState('');
    function checkLoggedIn() {
       axios({
          url: 'http://127.0.0.1:5000/api/whoami',
@@ -31,6 +32,7 @@ function MainPage() {
          .then((response) => {
             console.log(response);
             setLogged(true);
+            setUsername(response.data);
          })
          .catch((error) => {
             if (error.response) {
@@ -131,7 +133,11 @@ function MainPage() {
                   <Populate onSelect={(apt) => setTo(apt)} />
                </Grid>
                <Grid item xs style={{ maxHeight: '100%', overflow: 'auto' }}>
-                  <RightSection apt={to || apartments[0]} logged={logged} />
+                  <RightSection
+                     apt={to || apartments[0]}
+                     logged={logged}
+                     username={username}
+                  />
                </Grid>
             </Grid>
          </Stack>

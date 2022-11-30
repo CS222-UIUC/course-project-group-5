@@ -15,17 +15,18 @@ import {
 interface Props {
    apt: AptType | undefined;
    setReviews: Dispatch<SetStateAction<ReviewType[]>>;
+   username: string;
 }
 
 const baseURL = 'http://127.0.0.1:5000/main';
-export default function AddReview({ apt, setReviews }: Props) {
+export default function AddReview({ apt, setReviews, username }: Props) {
    const [text, setText] = useState<string>('');
    const [vote, setVote] = useState<number>(0);
    const addReviewHandler = async (text: string, vote: number) => {
       // post review on submit
       const result = await axios.post(`${baseURL}`, {
          apt_id: apt?.id,
-         username: 'Zongxian',
+         username: username,
          comment: text,
          vote: vote,
       });

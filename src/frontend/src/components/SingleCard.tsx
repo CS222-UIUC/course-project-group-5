@@ -14,7 +14,7 @@ interface SingleCardProps {
    address: string;
    price_min: number;
    price_max: number;
-   votes: number;
+   rating: number;
    onSelect: (apt: AptType) => void;
 }
 
@@ -24,7 +24,7 @@ const SingleCard = ({
    address,
    price_min,
    price_max,
-   votes,
+   rating,
    onSelect,
 }: SingleCardProps) => (
    <React.Fragment>
@@ -32,7 +32,7 @@ const SingleCard = ({
          {/* A clickable card with info about an apartment */}
          <CardActionArea
             onClick={() =>
-               onSelect({ id, name, address, price_min, price_max, votes })
+               onSelect({ id, name, address, price_min, price_max, rating })
             }
          >
             <CardContent style={{ height: '175px' }}>

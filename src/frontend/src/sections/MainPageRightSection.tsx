@@ -11,8 +11,9 @@ const baseURL = 'http://127.0.0.1:5000/main';
 interface apt {
    apt: AptType | undefined; // in case of null
    logged: boolean;
+   username: string;
 }
-function RightSection({ apt, logged }: apt) {
+function RightSection({ apt, logged, username }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
    const [pics, setPics] = useState<string[]>([
       'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png',
@@ -63,7 +64,13 @@ function RightSection({ apt, logged }: apt) {
                   sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
                />
             )}
-            {logged === true && <AddReview apt={apt} setReviews={setReviews} />}
+            {logged === true && (
+               <AddReview
+                  apt={apt}
+                  setReviews={setReviews}
+                  username={username}
+               />
+            )}
             <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <ReviewsList reviews={reviews} />
          </Stack>

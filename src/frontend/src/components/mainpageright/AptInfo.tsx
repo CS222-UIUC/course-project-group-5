@@ -23,9 +23,7 @@ export function AptInfo({ apt }: IAptInfoProps) {
                   </Typography>
                </Box>
                <Box display="flex" justifyContent="center">
-                  <Typography variant="h6">
-                     Rating: ${apt?.votes || 0}
-                  </Typography>
+                  <Typography variant="h6">Rating: {apt?.rating}</Typography>
                </Box>
             </Stack>
          </Paper>
