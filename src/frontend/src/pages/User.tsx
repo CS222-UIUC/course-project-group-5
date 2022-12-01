@@ -1,27 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
    Grid,
    Typography,
-   List,
-   ListItemText,
    Box,
-   Divider,
    Stack,
    Button,
-   ListItemAvatar,
    Avatar,
-   ListItem,
    AppBar,
    Toolbar,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import PersonIcon from '@mui/icons-material/Person';
-import getInfo from '../components/user/getUser';
 import { logout } from '../components/user/LogOut';
-import { FormEmail } from '../components/user/FormEmail';
-import { FormPhone } from '../components/user/FormPhone';
+import { FormUser } from '../components/user/FormUser';
 import { FormLikedApts } from '../components/user/FormLikedApts';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function User() {
@@ -107,48 +99,5 @@ export default function User() {
             </Grid>
          </Stack>
       </>
-   );
-}
-
-interface UserProps {
-   setId: Dispatch<SetStateAction<number>>;
-}
-
-function FormUser({ setId }: UserProps) {
-   const user_info = getInfo();
-   const [displayEmail, setDisplayEmail] = useState('');
-   const [displayPhone, setDisplayPhone] = useState('');
-   useEffect(() => {
-      setDisplayEmail(user_info.user.email);
-      setDisplayPhone(user_info.user.phone);
-      setId(user_info.user.user_id);
-   }, [user_info.user.email, user_info.user.phone, user_info.user.user_id]);
-   return (
-      <React.Fragment>
-         {/* Form UI for user info */}
-         <List>
-            <ListItem>
-               <ListItemAvatar>
-                  <Avatar>
-                     <PersonIcon />
-                  </Avatar>
-               </ListItemAvatar>
-               <ListItemText
-                  primary="Username"
-                  secondary={user_info.user.username}
-               />
-            </ListItem>
-            <Divider />
-            <FormEmail
-               displayEmail={displayEmail}
-               setDisplayEmail={setDisplayEmail}
-            />
-            <Divider />
-            <FormPhone
-               displayPhone={displayPhone}
-               setDisplayPhone={setDisplayPhone}
-            />
-         </List>
-      </React.Fragment>
    );
 }

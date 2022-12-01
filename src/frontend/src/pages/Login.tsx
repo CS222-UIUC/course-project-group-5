@@ -8,6 +8,7 @@ import {
    Link,
    FormControlLabel,
    Checkbox,
+   Stack,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
@@ -46,7 +47,7 @@ export default function Login() {
 
    const paperStyle = {
       padding: 20,
-      height: '60vh',
+      height: '65vh',
       width: 310,
       margin: '20px auto',
    };
@@ -60,24 +61,32 @@ export default function Login() {
    return (
       <Grid>
          <Paper elevation={12} style={paperStyle}>
-            {/* A paper like UI with fields for login */}
-            <PersonIcon fontSize="large" />
-            <h2>Sign In</h2>
-            <TextField
-               label="Username/Email"
-               placeholder="Enter Username or Email"
-               onChange={(event) => setUser(event.target.value)}
-               fullWidth
-               required
-            />
-            <TextField
-               label="Password"
-               placeholder="Enter Password"
-               type="password"
-               onChange={(event) => setPassword(event.target.value)}
-               fullWidth
-               required
-            />
+            <Stack spacing={2}>
+               {/* A paper like UI with fields for login */}
+               <Grid container spacing={2}>
+                  <Grid item xs={2}>
+                     <PersonIcon fontSize="large" />
+                  </Grid>
+                  <Grid item xs>
+                     <h2>Sign In</h2>
+                  </Grid>
+               </Grid>
+               <TextField
+                  label="Username/Email"
+                  placeholder="Enter Username or Email"
+                  onChange={(event) => setUser(event.target.value)}
+                  fullWidth
+                  required
+               />
+               <TextField
+                  label="Password"
+                  placeholder="Enter Password"
+                  type="password"
+                  onChange={(event) => setPassword(event.target.value)}
+                  fullWidth
+                  required
+               />
+            </Stack>
             <FormControlLabel
                control={<Checkbox name="checkedB" color="primary" />}
                label="Remember me"
@@ -97,6 +106,9 @@ export default function Login() {
             </Typography>
             <Typography>
                <Link href="/register">Sign Up</Link>
+            </Typography>
+            <Typography>
+               <Link href="/">Access without logging in</Link>
             </Typography>
             {res !== undefined && res !== `welcome ${user}` && (
                <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
