@@ -105,21 +105,21 @@ export default function Register() {
                   fullWidth
                   required
                />
+               <FormControlLabel
+                  control={<Checkbox name="checkedB" color="primary" />}
+                  label="Remember me"
+               />
+               <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  style={btnstyle}
+                  onClick={sendData}
+                  fullWidth
+               >
+                  Sign up
+               </Button>
             </Stack>
-            <FormControlLabel
-               control={<Checkbox name="checkedB" color="primary" />}
-               label="Remember me"
-            />
-            <Button
-               type="submit"
-               color="primary"
-               variant="contained"
-               style={btnstyle}
-               onClick={sendData}
-               fullWidth
-            >
-               Sign up
-            </Button>
             <Typography>
                <Link href="/login">Already signed up?</Link>
             </Typography>

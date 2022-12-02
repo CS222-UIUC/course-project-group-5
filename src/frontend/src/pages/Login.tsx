@@ -86,21 +86,21 @@ export default function Login() {
                   fullWidth
                   required
                />
+               <FormControlLabel
+                  control={<Checkbox name="checkedB" color="primary" />}
+                  label="Remember me"
+               />
+               <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  style={btnstyle}
+                  onClick={sendData}
+                  fullWidth
+               >
+                  Sign in
+               </Button>
             </Stack>
-            <FormControlLabel
-               control={<Checkbox name="checkedB" color="primary" />}
-               label="Remember me"
-            />
-            <Button
-               type="submit"
-               color="primary"
-               variant="contained"
-               style={btnstyle}
-               onClick={sendData}
-               fullWidth
-            >
-               Sign in
-            </Button>
             <Typography>
                <Link href="#">Forgot Password</Link>
             </Typography>

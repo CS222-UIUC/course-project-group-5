@@ -1,6 +1,6 @@
 """Contains the UserPage backend"""
 from typing import List
-from tests.auth import validate_phone, validate_email, validate_password
+from auth import validate_phone, validate_email, validate_password
 from dataholders.user import User
 from dataholders.apt import Apt
 from decorators import use_database
