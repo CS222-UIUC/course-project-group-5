@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import React, { useState, Dispatch, SetStateAction } from 'react';
+import { ReviewType, AptType } from '../Types';
 import axios from 'axios';
+import {
+   TextField,
+   FormControl,
+   FormControlLabel,
+   FormLabel,
+   RadioGroup,
+   Button,
+   Radio,
+   Stack,
+} from '@mui/material';
+
+interface Props {
+   apt: AptType | undefined;
+   setReviews: Dispatch<SetStateAction<ReviewType[]>>;
+   username: string;
+}
 
 const baseURL = 'http://127.0.0.1:5000/main';
-export default function AddReview() {
+export default function AddReview({ apt, setReviews, username }: Props) {
    const [text, setText] = useState<string>('');
    const [vote, setVote] = useState<number>(0);
    const addReviewHandler = async (text: string, vote: number) => {
       // post review on submit
       const result = await axios.post(`${baseURL}`, {
-         apt_id: 2,
-         username: 'Zongxian',
+         apt_id: apt?.id,
+         username: username,
          comment: text,
          vote: vote,
       });
+      setReviews(result.data);
       console.log(result);
    };
    const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,59 +51,32 @@ export default function AddReview() {
       addReviewHandler(text, vote);
    };
    return (
-      <div>
+      <React.Fragment>
          {/* {error && <Alert variant="danger">{error}</Alert>} */}
-         <hr></hr>
-         <Form className="mt-3 mb-3" onSubmit={add}>
-            <Form.Group className="mb-3 text-center" controlId="formBasicText">
-               <Form.Label>Create a Review</Form.Label>
-               <Form.Control
-                  placeholder="Enter your reviews here"
-                  as="textarea"
-                  rows={5}
+         <FormControl className="mt-3 mb-3" onSubmit={add} key={apt?.id || 1}>
+            <Stack spacing={2}>
+               <FormLabel>Create a review</FormLabel>
+               <TextField
+                  label="Enter your reviews here"
                   onChange={(e) => setText(e.target.value)}
-               />
-            </Form.Group>
-            <div className="mb-3">
-               <div className="form-check form-check-inline ">
-                  <input
-                     name="group1"
-                     type="radio"
+               ></TextField>
+               <RadioGroup>
+                  <FormControlLabel
                      value="upvote"
-                     id="inline-radio-1"
-                     className="form-check-input"
-                     onChange={radioHandler}
+                     control={<Radio onChange={radioHandler} />}
+                     label="Upvote"
                   />
-                  <label
-                     title=""
-                     htmlFor="inline-radio-1"
-                     className="form-check-label"
-                  >
-                     upvote
-                  </label>
-               </div>
-               <div className="form-check form-check-inline">
-                  <input
-                     name="group1"
-                     type="radio"
+                  <FormControlLabel
                      value="downvote"
-                     id="inline-radio-2"
-                     className="form-check-input"
-                     onChange={radioHandler}
+                     control={<Radio onChange={radioHandler} />}
+                     label="Downvote"
                   />
-                  <label
-                     title=""
-                     htmlFor="inline-radio-2"
-                     className="form-check-label"
-                  >
-                     downvote
-                  </label>
-               </div>
-            </div>
-            <Button type="submit" variant="primary">
-               Submit
-            </Button>
-         </Form>
-      </div>
+               </RadioGroup>
+               <Button type="submit" variant="contained" onClick={add}>
+                  Submit
+               </Button>
+            </Stack>
+         </FormControl>
+      </React.Fragment>
    );
 }

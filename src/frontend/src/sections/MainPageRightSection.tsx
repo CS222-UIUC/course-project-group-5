@@ -5,12 +5,15 @@ import ImagesGallery from '../components/mainpageright/ImagesGallery';
 import { ReviewType, AptType } from '../components/Types';
 import { AptInfo } from '../components/mainpageright/AptInfo';
 import axios from 'axios';
+import { Stack, Divider } from '@mui/material';
 
 const baseURL = 'http://127.0.0.1:5000/main';
 interface apt {
    apt: AptType | undefined; // in case of null
+   logged: boolean;
+   username: string;
 }
-function RightSection({ apt }: apt) {
+function RightSection({ apt, logged, username }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
    const [pics, setPics] = useState<string[]>([
       'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png',
@@ -51,12 +54,27 @@ function RightSection({ apt }: apt) {
       getAllReviews();
    }, [apt]);
    return (
-      <div className="container">
-         <ImagesGallery pics={pics} />
-         <AptInfo apt={apt} />
-         <AddReview />
-         <ReviewsList reviews={reviews} />
-      </div>
+      <React.Fragment>
+         {/* A column of every element on the right half */}
+         <Stack spacing={3}>
+            <ImagesGallery pics={pics} />
+            <AptInfo apt={apt} />
+            {logged === true && (
+               <Divider
+                  sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
+               />
+            )}
+            {logged === true && (
+               <AddReview
+                  apt={apt}
+                  setReviews={setReviews}
+                  username={username}
+               />
+            )}
+            <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
+            <ReviewsList reviews={reviews} />
+         </Stack>
+      </React.Fragment>
    );
 }
 

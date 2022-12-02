@@ -220,7 +220,8 @@ class MainPage:
     ) -> List[Review]:
         """Write a new review for apartment"""
         user_id = self.write_apartment_review.cursor.execute(
-            "SELECT user_id FROM Users WHERE username = ?", (username,)
+            "SELECT user_id FROM Users WHERE username = ? OR email = ?",
+            (username, username),
         ).fetchone()[0]
         today = date.today().strftime("%Y-%m-%d")
         self.write_apartment_review.cursor.execute(

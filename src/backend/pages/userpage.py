@@ -1,6 +1,6 @@
 """Contains the UserPage backend"""
 from typing import List
-from tests.auth import validate_phone, validate_email, validate_password
+from auth import validate_phone, validate_email, validate_password
 from dataholders.user import User
 from dataholders.apt import Apt
 from decorators import use_database
@@ -9,24 +9,26 @@ from decorators import use_database
 class UserPage:
     """UserPage class"""
 
-    def __init__(self, username: str) -> None:
+    def __init__(self, name: str) -> None:
         """Constructor"""
-        self.username = username
-        self.user = self.get_user(username)
+        self.name = name
+        self.user = self.get_user(name)
 
     @use_database
-    def get_user(self, username: str) -> User:
+    def get_user(self, query_sql: str) -> User:
         """Return User object based on username"""
-        query_sql = username
         user_query = self.get_user.cursor.execute(
-            "SELECT u.user_id, u.password, u.email, u.phone \
+            "SELECT u.user_id, u.username, u.password, u.email, u.phone \
             FROM USERS u\
-            WHERE u.username = ?",
-            (query_sql,),
+            WHERE u.username = ? OR u.email = ?",
+            (
+                query_sql,
+                query_sql,
+            ),
         ).fetchone()
         if user_query is None:
             return User("", "", "", "", "")
-        user_id, password, email, phone = user_query
+        user_id, username, password, email, phone = user_query
         return User(user_id, username, password, email, phone)
 
     @use_database
@@ -40,8 +42,8 @@ class UserPage:
         self.update_password.cursor.execute(
             "UPDATE Users \
             SET password = ? \
-            WHERE (username = ?)",
-            (password, self.username),
+            WHERE (username = ? OR email = ?)",
+            (password, self.name, self.name),
         )
         self.user.password = password
         return True
@@ -56,8 +58,8 @@ class UserPage:
         self.update_email.cursor.execute(
             "UPDATE Users \
             SET email = ? \
-            WHERE username = ?",
-            (email, self.username),
+            WHERE (username = ? OR email = ?)",
+            (email, self.name, self.name),
         )
         self.user.email = email
         return True
@@ -70,8 +72,9 @@ class UserPage:
         if self.user.phone == phone:
             return True
         self.update_phone.cursor.execute(
-            "UPDATE Users SET phone = ? WHERE (username = ?)",
-            (phone, self.username),
+            "UPDATE Users SET phone = ? \
+            WHERE (username = ? OR email = ?)",
+            (phone, self.name, self.name),
         )
         self.user.phone = phone
         return True

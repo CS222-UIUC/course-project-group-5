@@ -285,7 +285,7 @@ def test_userpage_not_logged_in(client):
     assert res.status_code == 404
     with app.test_request_context("/user/"):
         res = userpage()
-        assert res[1] == 404
+        assert res[1] == 403
 
 
 @use_test
@@ -301,7 +301,7 @@ def test_userpage_get_request(client):
     with app.test_request_context("/user/", method="GET"):
         session["username"] = "Mike"
         res = userpage()
-        assert res[1] == 201
+        assert res[1] == 200
     connection = sqlite3.connect("database/database_test.db")
     cursor = connection.cursor()
     cursor.execute("DELETE FROM Users WHERE username = ?", ("Mike",))
@@ -372,7 +372,7 @@ def test_whoami():
     """Test whoami returns 404 and 201"""
     with app.test_request_context("/api/whoami"):
         res = whoami()
-        assert res[1] == 404
+        assert res[1] == 403
     with app.test_request_context("/api/whoami"):
         session["username"] = "Mike"
         res = whoami()

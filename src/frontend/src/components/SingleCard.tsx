@@ -1,17 +1,12 @@
 import React from 'react';
-import { Typography, Card, CardContent } from '@material-ui/core';
-import { CardActionArea } from '@mui/material';
-import styled from 'styled-components';
+import {
+   Typography,
+   Card,
+   CardContent,
+   Stack,
+   CardActionArea,
+} from '@mui/material';
 import { AptType } from './Types';
-
-const Container = styled.div``;
-
-const MyCard = styled(Card)`
-   margin-left: 20px;
-   margin-bottom: 20px;
-   height: 200px;
-   width: 470px;
-`;
 
 interface SingleCardProps {
    id: number;
@@ -19,7 +14,7 @@ interface SingleCardProps {
    address: string;
    price_min: number;
    price_max: number;
-   votes: number;
+   rating: number;
    onSelect: (apt: AptType) => void;
 }
 
@@ -29,42 +24,38 @@ const SingleCard = ({
    address,
    price_min,
    price_max,
-   votes,
+   rating,
    onSelect,
 }: SingleCardProps) => (
-   <Container>
-      <MyCard>
-         {' '}
+   <React.Fragment>
+      <Card>
+         {/* A clickable card with info about an apartment */}
          <CardActionArea
             onClick={() =>
-               onSelect({ id, name, address, price_min, price_max, votes })
+               onSelect({ id, name, address, price_min, price_max, rating })
             }
          >
-            <CardContent style={{ height: '300px' }}>
-               {/*<Button size="small">Learn More</Button>*/}
-               <div style={{ display: 'inline-block', width: '100%' }}>
+            <CardContent style={{ height: '175px' }}>
+               <Stack>
+                  {/*<Button size="small">Learn More</Button>*/}
                   <Typography
                      gutterBottom
                      variant="h5"
-                     component="div"
                      style={{ float: 'left', marginLeft: '30px' }}
+                     component="div"
                   >
                      {name}
                   </Typography>
                   <Typography
                      gutterBottom
                      variant="body1"
-                     component="div"
                      style={{ float: 'right', marginTop: '5px' }}
                   >
                      {address}
                   </Typography>
-               </div>
-               <div>
                   <Typography
                      gutterBottom
                      variant="body2"
-                     component="div"
                      style={{ float: 'left' }}
                   >
                      {/*review*/}
@@ -72,7 +63,6 @@ const SingleCard = ({
                   <Typography
                      gutterBottom
                      variant="body2"
-                     component="div"
                      style={{ float: 'right' }}
                   >
                      ${price_min}-${price_max}
@@ -80,16 +70,15 @@ const SingleCard = ({
                   <Typography
                      gutterBottom
                      variant="body2"
-                     component="div"
                      style={{ float: 'left' }}
                   >
                      {/* {rating} */}
                   </Typography>
-               </div>
+               </Stack>
             </CardContent>
          </CardActionArea>
-      </MyCard>
-   </Container>
+      </Card>
+   </React.Fragment>
 );
 
 export default SingleCard;

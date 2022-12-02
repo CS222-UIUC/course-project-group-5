@@ -10,6 +10,7 @@ src/frontend/node_modules
 src/backend/.pytest_cache
 .pytest_cache
 src/backend/__pycache__
+src/backend/flask_session
 
 src/frontend/my-app/node_modules
 # testing

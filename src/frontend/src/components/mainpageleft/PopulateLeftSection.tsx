@@ -1,4 +1,15 @@
-import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+   Grid,
+   Paper,
+   FormControl,
+   Select,
+   MenuItem,
+   SelectChangeEvent,
+   InputLabel,
+   Stack,
+   Typography,
+   Box,
+} from '@mui/material';
 import React, { useState, useRef, useCallback } from 'react';
 import SingleCard from '../SingleCard';
 import { useSearchParams } from 'react-router-dom';
@@ -44,43 +55,37 @@ export default function Populate({ onSelect }: Props) {
       [loading, hasMore]
    );
 
-   const handlePriceToggle = (
-      event: React.SyntheticEvent<Element, Event>,
-      selected: string
-   ) => {
-      setPriceSort(selected);
+   const handlePriceToggle = (event: SelectChangeEvent<string>) => {
+      setPriceSort(event.target.value);
       setId(-1); // start at the beginning
       // sets URL
-      if (selected === 'low-high') {
+      if (event.target.value === 'low-high') {
          searchParams.set('priceSort', '-1');
-      } else if (selected === 'high-low') {
+      } else if (event.target.value === 'high-low') {
          searchParams.set('priceSort', '1');
       } else {
          searchParams.delete('priceSort');
       }
       searchParams.set('populate', 'True');
-      if (selected) {
+      if (event.target.value) {
          searchParams.set('populate', 'False');
       }
       setSearchParams(searchParams);
    };
 
-   const handlePopularToggle = (
-      event: React.SyntheticEvent<Element, Event>,
-      selected: string
-   ) => {
-      setRatingSort(selected);
+   const handlePopularToggle = (event: SelectChangeEvent<string>) => {
+      setRatingSort(event.target.value);
       setId(-1); // start at the beginning
       // sets URL
       searchParams.delete('aptId');
-      if (selected === 'most popular') {
+      if (event.target.value === 'most popular') {
          searchParams.set('ratingSort', '1');
-      } else if (selected === 'least popular') {
+      } else if (event.target.value === 'least popular') {
          searchParams.set('ratingSort', '-1');
       } else {
          searchParams.delete('ratingSort');
       }
-      if (selected) {
+      if (event.target.value) {
          searchParams.set('populate', 'True');
          searchParams.set('numApts', '10');
       } else {
@@ -90,40 +95,54 @@ export default function Populate({ onSelect }: Props) {
    };
 
    return (
-      <>
-         <div>
-            <div style={{ textAlign: 'center' }}>
-               <br />
-               <ToggleButtonGroup
-                  color="primary"
-                  value={priceSort}
-                  onChange={handlePriceToggle}
-                  aria-label="Platform"
-                  exclusive
-               >
-                  <ToggleButton value="low-high">Low-High</ToggleButton>
-                  <ToggleButton value="high-low">High-Low</ToggleButton>
-               </ToggleButtonGroup>
-               <ToggleButtonGroup
-                  color="primary"
-                  value={ratingSort}
-                  onChange={handlePopularToggle}
-                  aria-label="Platform"
-                  exclusive
-               >
-                  <ToggleButton value="least popular">
-                     Least Popular
-                  </ToggleButton>
-                  <ToggleButton value="most popular">Most Popular</ToggleButton>
-               </ToggleButtonGroup>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div style={{ textAlign: 'center' }}>
-               {apartments.length === 0 && !loading && 'None found'}
-            </div>
-            <Grid style={{ maxHeight: '100vh', overflow: 'auto' }}>
+      <React.Fragment>
+         <Stack spacing={3}>
+            <Paper elevation={2}>
+               {/* A paper UI with 2 drop down buttons for sorting */}
+               <Grid container justifyContent="space-between">
+                  <Grid item xs={5}>
+                     <FormControl fullWidth>
+                        {/* Sort by price */}
+                        <InputLabel>Price</InputLabel>
+                        <Select
+                           size="medium"
+                           color="primary"
+                           onChange={handlePriceToggle}
+                           label="Price"
+                        >
+                           <MenuItem value="low-high">Low to High</MenuItem>
+                           <MenuItem value="high-low">High to Low</MenuItem>
+                        </Select>
+                     </FormControl>
+                  </Grid>
+                  <Grid item xs={5}>
+                     <FormControl fullWidth>
+                        {/* Sort by popularity */}
+                        <InputLabel>Popularity</InputLabel>
+                        <Select
+                           size="medium"
+                           color="primary"
+                           onChange={handlePopularToggle}
+                           label="Popularity"
+                        >
+                           <MenuItem value="least popular">
+                              Least Popular
+                           </MenuItem>
+                           <MenuItem value="most popular">
+                              Most Popular
+                           </MenuItem>
+                        </Select>
+                     </FormControl>
+                  </Grid>
+               </Grid>
+            </Paper>
+            {apartments.length === 0 && !loading && (
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h5">None found</Typography>
+               </Box>
+            )}
+            <Stack style={{ maxHeight: '175vh', overflow: 'auto' }} spacing={2}>
+               {/* A column of apartment info */}
                {apartments.map((apartment, i) => {
                   if (apartments.length === i + 1) {
                      return (
@@ -148,10 +167,18 @@ export default function Populate({ onSelect }: Props) {
                      );
                   }
                })}
-            </Grid>
-            <div style={{ textAlign: 'center' }}>{loading && 'Loading...'}</div>
-            <div style={{ textAlign: 'center' }}>{error && 'Error...'}</div>
-         </div>
-      </>
+            </Stack>
+            {loading && (
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h5">Loading...</Typography>
+               </Box>
+            )}
+            {error && (
+               <Box display="flex" justifyContent="center">
+                  <Typography variant="h5">Error...</Typography>
+               </Box>
+            )}
+         </Stack>
+      </React.Fragment>
    );
 }

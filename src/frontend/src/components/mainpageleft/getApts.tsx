@@ -44,7 +44,7 @@ function getApartments(priceSort: string, ratingSort: string, id: number) {
                         address: res.data[i].address,
                         price_min: res.data[i].price_min,
                         price_max: res.data[i].price_max,
-                        votes: res.data[i].votes,
+                        rating: res.data[i].rating,
                      });
                   }
                }

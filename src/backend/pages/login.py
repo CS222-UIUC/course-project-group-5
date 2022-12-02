@@ -1,7 +1,7 @@
 """ Contains Login class """
 from dataclasses import dataclass
 from decorators import use_database
-from tests.auth import validate_email, validate_password, validate_phone
+from auth import validate_email, validate_password, validate_phone
 
 
 @dataclass(frozen=True)
@@ -33,7 +33,7 @@ class Login:
             return RegisterResult("Invalid phone number, please try again", False)
 
         if not validate_password(password):
-            return RegisterResult("Password is too short, please try again", False)
+            return RegisterResult("Password length should be greater than 8", False)
 
         check = self.register.cursor.execute(
             "SELECT username FROM Users WHERE username = ?", (username,)

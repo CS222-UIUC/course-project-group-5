@@ -16,5 +16,13 @@ export type AptType = {
    address: string;
    price_min: number;
    price_max: number;
-   votes: number;
+   rating: number;
+};
+
+export type UserType = {
+   user_id: number;
+   username: string;
+   password: string;
+   email: string;
+   phone: string;
 };
