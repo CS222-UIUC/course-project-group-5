@@ -72,11 +72,7 @@ export default function AddReview({ apt, setReviews, username }: Props) {
                      label="Downvote"
                   />
                </RadioGroup>
-               <Button
-                  type="submit"
-                  variant="contained"
-                  onClick={add}
-               >
+               <Button type="submit" variant="contained" onClick={add}>
                   Submit
                </Button>
             </Stack>
