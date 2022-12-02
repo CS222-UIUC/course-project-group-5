@@ -75,9 +75,7 @@ export default function AddReview({ apt, setReviews, username }: Props) {
                <Button
                   type="submit"
                   variant="contained"
-                  onClick={() => {
-                     add();
-                  }}
+                  onClick={add}
                >
                   Submit
                </Button>
