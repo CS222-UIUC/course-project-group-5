@@ -7,7 +7,7 @@
 
 ![Eslint](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/eslint.yml/badge.svg)
 ![Pylint](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/pylint.yml/badge.svg)
-![Pytest-coverage](https://img.shields.io/badge/pytest%20coverage%20calculation-100%25-brightgreen)
+![Pytest-coverage](https://img.shields.io/badge/Pytest%20Coverage%20-100%25-brightgreen)
 
 <details>
   <summary>Table of Contents</summary>
