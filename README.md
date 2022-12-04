@@ -21,6 +21,7 @@
     <li>
       <a href="#technical-architecture">Technical Architecture</a>
       <ul>
+        <li><a href="#components">Components</a></li>
         <li><a href="#diagram">Diagram</a></li>
       </ul>
     </li>
@@ -58,7 +59,7 @@ Flask processes the data sent from React, writes to the database, and handles us
 The SQLite database has tables for Users, Apartments, AptPics, and Reviews.
 
 ## Components
-### Login and Register pages
+### Login and Register Pages
 
 The login and register pages are the starting points for users who want access to every part of the website. It interacts with other components by linking to other pages if the user inputs accurate information, which the backend checks. The backend uses Authlib and Flask-Session. 
 
