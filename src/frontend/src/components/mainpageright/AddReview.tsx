@@ -10,6 +10,7 @@ import {
    Button,
    Radio,
    Stack,
+   ButtonGroup,
 } from '@mui/material';
 
 interface Props {
@@ -46,7 +47,7 @@ export default function AddReview({
                address: apt.address,
                price_min: apt.price_min,
                price_max: apt.price_max,
-               rating: apt.rating + 1,
+               rating: apt.rating + vote,
             };
          });
       }
@@ -132,18 +133,14 @@ export default function AddReview({
                      label="Downvote"
                   />
                </RadioGroup>
-               <Button type="submit" variant="contained" onClick={add}>
-                  Submit
-               </Button>
-               {hasReview === true && (
-                  <Button
-                     type="submit"
-                     variant="contained"
-                     onClick={deleteReview}
-                  >
-                     Delete
+               <ButtonGroup variant="contained">
+                  <Button type="submit" onClick={add}>
+                     Submit
                   </Button>
-               )}
+                  {hasReview === true && (
+                     <Button onClick={deleteReview}>Delete</Button>
+                  )}
+               </ButtonGroup>
             </Stack>
          </FormControl>
       </React.Fragment>
