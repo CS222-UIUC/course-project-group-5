@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import ReviewsList from '../components/mainpageright/ReviewsList';
 import AddReview from '../components/mainpageright/AddReview';
 import ImagesGallery from '../components/mainpageright/ImagesGallery';
@@ -12,12 +12,14 @@ interface apt {
    apt: AptType | undefined; // in case of null
    logged: boolean;
    username: string;
+   setTo: Dispatch<SetStateAction<AptType>>;
 }
-function RightSection({ apt, logged, username }: apt) {
+function RightSection({ apt, logged, username, setTo }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
    const [pics, setPics] = useState<string[]>([
       'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png',
    ]);
+   const [hasReview, setHasReview] = useState(false);
    // const [aptInfo, setAptInfo] = useState<AptType>({
    //    id: -1,
    //    name: 'Apartment Name',
@@ -27,6 +29,25 @@ function RightSection({ apt, logged, username }: apt) {
    //    votes: -1,
    // });
    // setAptInfo(apt);
+   function checkHasReview() {
+      axios({
+         url: `${baseURL}?review=True&aptId=${apt?.id || 1}&checkReview=True`,
+         withCredentials: true,
+      })
+         .then((response) => {
+            console.log(response);
+            setHasReview(true);
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+               setHasReview(false);
+            }
+         });
+   }
+   checkHasReview();
    const retrieveReviews = async () => {
       const response = await axios.get(
          `${baseURL}?review=True&aptId=${apt?.id || 1}`
@@ -60,16 +81,18 @@ function RightSection({ apt, logged, username }: apt) {
             <ImagesGallery pics={pics} />
             <AptInfo apt={apt} />
             {logged === true && (
-               <Divider
-                  sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
-               />
-            )}
-            {logged === true && (
-               <AddReview
-                  apt={apt}
-                  setReviews={setReviews}
-                  username={username}
-               />
+               <React.Fragment>
+                  <Divider
+                     sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
+                  />
+                  <AddReview
+                     apt={apt}
+                     setReviews={setReviews}
+                     username={username}
+                     hasReview={hasReview}
+                     setTo={setTo}
+                  />
+               </React.Fragment>
             )}
             <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <ReviewsList reviews={reviews} />

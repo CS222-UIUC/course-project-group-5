@@ -137,6 +137,7 @@ function MainPage() {
                      apt={to || apartments[0]}
                      logged={logged}
                      username={username}
+                     setTo={setTo}
                   />
                </Grid>
             </Grid>

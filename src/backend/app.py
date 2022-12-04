@@ -109,10 +109,10 @@ def whoami():
 def mainpage():
     """Handle mainpage requests"""
     mainpage_obj = MainPage()
-    if request.method == "POST":
-        return mainpage_post(mainpage_obj)
-
     args = request.args
+    if request.method == "POST":
+        return mainpage_post(mainpage_obj, args)
+
     return mainpage_get(mainpage_obj, args)
 
 
@@ -138,6 +138,7 @@ def mainpage_get(mainpage_obj: MainPage, args: MultiDict):
         args.get("searchQuery", type=str),
         args.get("priceSort", type=int),
         args.get("ratingSort", type=int),
+        args.get("checkReview", type=bool),
     )
 
     return mainpage_process_get(mainpage_obj, action, param)
@@ -147,6 +148,7 @@ def mainpage_process_get(
     mainpage_obj: MainPage, action: GetRequestType, param: GetRequestParams
 ):
     """Process the get requests"""
+    user = session.get("username", "")
     query_result = ""
     if action.is_search is True and param.search_query is not None:
         apts = mainpage_obj.search_apartments(param.search_query)
@@ -171,8 +173,12 @@ def mainpage_process_get(
         query_result = dataclasses_into_json(apts)
 
     elif action.is_review is True and param.apt_id is not None:
-        reviews = mainpage_obj.get_apartments_reviews(param.apt_id)
-        query_result = dataclasses_into_json(reviews)
+        if param.check_review is None:
+            reviews = mainpage_obj.get_apartments_reviews(param.apt_id, user)
+            query_result = dataclasses_into_json(reviews)
+        else:
+            if mainpage_obj.check_user_reviewed(param.apt_id, user):
+                query_result = "True"
 
     elif action.is_pictures is True and param.apt_id is not None:
         query_result = json.dumps(mainpage_obj.get_apartments_pictures(param.apt_id))
@@ -182,15 +188,16 @@ def mainpage_process_get(
     return "", 400
 
 
-def mainpage_post(mainpage_obj: MainPage):
+def mainpage_post(mainpage_obj: MainPage, args: MultiDict):
     """
     Helper for mainpage post requests
     Actions that use post request:
     - Writing a review to an apartment
+    - Delete an existing review
     """
     json_form = request.get_json(force=True)
 
-    is_delete = request.args.get("delete", default=False, type=bool)
+    is_delete = args.get("delete", default=False, type=bool)
 
     if isinstance(json_form, dict):
         if not is_delete:

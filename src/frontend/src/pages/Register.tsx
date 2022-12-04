@@ -22,7 +22,7 @@ export default function Register() {
    const [res, setRes] = useState();
    const paperStyle = {
       padding: 20,
-      height: '80vh',
+      height: '100%',
       width: 310,
       margin: '20px auto',
    };
