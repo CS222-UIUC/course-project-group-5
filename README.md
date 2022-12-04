@@ -5,9 +5,9 @@
 [![Forks][forks-shield]][forks-url] -->
 [![Stargazers][stars-shield]][stars-url]
 
-![Tests](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/eslint.yml/badge.svg)
-![Tests](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/pylint.yml/badge.svg)
-![Tests](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/pytest-coverage.yml/badge.svg)
+![Eslint](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/eslint.yml/badge.svg)
+![Pylint](https://github.com/CS222-UIUC/course-project-group-5/actions/workflows/pylint.yml/badge.svg)
+![Pytest-coverage](https://img.shields.io/badge/pytest%20coverage%20calculation-100%25-brightgreen)
 
 <details>
   <summary>Table of Contents</summary>
@@ -77,7 +77,7 @@ Minh worked on the front end, Samuel worked on the backend, and Aden did the use
 ### Diagram
 
 <div align="center">
-    <img src="src/diagram.png" alt="Diagram" width="500" height="500">
+    <img src="src/diagram.png" alt="Diagram" width="500" height="400">
 </div>
 
 ## Installation and Usage
