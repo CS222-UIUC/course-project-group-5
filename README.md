@@ -34,7 +34,7 @@
 
 ## About the Project
 
-![Move Securely](src/demo.png)
+![Move Securely](images/demo.png)
 
 Students have limited knowledge about living in a new city. They can find mixed information on Facebook groups, Reddit, online group chats, and discussions with others. By centralizing ratings and information about specific dorms and apartments, our application makes decisions more straightforward and the process of moving to a new city smoother.
 
@@ -77,7 +77,7 @@ Minh worked on the front end, Samuel worked on the backend, and Aden did the use
 ### Diagram
 
 <div align="center">
-    <img src="src/diagram.png" alt="Diagram" width="500" height="400">
+    <img src="images/diagram.png" alt="Diagram" width="500" height="400">
 </div>
 
 ## Installation and Usage
