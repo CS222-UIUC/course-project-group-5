@@ -148,7 +148,25 @@ def test_mainpage_get_user_reviewed(client):
     res_1 = client.get("/login", json=log_info)
     res = client.get("/main", query_string=query)
     mainpage.clean_all()
+    connection.close()
     assert res_1.status_code == 200
+    assert res.status_code == 200
+
+
+@use_test
+def test_mainpage_get_search_single_apt(client):
+    """Mainpage handles getting single apt info"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    far_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+    ).fetchone()[0]
+    query = {"search": "True", "aptId": far_id}
+    res = client.get("/main", query_string=query)
+    mainpage.clean_all()
+    connection.close()
     assert res.status_code == 200
 
 

@@ -414,4 +414,20 @@ class TestMainPage:
         ).fetchone()[0]
         check = self.main_page.check_user_reviewed(par_id, "Big_finger")
         self.main_page_stage.clean_all()
+        connection.close()
         assert check
+
+    @use_test
+    def test_get_single_apt(self):
+        """Test gets a single apt"""
+        self.main_page_stage.initialize_all()
+        connection = sqlite3.connect("database/database_test.db")
+        cursor = connection.cursor()
+        par_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
+        par = Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        check = self.main_page.get_single_apt(par_id)
+        self.main_page_stage.clean_all()
+        connection.close()
+        assert par == check

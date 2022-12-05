@@ -150,9 +150,13 @@ def mainpage_process_get(
     """Process the get requests"""
     user = session.get("username", "")
     query_result = ""
-    if action.is_search is True and param.search_query is not None:
-        apts = mainpage_obj.search_apartments(param.search_query)
-        query_result = dataclasses_into_json(apts)
+    if action.is_search is True:
+        if param.search_query is not None:
+            apts = mainpage_obj.search_apartments(param.search_query)
+            query_result = dataclasses_into_json(apts)
+        if param.apt_id is not None:
+            apt = mainpage_obj.get_single_apt(param.apt_id)
+            query_result = json.dumps(dataclasses.asdict(apt))
 
     elif action.is_populate is True and param.num_apts is not None:
         apts = []

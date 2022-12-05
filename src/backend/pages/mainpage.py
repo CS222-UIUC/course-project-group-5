@@ -27,6 +27,11 @@ class MainPage:
     FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
     GROUP BY Apartments.apt_id) "
 
+    search_apt_query = "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+    COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+    Apartments.price_min, Apartments.price_max \
+    FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id "
+
     def __init__(self) -> None:
         """Constructor"""
 
@@ -35,11 +40,8 @@ class MainPage:
         """Returns a list of apartments with name matching query"""
         query_sql = "%" + query.lower() + "%"
         apt_query = self.search_apartments.cursor.execute(
-            "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
-            Apartments.price_min, Apartments.price_max \
-            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
-            WHERE LOWER(Apartments.apt_name) LIKE ? \
+            self.search_apt_query
+            + "WHERE LOWER(Apartments.apt_name) LIKE ? \
             GROUP BY Apartments.apt_id",
             (query_sql,),
         ).fetchall()
@@ -303,3 +305,14 @@ class MainPage:
         if user_id is None:
             return -1
         return user_id[0]
+
+    @use_database
+    def get_single_apt(self, apt_id: int) -> Apt:
+        """Get a single apt from apt id"""
+        apt = self.get_single_apt.cursor.execute(
+            self.search_apt_query
+            + "WHERE Apartments.apt_id = ? \
+            GROUP BY Apartments.apt_id",
+            (apt_id,),
+        ).fetchone()
+        return Apt(apt[0], apt[1], apt[2], apt[3], apt[4], apt[5])
