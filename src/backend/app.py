@@ -37,7 +37,7 @@ google = oauth.register(
 def googlelogin():
     """Handles google oauth login"""
     google_client = oauth.create_client("google")
-    redirect_uri = url_for("authorize", _external=True)  # move to /authorize route
+    redirect_uri = url_for("authorize", _external=True)  # move to the /authorize route
     return google_client.authorize_redirect(redirect_uri)
 
 
@@ -49,10 +49,10 @@ def authorize():
     resp = google_client.get("userinfo", token=token)  # userinfo contains email
     resp.raise_for_status()  # check status code
     user_info = resp.json()  # convert to json
-    # query database for username
+    # query database for username and create session
     page = UserPage(user_info["email"])
     session["username"] = page.get_user(user_info["email"]).username
-    return redirect("http://localhost:3000"), 301  # necessary status code
+    return redirect("http://localhost:3000"), 301  # necessary status code for Flask to auto-redirect
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -65,10 +65,10 @@ def login():
         password = json_form.get("password", "")
         remember = json_form.get("remember_me", False)
         if user_login.login(username, password):
-            # session object makes User accessible in the backend
+            # A session object makes the User accessible in the backend
             session["username"] = username
             if remember:
-                session.permanent = True  # what does this do?
+                session.permanent = True  # Flask probably does this automatically
             return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
