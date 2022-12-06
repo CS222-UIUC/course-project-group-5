@@ -16,7 +16,7 @@ class UserPage:
 
     @use_database
     def get_user(self, query_sql: str) -> User:
-        """Return User object based on username"""
+        """Return User object based on username or email"""
         user_query = self.get_user.cursor.execute(
             "SELECT u.user_id, u.username, u.password, u.email, u.phone \
             FROM USERS u\

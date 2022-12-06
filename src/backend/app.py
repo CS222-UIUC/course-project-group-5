@@ -50,12 +50,12 @@ def authorize():
     resp.raise_for_status()  # check status code
     user_info = resp.json()  # convert to json
     # query database for username and create session
-    page = UserPage(user_info["email"])
-    session["username"] = page.get_user(user_info["email"]).username
-    return (
-        redirect("http://localhost:3000"),
-        301,
-    )  # necessary status code for Flask to auto-redirect
+    get = UserPage("").get_user(user_info["email"])
+    if get.email != "" and get.user_id != "":
+        session["username"] = get.username
+        return redirect("http://localhost:3000"), 301
+    # necessary status code for Flask to auto-redirect
+    return redirect("http://localhost:3000/login"), 301
 
 
 @app.route("/login", methods=["GET", "POST"])
