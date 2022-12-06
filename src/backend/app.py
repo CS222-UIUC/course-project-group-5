@@ -30,7 +30,6 @@ def login():
         if user_login.login(username, password):
             # session object makes User accessible in the backend
             session["username"] = username
-            print(session.get("username"))
             return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
@@ -57,7 +56,6 @@ def register():
 @app.route("/user", methods=["GET", "POST"])
 def userpage():
     """Handles userpage requests"""
-    print(session.get("username"))
     if session.get("username") is None:
         return "user does not exist", 403
     name = session.get("username") or ""
@@ -97,7 +95,6 @@ def logout():
 @app.route("/api/whoami")
 def whoami():
     """Shows whether a user is logged in and returns session username"""
-    print(session.get("username"))
     if session.get("username") is None:
         return "user logged out", 403
     username = session.get("username", "")

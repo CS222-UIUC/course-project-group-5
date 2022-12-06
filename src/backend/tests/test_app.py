@@ -167,6 +167,7 @@ def test_mainpage_get_search_single_apt(client):
     res = client.get("/main", query_string=query)
     mainpage.clean_all()
     connection.close()
+    print(res.text)
     assert res.status_code == 200
 
 

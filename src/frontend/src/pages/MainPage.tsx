@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import getApartments from '../components/mainpageleft/getApts';
 import Populate from '../components/mainpageleft/PopulateLeftSection';
 import SearchBar from '../components/SearchBar';
@@ -24,6 +24,9 @@ function MainPage() {
    const [to, setTo] = useState<AptType>(apartments[0]);
    const [logged, setLogged] = useState(false);
    const [username, setUsername] = useState('');
+   const handleAptChange = (apt: AptType) => {
+      setTo(apt);
+   };
    function checkLoggedIn() {
       axios({
          url: 'http://127.0.0.1:5000/api/whoami',
@@ -42,7 +45,9 @@ function MainPage() {
             }
          });
    }
-   checkLoggedIn();
+   useEffect(() => {
+      checkLoggedIn();
+   }, []);
 
    return (
       <>
@@ -124,7 +129,7 @@ function MainPage() {
                      alignItems="center"
                   >
                      <Stack spacing={2} sx={{ width: 500 }}>
-                        <SearchBar />
+                        <SearchBar handleAptChange={handleAptChange} />
                      </Stack>
                   </Box>
                </Grid>
@@ -137,7 +142,7 @@ function MainPage() {
                      apt={to || apartments[0]}
                      logged={logged}
                      username={username}
-                     setTo={setTo}
+                     handleAptChange={handleAptChange}
                   />
                </Grid>
             </Grid>

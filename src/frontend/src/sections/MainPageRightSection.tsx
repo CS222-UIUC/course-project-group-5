@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReviewsList from '../components/mainpageright/ReviewsList';
 import AddReview from '../components/mainpageright/AddReview';
 import ImagesGallery from '../components/mainpageright/ImagesGallery';
@@ -12,23 +12,14 @@ interface apt {
    apt: AptType | undefined; // in case of null
    logged: boolean;
    username: string;
-   setTo: Dispatch<SetStateAction<AptType>>;
+   handleAptChange: (apt: AptType) => void;
 }
-function RightSection({ apt, logged, username, setTo }: apt) {
+function RightSection({ apt, logged, username, handleAptChange }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
    const [pics, setPics] = useState<string[]>([
       'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png',
    ]);
    const [hasReview, setHasReview] = useState(false);
-   // const [aptInfo, setAptInfo] = useState<AptType>({
-   //    id: -1,
-   //    name: 'Apartment Name',
-   //    address: 'Apartment Address',
-   //    price_min: 0,
-   //    price_max: 9999,
-   //    votes: -1,
-   // });
-   // setAptInfo(apt);
    function checkHasReview() {
       axios({
          url: `${baseURL}?review=True&aptId=${apt?.id || 1}&checkReview=True`,
@@ -47,7 +38,9 @@ function RightSection({ apt, logged, username, setTo }: apt) {
             }
          });
    }
-   checkHasReview();
+   useEffect(() => {
+      checkHasReview();
+   }, [apt]);
    const retrieveReviews = async () => {
       const response = await axios.get(
          `${baseURL}?review=True&aptId=${apt?.id || 1}`
@@ -90,7 +83,7 @@ function RightSection({ apt, logged, username, setTo }: apt) {
                      setReviews={setReviews}
                      username={username}
                      hasReview={hasReview}
-                     setTo={setTo}
+                     handleAptChange={handleAptChange}
                   />
                </React.Fragment>
             )}

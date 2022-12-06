@@ -18,7 +18,7 @@ interface Props {
    setReviews: Dispatch<SetStateAction<ReviewType[]>>;
    username: string;
    hasReview: boolean;
-   setTo: Dispatch<SetStateAction<AptType>>;
+   handleAptChange: (apt: AptType) => void;
 }
 
 const baseURL = 'http://127.0.0.1:5000/main';
@@ -27,10 +27,34 @@ export default function AddReview({
    setReviews,
    username,
    hasReview,
-   setTo,
+   handleAptChange,
 }: Props) {
    const [text, setText] = useState<string>('');
    const [vote, setVote] = useState<number>(0);
+   const queryApt = () => {
+      axios({
+         method: 'GET',
+         url: `${baseURL}?search=True&aptId=${apt?.id}`,
+      })
+         .then((response) => {
+            console.log(response);
+            handleAptChange({
+               id: response.data.apt_id,
+               name: response.data.name,
+               address: response.data.address,
+               price_min: response.data.price_min,
+               price_max: response.data.price_max,
+               rating: response.data.rating,
+            });
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+            }
+         });
+   };
    const addReviewHandler = async (text: string, vote: number) => {
       // post review on submit
       const result = await axios.post(`${baseURL}`, {
@@ -39,22 +63,11 @@ export default function AddReview({
          comment: text,
          vote: vote,
       });
-      if (apt !== undefined) {
-         setTo(() => {
-            return {
-               id: apt.id,
-               name: apt.name,
-               address: apt.address,
-               price_min: apt.price_min,
-               price_max: apt.price_max,
-               rating: apt.rating + vote,
-            };
-         });
-      }
+      queryApt();
       setReviews(result.data);
       console.log(result);
    };
-   function deleteReview() {
+   const deleteReview = () => {
       axios({
          method: 'POST',
          url: 'http://127.0.0.1:5000/main?delete=True',
@@ -67,18 +80,7 @@ export default function AddReview({
          .then((response) => {
             console.log(response);
             setReviews(response.data);
-            if (apt !== undefined) {
-               setTo(() => {
-                  return {
-                     id: apt.id,
-                     name: apt.name,
-                     address: apt.address,
-                     price_min: apt.price_min,
-                     price_max: apt.price_max,
-                     rating: apt.rating - 1,
-                  };
-               });
-            }
+            queryApt();
          })
          .catch((error) => {
             if (error.response) {
@@ -87,7 +89,7 @@ export default function AddReview({
                console.log(error.response.headers);
             }
          });
-   }
+   };
    const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
       console.log(typeof event.target.value);
       // set the vote
