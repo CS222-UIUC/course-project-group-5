@@ -37,7 +37,7 @@ google = oauth.register(
 def googlelogin():
     """Handles google oauth login"""
     google_client = oauth.create_client("google")
-    redirect_uri = url_for("authorize", _external=True)
+    redirect_uri = url_for("authorize", _external=True)  # move to /authorize route
     return google_client.authorize_redirect(redirect_uri)
 
 
@@ -46,13 +46,13 @@ def authorize():
     """Authorization with google"""
     google_client = oauth.create_client("google")
     token = google_client.authorize_access_token()
-    resp = google_client.get("userinfo", token=token)
-    resp.raise_for_status()
-    user_info = resp.json()
-    # Note: you're not supposed to use user google data in session...
+    resp = google_client.get("userinfo", token=token)  # userinfo contains email
+    resp.raise_for_status()  # check status code
+    user_info = resp.json()  # convert to json
+    # query database for username
     page = UserPage(user_info["email"])
     session["username"] = page.get_user(user_info["email"]).username
-    return redirect("http://localhost:3000"), 301
+    return redirect("http://localhost:3000"), 301  # necessary status code
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -101,7 +101,7 @@ def userpage():
     page = UserPage(name)
     if request.method == "POST":
         json_form = request.get_json(force=True) or {}  # deserialize data
-        # see which field was True and therefore should be changed
+        # see which field is True and should be changed
         is_password = json_form.get("is_password", False)
         is_email = json_form.get("is_email", False)
         is_phone = json_form.get("is_phone", False)
@@ -128,7 +128,7 @@ def userpage():
 @app.route("/logout")
 def logout():
     """Removes session object"""
-    session.pop("username", None)  # remove session object
+    session.pop("username", None)
     return "logout success", 201
 
 

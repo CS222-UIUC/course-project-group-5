@@ -114,6 +114,9 @@ export default function Login() {
             <Typography style={{ marginTop: '10px' }}>
                <Link href="/">Access without logging in</Link>
             </Typography>
+            {/* Moves to the server-side to do the authorization.
+               I'm not sure if it's good practice.
+            */}
             <Link href="http://127.0.0.1:5000/googlelogin">
                <GoogleButton style={{ marginTop: '10px' }} />
             </Link>
