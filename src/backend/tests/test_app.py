@@ -85,7 +85,7 @@ def test_login_valid(client):
     )
     connection.commit()
 
-    log_info = {"user": "big_finger", "password": "123456789"}
+    log_info = {"user": "big_finger", "password": "123456789", "remember_me": "True"}
     res = client.post("/login", json=log_info)
     cursor.execute("DELETE FROM Users WHERE username = ?", ("big_finger",))
     connection.commit()
@@ -415,3 +415,14 @@ def test_whoami():
         session["username"] = "Mike"
         res = whoami()
         assert res[0] == "Mike" and res[1] == 201
+
+
+@use_test
+def test_google_oauth_success(client):
+    """Successful oauth login"""
+    res = client.get("/googlelogin")
+    print(res)
+    assert len(res.history) == 0
+    assert res.request.path == "/googlelogin"
+    # don't know how to test /authorize
+    # res2 = client.get("/authorize")

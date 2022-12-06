@@ -14,21 +14,24 @@ import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import GoogleButton from 'react-google-button';
 
 export default function Login() {
    const navigate = useNavigate();
    const [user, setUser] = useState('');
    const [password, setPassword] = useState('');
    const [res, setRes] = useState();
+   const [remember, setRemember] = useState(false);
 
    function sendData() {
       axios({
-         method: 'post',
+         method: 'POST',
          url: 'http://127.0.0.1:5000/login',
          withCredentials: true,
          data: {
             user: user,
             password: password,
+            remember_me: remember,
          },
       })
          .then((response) => {
@@ -72,7 +75,7 @@ export default function Login() {
                   </Grid>
                </Grid>
                <TextField
-                  label="Username/Email"
+                  label="Username or Email"
                   placeholder="Enter Username or Email"
                   onChange={(event) => setUser(event.target.value)}
                   fullWidth
@@ -88,6 +91,7 @@ export default function Login() {
                />
                <FormControlLabel
                   control={<Checkbox name="checkedB" color="primary" />}
+                  onChange={() => setRemember(!remember)}
                   label="Remember me"
                />
                <Button
@@ -101,15 +105,21 @@ export default function Login() {
                   Sign in
                </Button>
             </Stack>
-            <Typography>
+            {/* <Typography>
                <Link href="#">Forgot Password</Link>
-            </Typography>
+            </Typography> */}
             <Typography>
                <Link href="/register">Sign Up</Link>
             </Typography>
-            <Typography>
+            <Typography style={{ marginTop: '10px' }}>
                <Link href="/">Access without logging in</Link>
             </Typography>
+            {/* Moves to the server-side to do the authorization.
+               I'm not sure if it's good practice.
+            */}
+            <Link href="http://127.0.0.1:5000/googlelogin">
+               <GoogleButton style={{ marginTop: '10px' }} />
+            </Link>
             {res !== undefined && res !== `welcome ${user}` && (
                <Typography sx={{ color: '#ff0000' }}>{res}</Typography>
             )}

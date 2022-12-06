@@ -34,7 +34,6 @@ class UserPage:
     @use_database
     def update_password(self, password: str) -> bool:
         """Updates password based on username"""
-        # can use Flask-Hashing if we want
         if not validate_password(password):
             return False
         if self.user.password == password:

@@ -2,13 +2,15 @@
 import json
 import dataclasses
 from werkzeug.datastructures import MultiDict
-from flask import Flask, request, session
+from flask import Flask, request, session, url_for, redirect
 from flask_cors import CORS
+from authlib.integrations.flask_client import OAuth
 from flask_session import Session
 from pages.login import Login
 from pages.mainpage import MainPage
 from pages.userpage import UserPage
 from dataholders.mainpage_get import GetRequestType, GetRequestParams
+
 
 app = Flask(__name__)
 SECRET_KEY = b"xe47Wxcdx86Wxac(mKlxa5xa2,xb3axc6xf1x86Fxc25x94xfc"
@@ -16,6 +18,44 @@ SESSION_TYPE = "filesystem"
 app.config.from_object(__name__)
 Session(app)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+oauth = OAuth(app)
+
+google = oauth.register(
+    name="google",
+    client_id="410902541459-t10u2h0s4v2bnksbtq6futvmm2lke57k.apps.googleusercontent.com",
+    client_secret="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",
+    access_token_url="https://accounts.google.com/o/oauth2/token",
+    authorize_url="https://accounts.google.com/o/oauth2/auth",
+    api_base_url="https://www.googleapis.com/oauth2/v1/",
+    userinfo_endpoint="https://openidconnect.googleapis.com/v1/userinfo",
+    client_kwargs={"scope": "email"},
+    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+)
+
+
+@app.route("/googlelogin", methods=["GET", "POST"])
+def googlelogin():
+    """Handles google oauth login"""
+    google_client = oauth.create_client("google")
+    redirect_uri = url_for("authorize", _external=True)  # move to the /authorize route
+    return google_client.authorize_redirect(redirect_uri)
+
+
+@app.route("/authorize")
+def authorize():
+    """Authorization with google"""
+    google_client = oauth.create_client("google")
+    token = google_client.authorize_access_token()
+    resp = google_client.get("userinfo", token=token)  # userinfo contains email
+    resp.raise_for_status()  # check status code
+    user_info = resp.json()  # convert to json
+    # query database for username and create session
+    page = UserPage(user_info["email"])
+    session["username"] = page.get_user(user_info["email"]).username
+    return (
+        redirect("http://localhost:3000"),
+        301,
+    )  # necessary status code for Flask to auto-redirect
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -23,13 +63,15 @@ def login():
     """Handles login routing"""
     user_login = Login()
     json_form = request.get_json(force=True)
-
     if isinstance(json_form, dict):
         username = json_form.get("user", "")
         password = json_form.get("password", "")
+        remember = json_form.get("remember_me", False)
         if user_login.login(username, password):
-            # session object makes User accessible in the backend
+            # A session object makes the User accessible in the backend
             session["username"] = username
+            if remember:
+                session.permanent = True  # Flask probably does this automatically
             return f"welcome {username}", 200
         return "User not found, please try again", 401
     return "", 400
@@ -62,7 +104,7 @@ def userpage():
     page = UserPage(name)
     if request.method == "POST":
         json_form = request.get_json(force=True) or {}  # deserialize data
-        # see which field was True and therefore should be changed
+        # see which field is True and should be changed
         is_password = json_form.get("is_password", False)
         is_email = json_form.get("is_email", False)
         is_phone = json_form.get("is_phone", False)
@@ -80,7 +122,8 @@ def userpage():
         if not result:
             return "invalid request", 400
         return "success", 201
-    user = page.get_user(name)  # request.method == "GET"
+    # request.method == "GET"
+    user = page.get_user(name)
     data_dict = dataclasses.asdict(user)
     return json.dumps(data_dict), 200
 
@@ -88,15 +131,15 @@ def userpage():
 @app.route("/logout")
 def logout():
     """Removes session object"""
-    session.pop("username", None)  # remove session object
-    return "", 201
+    session.pop("username", None)
+    return "logout success", 201
 
 
 @app.route("/api/whoami")
 def whoami():
     """Shows whether a user is logged in and returns session username"""
     if session.get("username") is None:
-        return "user logged out", 403
+        return "user is logged out", 403
     username = session.get("username", "")
     return str(username), 201
 
