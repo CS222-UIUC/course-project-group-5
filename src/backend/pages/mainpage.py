@@ -284,7 +284,6 @@ class MainPage:
     def check_user_reviewed(self, apt_id: int, user: str) -> bool:
         """Check if review exists for an user"""
         user_id = self.get_user_id_from_user(user)
-        print(user_id)
         review = self.check_user_reviewed.cursor.execute(
             "SELECT * FROM Reviews WHERE (apt_id = ? AND user_id = ?)",
             (
@@ -292,7 +291,6 @@ class MainPage:
                 user_id,
             ),
         ).fetchone()
-        print(review)
         return review is not None
 
     @use_database
