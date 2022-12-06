@@ -22,3 +22,4 @@ class GetRequestParams:
     search_query: Union[str, None]
     rating_sort: Union[int, None]
     price_sort: Union[int, None]
+    check_review: Union[bool, None]

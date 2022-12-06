@@ -77,7 +77,7 @@ Minh worked on the front end, Samuel worked on the backend, and Aden did the use
 ### Diagram
 
 <div align="center">
-    <img src="images/diagram.png" alt="Diagram" width="500" height="400">
+   ![image](https://user-images.githubusercontent.com/46902243/205808639-52731fd1-7798-472f-9245-163050c26969.png)
 </div>
 
 ## Installation and Usage

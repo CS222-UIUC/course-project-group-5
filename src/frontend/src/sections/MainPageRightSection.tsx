@@ -12,21 +12,35 @@ interface apt {
    apt: AptType | undefined; // in case of null
    logged: boolean;
    username: string;
+   handleAptChange: (apt: AptType) => void;
 }
-function RightSection({ apt, logged, username }: apt) {
+function RightSection({ apt, logged, username, handleAptChange }: apt) {
    const [reviews, setReviews] = useState<ReviewType[]>([]);
    const [pics, setPics] = useState<string[]>([
       'https://www.salonlfc.com/wp-content/uploads/2018/01/image-not-found-scaled.png',
    ]);
-   // const [aptInfo, setAptInfo] = useState<AptType>({
-   //    id: -1,
-   //    name: 'Apartment Name',
-   //    address: 'Apartment Address',
-   //    price_min: 0,
-   //    price_max: 9999,
-   //    votes: -1,
-   // });
-   // setAptInfo(apt);
+   const [hasReview, setHasReview] = useState(false);
+   function checkHasReview() {
+      axios({
+         url: `${baseURL}?review=True&aptId=${apt?.id || 1}&checkReview=True`,
+         withCredentials: true,
+      })
+         .then((response) => {
+            console.log(response);
+            setHasReview(true);
+         })
+         .catch((error) => {
+            if (error.response) {
+               console.log(error.response);
+               console.log(error.response.status);
+               console.log(error.response.headers);
+               setHasReview(false);
+            }
+         });
+   }
+   useEffect(() => {
+      checkHasReview();
+   }, [apt]);
    const retrieveReviews = async () => {
       const response = await axios.get(
          `${baseURL}?review=True&aptId=${apt?.id || 1}`
@@ -60,16 +74,18 @@ function RightSection({ apt, logged, username }: apt) {
             <ImagesGallery pics={pics} />
             <AptInfo apt={apt} />
             {logged === true && (
-               <Divider
-                  sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
-               />
-            )}
-            {logged === true && (
-               <AddReview
-                  apt={apt}
-                  setReviews={setReviews}
-                  username={username}
-               />
+               <React.Fragment>
+                  <Divider
+                     sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }}
+                  />
+                  <AddReview
+                     apt={apt}
+                     setReviews={setReviews}
+                     username={username}
+                     hasReview={hasReview}
+                     handleAptChange={handleAptChange}
+                  />
+               </React.Fragment>
             )}
             <Divider sx={{ borderBottomWidth: 3, bgcolor: 'secondary.dark' }} />
             <ReviewsList reviews={reviews} />

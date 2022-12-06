@@ -50,7 +50,7 @@ export default function Login() {
 
    const paperStyle = {
       padding: 20,
-      height: '65vh',
+      height: '100%',
       width: 310,
       margin: '20px auto',
    };
