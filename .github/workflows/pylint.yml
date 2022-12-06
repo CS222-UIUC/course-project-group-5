@@ -23,6 +23,7 @@ jobs:
         pip install flask-cors
         pip install BeautifulSoup4
         pip install Flask-Session2
+        pip install authlib
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
