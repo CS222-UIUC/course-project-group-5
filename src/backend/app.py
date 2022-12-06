@@ -52,7 +52,10 @@ def authorize():
     # query database for username and create session
     page = UserPage(user_info["email"])
     session["username"] = page.get_user(user_info["email"]).username
-    return redirect("http://localhost:3000"), 301  # necessary status code for Flask to auto-redirect
+    return (
+        redirect("http://localhost:3000"),
+        301,
+    )  # necessary status code for Flask to auto-redirect
 
 
 @app.route("/login", methods=["GET", "POST"])
