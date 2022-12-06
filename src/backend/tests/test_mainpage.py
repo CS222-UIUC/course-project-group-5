@@ -327,7 +327,7 @@ class TestMainPage:
             "SELECT apt_id FROM Apartments WHERE (apt_name = 'Sherman')"
         ).fetchone()[0]
         connection.close()
-        res = self.main_page.get_apartments_reviews(sherman_id)
+        res = self.main_page.get_apartments_reviews(sherman_id, "Big_finger")
 
         self.main_page_stage.clean_all()
         assert sample_apts_review == res
@@ -375,7 +375,7 @@ class TestMainPage:
         ).fetchone()[0]
         self.main_page_stage.clean_up_reviews(cursor, connection)
         connection.close()
-        res = self.main_page.get_apartments_reviews(sherman_id)
+        res = self.main_page.get_apartments_reviews(sherman_id, "")
         self.main_page_stage.clean_all()
         assert sample_apts_review == res
 
@@ -402,3 +402,32 @@ class TestMainPage:
         connection.close()
         self.main_page_stage.clean_all()
         assert modified_review == sample_apts_review
+
+    @use_test
+    def test_check_user_reviewed(self):
+        """Test checking a review exists for a user"""
+        self.main_page_stage.initialize_all()
+        connection = sqlite3.connect("database/database_test.db")
+        cursor = connection.cursor()
+        par_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
+        check = self.main_page.check_user_reviewed(par_id, "Big_finger")
+        self.main_page_stage.clean_all()
+        connection.close()
+        assert check
+
+    @use_test
+    def test_get_single_apt(self):
+        """Test gets a single apt"""
+        self.main_page_stage.initialize_all()
+        connection = sqlite3.connect("database/database_test.db")
+        cursor = connection.cursor()
+        par_id = cursor.execute(
+            "SELECT apt_id FROM Apartments WHERE (apt_name = 'PAR')"
+        ).fetchone()[0]
+        par = Apt(par_id, "PAR", "901 W College Ct", -1, 5000, 6000)
+        check = self.main_page.get_single_apt(par_id)
+        self.main_page_stage.clean_all()
+        connection.close()
+        assert par == check

@@ -11,14 +11,14 @@ const ReviewsList = ({ reviews }: Props) => {
          {reviews.length === 0 && (
             <Box display="flex" justifyContent="center">
                <Typography variant="h5">
-                  No comment yet. Write your first comment
+                  No review yet. Write your first review
                </Typography>
             </Box>
          )}
          {reviews.length !== 0 && (
             <Stack spacing={1}>
                <Box display="flex" justifyContent="center">
-                  <Typography variant="h5">Comments</Typography>
+                  <Typography variant="h5">Reviews</Typography>
                </Box>
                {reviews.map((review, i) => (
                   <ReviewCard
