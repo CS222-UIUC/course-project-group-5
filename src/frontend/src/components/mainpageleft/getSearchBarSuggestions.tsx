@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { AptType } from '../Types';
 
 export default function getSuggestions(query: string, search: boolean) {
-   const emptyarray: {
-      name: string;
-   }[] = [];
-   const [names, setNames] = useState(emptyarray);
+   const [apts, setApts] = useState<AptType[]>([]);
 
    useEffect(() => {
       // clears the names
-      setNames(emptyarray);
+      setApts([]);
    }, [query]);
 
    useEffect(() => {
@@ -23,17 +21,20 @@ export default function getSuggestions(query: string, search: boolean) {
          withCredentials: true,
       })
          .then((res) => {
-            const newNames: {
-               name: string;
-            }[] = [];
+            const newApts: AptType[] = [];
             for (let i = 0; i < res.data.length; i++) {
                if (res.data[i].name !== undefined) {
-                  newNames.push({
+                  newApts.push({
+                     id: res.data[i].apt_id,
                      name: res.data[i].name,
+                     address: res.data[i].address,
+                     price_min: res.data[i].price_min,
+                     price_max: res.data[i].price_max,
+                     rating: res.data[i].rating,
                   });
                }
             }
-            setNames(newNames);
+            setApts(newApts);
          })
          .catch((e) => {
             if (axios.isCancel(e)) return;
@@ -43,5 +44,5 @@ export default function getSuggestions(query: string, search: boolean) {
       };
    }, [query]);
 
-   return { names };
+   return { apts };
 }

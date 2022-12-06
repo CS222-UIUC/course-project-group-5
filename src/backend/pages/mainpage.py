@@ -27,6 +27,11 @@ class MainPage:
     FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
     GROUP BY Apartments.apt_id) "
 
+    search_apt_query = "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
+    COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
+    Apartments.price_min, Apartments.price_max \
+    FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id "
+
     def __init__(self) -> None:
         """Constructor"""
 
@@ -35,11 +40,8 @@ class MainPage:
         """Returns a list of apartments with name matching query"""
         query_sql = "%" + query.lower() + "%"
         apt_query = self.search_apartments.cursor.execute(
-            "SELECT Apartments.apt_id, Apartments.apt_name, Apartments.apt_address, \
-            COALESCE(SUM(Reviews.vote), 0) AS 'total_vote', \
-            Apartments.price_min, Apartments.price_max \
-            FROM Apartments LEFT JOIN Reviews ON Apartments.apt_id = Reviews.apt_id \
-            WHERE LOWER(Apartments.apt_name) LIKE ? \
+            self.search_apt_query
+            + "WHERE LOWER(Apartments.apt_name) LIKE ? \
             GROUP BY Apartments.apt_id",
             (query_sql,),
         ).fetchall()
@@ -216,13 +218,10 @@ class MainPage:
 
     @use_database
     def write_apartment_review(
-        self, apt_id: int, username: str, comment: str, vote: int
+        self, apt_id: int, user: str, comment: str, vote: int
     ) -> List[Review]:
         """Write a new review for apartment"""
-        user_id = self.write_apartment_review.cursor.execute(
-            "SELECT user_id FROM Users WHERE username = ? OR email = ?",
-            (username, username),
-        ).fetchone()[0]
+        user_id = self.get_user_id_from_user(user)
         today = date.today().strftime("%Y-%m-%d")
         self.write_apartment_review.cursor.execute(
             "INSERT INTO Reviews (apt_id, user_id, date_of_rating, comment, vote) \
@@ -239,21 +238,23 @@ class MainPage:
             FROM Users INNER JOIN Reviews \
             ON Users.user_id = Reviews.user_id \
             WHERE Reviews.apt_id = ? \
-            ORDER BY Users.username = ? DESC, Reviews.date_of_rating DESC",
-            (apt_id, username),
+            ORDER BY Users.user_id = ? DESC, Reviews.date_of_rating DESC",
+            (apt_id, user_id),
         ).fetchall()
         return self.create_reviews_helper(ratings_query)
 
     @use_database
-    def get_apartments_reviews(self, apt_id: int) -> List[Review]:
+    def get_apartments_reviews(self, apt_id: int, user: str) -> List[Review]:
         """Returns a list of apartment reviews"""
+        user_id = self.get_user_id_from_user(user)
         ratings_query = self.get_apartments_reviews.cursor.execute(
             "SELECT Users.username, Reviews.date_of_rating, Reviews.comment, Reviews.vote \
             FROM Users INNER JOIN Reviews \
             ON Users.user_id = Reviews.user_id \
             WHERE Reviews.apt_id = ? \
-            ORDER BY Reviews.date_of_rating DESC",
-            (apt_id,),
+            ORDER BY Users.user_id = ? DESC, \
+            Reviews.date_of_rating DESC",
+            (apt_id, user_id),
         ).fetchall()
         return self.create_reviews_helper(ratings_query)
 
@@ -269,12 +270,49 @@ class MainPage:
         return reviews
 
     @use_database
-    def delete_apartment_review(self, apt_id: int, username: str) -> List[Review]:
+    def delete_apartment_review(self, apt_id: int, user: str) -> List[Review]:
         """Delete an apartment reviews"""
+        user_id = self.get_user_id_from_user(user)
         self.delete_apartment_review.cursor.execute(
-            "DELETE FROM Reviews WHERE (apt_id = ? AND user_id = \
-            (SELECT user_id FROM Users WHERE username = ?))",
-            (apt_id, username),
+            "DELETE FROM Reviews WHERE (apt_id = ? AND user_id = ?)",
+            (apt_id, user_id),
         )
         self.delete_apartment_review.connection.commit()
-        return self.get_apartments_reviews(apt_id)
+        return self.get_apartments_reviews(apt_id, "")
+
+    @use_database
+    def check_user_reviewed(self, apt_id: int, user: str) -> bool:
+        """Check if review exists for an user"""
+        user_id = self.get_user_id_from_user(user)
+        print(user_id)
+        review = self.check_user_reviewed.cursor.execute(
+            "SELECT * FROM Reviews WHERE (apt_id = ? AND user_id = ?)",
+            (
+                apt_id,
+                user_id,
+            ),
+        ).fetchone()
+        print(review)
+        return review is not None
+
+    @use_database
+    def get_user_id_from_user(self, user) -> int:
+        """Gets user_id corresponding to certain username/email"""
+        user_id = self.get_user_id_from_user.cursor.execute(
+            "SELECT user_id FROM Users WHERE username = ? OR email = ?",
+            (user, user),
+        ).fetchone()
+        if user_id is None:
+            return -1
+        return user_id[0]
+
+    @use_database
+    def get_single_apt(self, apt_id: int) -> Apt:
+        """Get a single apt from apt id"""
+        apt = self.get_single_apt.cursor.execute(
+            self.search_apt_query
+            + "WHERE Apartments.apt_id = ? \
+            GROUP BY Apartments.apt_id",
+            (apt_id,),
+        ).fetchone()
+        return Apt(apt[0], apt[1], apt[2], apt[3], apt[4], apt[5])

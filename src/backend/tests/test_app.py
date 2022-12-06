@@ -134,6 +134,44 @@ def test_mainpage_get_valid_review(client):
 
 
 @use_test
+def test_mainpage_get_user_reviewed(client):
+    """Mainpage handles review checking request"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    far_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+    ).fetchone()[0]
+    query = {"review": "True", "checkReview": True, "aptId": far_id}
+    log_info = {"user": "Big_finger", "password": "big_password1"}
+    res_1 = client.get("/login", json=log_info)
+    res = client.get("/main", query_string=query)
+    mainpage.clean_all()
+    connection.close()
+    assert res_1.status_code == 200
+    assert res.status_code == 200
+
+
+@use_test
+def test_mainpage_get_search_single_apt(client):
+    """Mainpage handles getting single apt info"""
+    mainpage = MainPageStaging()
+    mainpage.initialize_all()
+    connection = sqlite3.connect("database/database_test.db")
+    cursor = connection.cursor()
+    far_id = cursor.execute(
+        "SELECT apt_id FROM Apartments WHERE (apt_name = 'FAR')"
+    ).fetchone()[0]
+    query = {"search": "True", "aptId": far_id}
+    res = client.get("/main", query_string=query)
+    mainpage.clean_all()
+    connection.close()
+    print(res.text)
+    assert res.status_code == 200
+
+
+@use_test
 def test_mainpage_get_valid_search(client):
     """Test mainpage handles valid search request"""
     mainpage = MainPageStaging()
