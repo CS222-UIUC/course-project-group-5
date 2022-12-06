@@ -76,9 +76,9 @@ This page is restricted to logged-in users, who can view their liked apartments 
 Minh worked on the front end, Samuel worked on the backend, and Aden did the user page's API in the backend.
 ### Diagram
 
-<div align="center">
-   ![image](https://user-images.githubusercontent.com/46902243/205808639-52731fd1-7798-472f-9245-163050c26969.png)
-</div>
+
+![image](images/tech_diagram.png)
+  
 
 ## Installation and Usage
 
