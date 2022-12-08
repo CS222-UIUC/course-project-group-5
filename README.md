@@ -95,13 +95,17 @@ If you would like to access the project code or the development website, follow 
 
 2. In the `src/frontend` directory, install npm packages:
    ```sh
-   npm install
+   npm install -force
    ```
 3. In the same directory start the React app:
     ```sh
     npm start
     ```
-4. Open another terminal and move to the `src/backend` directory. Start the Flask app:
+4. Open another terminal and move to the `src/backend` directory, install pip packages:
+    ```sh
+    pip install -r requirements.txt
+    ```
+5. Start the Flask app:
     ```sh
     flask run
     ```
