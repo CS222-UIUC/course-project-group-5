@@ -95,13 +95,13 @@ If you would like to access the project code or the development website, follow 
 
 2. In the `src/frontend` directory, install npm packages:
    ```sh
-   npm install -force
+   npm install --force
    ```
 3. In the same directory start the React app:
     ```sh
     npm start
     ```
-4. Open another terminal and move to the `src/backend` directory, install pip packages:
+4. Open another terminal, move to the `src/backend` directory, and install pip packages:
     ```sh
     pip install -r requirements.txt
     ```
