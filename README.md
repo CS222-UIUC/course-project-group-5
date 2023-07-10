@@ -119,7 +119,7 @@ If you would like to access the project code or the development website, follow 
 
 [Zongxian Feng](https://github.com/xxxfzxxx) created the residence scraper to populate our database and completed the right section of the main page, where users can view individual residence data, review, comment, and rate them. He also contributed to the CI/CD pipeline.
 
-[Aden Krakman](https://github.com/akrakman) created the search bar and the left section of the main page, where anyone can see the residence data in a scrollable list. He contributed to the user page backend, where users update their data. Also, he implemented the user page API, which maintains a session and posts user data to the frontend user page.
+[Aden](https://github.com/akrakman) created the search bar and the left section of the main page, where anyone can see the residence data in a scrollable list. He contributed to the user page backend, where users update their data. Also, he implemented the user page API, which maintains a session and posts user data to the frontend user page.
 
 Everyone tested their code and contributed to the overall design and implementation of the project.
 
