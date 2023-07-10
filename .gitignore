@@ -1,0 +1,38 @@
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+venv
+__pycache__
+.vscode
+# dependencies
+src/frontend/node_modules
+/.pnp
+.pnp.js
+src/backend/.pytest_cache
+.pytest_cache
+src/backend/__pycache__
+src/backend/flask_session
+
+src/frontend/my-app/node_modules
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# tests
+/src/backend/.coverage
+/src/backend/pytest-coverage.txt
+/src/backend/pytest.xml
+/src/backend/database/database.db-journal
+

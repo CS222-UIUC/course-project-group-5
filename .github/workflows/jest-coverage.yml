@@ -1,0 +1,20 @@
+name: Jest Coverage Calculation
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+        working-directory: src/frontend
+
+      - name: Run tests
+        run: |
+          npx ts-jest config:init --coverage --coverageReporters json-summary
+        working-directory: src/frontend
+
+      - name: Jest coverage comment
+        uses: MishaKav/jest-coverage-comment@main

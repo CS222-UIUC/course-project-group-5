@@ -1,0 +1,64 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@material-ui/core": "^4.12.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.7",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.62",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "axios": "^1.1.2",
+    "bootstrap": "^5.2.2",
+    "eslint": "^8.26.0",
+    "eslint-config-react-typescript": "^1.0.10",
+    "eslint-plugin-react": "^7.31.10",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.5.0",
+    "react-dom": "^18.2.0",
+    "react-google-button": "^0.7.2",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-material-ui-carousel": "3.4.2",
+    "react-router-dom": "^6.4.2",
+    "react-scripts": "^5.0.1",
+    "styled-components": "^5.3.6",
+    "underscore": "^1.13.6",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start-backend": "cd ../backend && flask run",
+    "lint": "npx eslint src/components/** && npx eslint src/App.tsx",
+    "prettier": "cd src && npx prettier --write .",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "@types/styled-components": "^5.1.26",
+    "@types/underscore": "^1.11.4",
+    "prettier": "2.7.1",
+    "typescript": "^4.8.4"
+  }
+}
